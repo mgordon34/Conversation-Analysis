@@ -1,13 +1,16 @@
 Goals of the algorithm
 
-Inputs: An .rtf file with the following information
+Inputs: An .rtf file with the following information:
+    - Line number: the order number of the line
     - Timespan: time range when the speaker was talking
     - Content: What the speaker said
     - Date: The date at which the conversation was
     - Time: The time of day the converstation took place
     - Speaker: The name of the speaker
-    - Recipient: Who the speaker was talking to. (labeled "all" if directed at anyone)
+    - Recipient: Who the speaker was talking to. (labeled "all" if directed at everyone in the group)
     - Starts At:
+
+ There is an example input .rtf file located on the team GitHub page.
 
 Outputs
     - A line graphs that shows the positive, negative and neutral sentiment rating of each individual speaker
@@ -16,3 +19,4 @@ Outputs
     scores of the conversation based on the difference between each of the individual speaker's
     positive, negative and neutral scores. The closer the sentiment scores are to each other, the more the
     conversation would reflect the corresponding sentiment (positive, negative or neutral).
+    -
