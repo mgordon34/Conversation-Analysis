@@ -1,14 +1,15 @@
 import Dialog
-import nltk.corpus
-from nltk.text import Text
-from nltk.corpus import sentiwordnet as swn
-from nltk.sentiment.util import *
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk import tokenize
-#di = Dialog(None, cont, None, None, sp, ra, )
 fi = open("AbbottCostello.txt")
 cnt = 1
 speakers = {"Abbott": [], "Costello": []}
+
+"""
+The following code uses the VADER sentiment analysis tool.
+Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.
+"""
+
+#Reading in the Abbott and Costello Document
 for line in fi.readlines():
     a = line.split(":")
     di = None
@@ -22,30 +23,30 @@ for line in fi.readlines():
         speakers[a[0]].append(di)
     cnt += 1
 
-
-
-"""
-    for k in speakers.keys():
-    print k
-    for diag in speakers[k]:
-        print diag.content
-"""
-
 fi.close()
+
 sid = SentimentIntensityAnalyzer()
+#diff contains the difference between Abbot's and Costello's sentiment rankings
 diff = []
+
+#abLines is an array dictionaries contains Abbot's sentiment rankings. One entry in abLines corresponds to one line in the conversation
+abLines = []
+
+#costLines is an array dictionaries contains Costello's sentiment rankings. One entry in abLines corresponds to one line in the conversation
+costLines = []
 
 print "++++++++++++++++++++++++++++++++++++++++++"
 for diag in speakers["Abbott"]:
     sentence = diag.content
     print sentence
+    #ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
     ss = sid.polarity_scores(sentence)
+    abLines.append(ss)
     for k in sorted(ss):
         print ('{0} : {1}, '.format(k, ss[k]))
     diff.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
 
-    print "++++++++++++++++++++++++++++++++++++++++++"
-
+print "++++++++++++++++++++++++++++++++++++++++++"
 i = len(diff)
 cnt = 0
 sid = SentimentIntensityAnalyzer()
@@ -53,8 +54,10 @@ print "*********************************************"
 for diag in speakers["Costello"]:
     sentence = diag.content
     print sentence
+    #ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Costello's
     ss = sid.polarity_scores(sentence)
-    print ss
+    costLines.append(ss)
+    #print ss
     for k in sorted(ss):
         print ('{0} : {1}, '.format(k, ss[k]))
     diff[cnt] = [abs(diff[cnt][0]-ss['compound']), abs(diff[cnt][1] - ss['neg']), abs(diff[cnt][2]-ss['neu']), abs(diff[cnt][3]-ss['pos'])]
