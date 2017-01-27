@@ -6,16 +6,19 @@ This project requires the nltk python library as a dependency. For directions to
 
 http://www.nltk.org/install.html
 
-In addition, the Vader_Lexiocn package is required. To obtain this package, after succesfully installing nltk, open the Python shell on the command line and type the following:
+In addition, the Vader_Lexicon package is required. To obtain this package, after succesfully installing nltk, open the Python shell on the command line and type the following:
 
 import nltk
+
 nltk.download()
+
 d
+
 l
 
 click enter until the interface reads "Identifier>"
 Then type:
 
-vader_lexion
+vader_lexicon
 
 [1] M. Mahajan and B. R. Jadhav, "Review of dual sentiment analysis," International Journal of Science and Research (IJSR), vol. 4, no. 11, pp. 2323–2326, Nov. 2015.
