@@ -1,0 +1,39 @@
+Goals of the algorithm
+
+Inputs: An .rtf file with the following information:
+    - Line number: the order number of the line
+    - Timespan: time range when the speaker was talking
+    - Content: What the speaker said
+    - Date: The date at which the conversation was
+    - Time: The time of day the converstation took place
+    - Speaker: The name of the speaker
+    - Recipient: Who the speaker was talking to. (labeled "all" if directed at everyone in the group)
+    - Starts At:
+
+There is an example input .rtf file located on the team GitHub page.
+Possible Resources:
+    - Capturing word-emotion, word-sentiment, and word-colour associations
+        + Mapping from words to emotions and associations
+        + http://www.saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm
+        + http://www.saifmohammad.com/WebPages/lexicons.html
+    - PMI-IR-Algorithm
+        + Used for mining word synonyms
+        + Implementations available online
+    - TF-IDF Algorithm
+        + used to characterize documents where the catagories are found within the document as opposed to just positive and negative
+        + The goal is to give insight about what information is in the document
+    - nltk
+        + Natural Language Toolkit for Python
+        + http://www.nltk.org/book/
+        + Text class is very useful giving information about a text such as word count, and basic statistics
+            *Note that it works on a document as a whole. If we wanted to use it we would have to create a
+            text document for each speaker.
+Outputs
+    - A line graphs that shows the positive, negative and neutral sentiment rating of each individual speaker
+    - "focus points" that show key points in the conversation. For example, the point when a speaker changes moods.
+    - A comparison line graph the show the difference in the emotions of the speakers. We could classify the sentiment
+    scores of the conversation based on the difference between each of the individual speaker's
+    positive, negative and neutral scores. The closer the sentiment scores are to each other, the more the
+    conversation would reflect the corresponding emotion.
+    - number of words
+    - frequency of words

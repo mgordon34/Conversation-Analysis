@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 
 from MainPage.models import Document
 from MainPage.forms import DocumentForm
+import TextParsing
 
 def main(request):
     # Handle file upload
@@ -13,7 +14,7 @@ def main(request):
         if form.is_valid():
             newdoc = Document(docfile = request.FILES['docfile'])
             newdoc.save()
-
+            TextParsing.parse(str = request.FILES['docfile'])
             # Redirect to the document list after POST
             return HttpResponseRedirect(reverse('MainPage.views.main'))
     else:
