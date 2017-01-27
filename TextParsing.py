@@ -13,6 +13,7 @@ class TextParsing:
             lines.append(line)
         fh.close()
         i = 0
+        index = 1
         while (i < len(lines)):
             line = lines[i]
 
@@ -57,7 +58,8 @@ class TextParsing:
                 print startsAt
 
                 self.dialogues.append(Dialog.Dialog(timestamp, content, date, time, speaker, recipients, startsAt))
-                self.speakerDict[speaker].append(i+1)
+                self.speakerDict[speaker].append(index+1)
+                index += 1
                 i += 4
             else:
                 i += 1

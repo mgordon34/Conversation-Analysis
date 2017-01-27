@@ -61,4 +61,4 @@ if __name__ == '__main__':
     tp = TextParsing.TextParsing("exampleData.rtf")
     a = Analyze()
     print a.getAverageScores(tp)
-    #print a.getSentimentData(tp, )
+    print a.getSentimentData(tp, "Tempus")
