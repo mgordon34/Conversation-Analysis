@@ -48,6 +48,7 @@ def results(request):
             ind = np.arange(4)
             width = .5
             plt.bar(ind, score, width)
+            plt.ylabel('Normalized Score')
             plt.xticks(ind,labels)
             # fig, ax = plt.subplots()
             # plot = ax.bar(ind, score, width)
