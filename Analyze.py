@@ -44,7 +44,10 @@ class Analyze:
             lines.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
         return lines
 
-    #TODO: getDifference does not work
+    """
+    Creates a scatter plot of the speakers in teh speaker array and the sentiment desired. 
+    possible sentiments: pos, neg, neu, compund
+    """
     def getDifference (self, tp, speakerArray, sentiment):
         funcArr = []
         diff = []
