@@ -18,44 +18,37 @@ class TextParsing:
             line = lines[i]
 
             if line[:4] == '\cf0':
-                print 'entered if'
+                #print 'entered if'
                 i += 2
                 line = lines[i]
                 timestamp = line[5:]
                 timestamp = timestamp[:(len(timestamp)- 7)]
-                print timestamp
 
                 i += 2
                 line = lines[i]
                 content = line[5:len(line) - 2]
-                print content
 
                 i += 4
                 line = lines[i]
                 date = line[5:(len(line)-7)]
-                print date
 
                 i += 2
                 line = lines[i]
                 time = line[5:(len(line) - 7)]
-                print time
 
                 i += 2
                 line = lines[i]
                 speaker = line[5:(len(line) - 7)]
-                print speaker
                 if speaker not in self.speakerDict:
                     self.speakerDict[speaker] = []
 
                 i += 2
                 line = lines[i]
                 recipients = line[5:(len(line) - 7)]
-                print recipients
 
                 i += 2
                 line = lines[i]
                 startsAt = line[5:(len(line) - 12)]
-                print startsAt
 
                 self.dialogues.append(Dialog.Dialog(timestamp, content, date, time, speaker, recipients, startsAt))
                 self.speakerDict[speaker].append(index+1)
@@ -63,4 +56,4 @@ class TextParsing:
                 i += 4
             else:
                 i += 1
-        print 'end\n'
+        #print 'end\n'
