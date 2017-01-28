@@ -14,7 +14,7 @@ def main(request):
         if form.is_valid():
             newdoc = Document(docfile = request.FILES['docfile'])
             newdoc.save()
-            TextParsing.parse(str = request.FILES['docfile'])
+            parser = TextParsing.TextParsing(request.FILES['docfile'].name)
             # Redirect to the document list after POST
             # return HttpResponseRedirect('MainPage.views.main')
     else:
@@ -31,5 +31,16 @@ def main(request):
     )
 
 def results(request):
-    output = analyzer.echo(request.POST['info'])
-    return HttpResponse(output)
+    # Handle file upload
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            newdoc = Document(docfile = request.FILES['docfile'])
+            newdoc.save()
+            parser = TextParsing.TextParsing(request.FILES['docfile'].name)
+            # Redirect to the document list after POST
+            # return HttpResponseRedirect('MainPage.views.main')
+    else:
+        form = DocumentForm() # A empty, unbound form
+
+    return render(request, 'appTemps/results.html')
