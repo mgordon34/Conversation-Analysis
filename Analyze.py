@@ -4,6 +4,7 @@ import TextParsing
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.cm as cm
+from scipy.interpolate import interp1d
 
 class Analyze:
     def __init__(self):
@@ -53,6 +54,7 @@ class Analyze:
         k = 0
         for sp in speakerArray:
             funcArr.append([[],[]])
+            print sp, len(tp.speakerDict[sp])
             for i in tp.speakerDict[sp]:
                 sentence = tp.dialogues[i].content
                 # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
@@ -66,8 +68,16 @@ class Analyze:
         fig = plt.figure()
         ax1 = fig.add_subplot(111)
         colors = cm.rainbow(np.linspace(0, 1, len(funcArr)))
+        plt.ylabel('sentiment score')
+        plt.xlabel("line number")
+        plt.title(sentiment)
         for i in range(len(funcArr)):
+            #xnew = np.linspace(0, 65, endpoint=True)
             ax1.scatter(funcArr[i][0], funcArr[i][1], s=10,c=colors[i], marker="s", label=speakerArray[i])
+            #f = interp1d(funcArr[i][0], funcArr[i][1])
+            #plt.plot(funcArr[i][0], funcArr[i][1], 'o',funcArr[i][0], f(funcArr[i][1]))
+            #plt.plot(funcArr[i][0], funcArr[i][1], 'o', xnew, f(xnew), '-')
+        #plt.legend(speakerArray, loc='best')
         plt.legend(loc='upper left')
         plt.show()
 
@@ -96,4 +106,4 @@ if __name__ == '__main__':
     print a.getAverageScores(tp)
     #print a.getSentimentData(tp, "Tempus")
     print a.getConversationSentiment(tp)
-    a.getDifference(tp, ["Tempus", "Bunnycrusher"], "pos")
+    a.getDifference(tp, ["Tempus", "Bunnycrusher", "Daner"], "pos")
