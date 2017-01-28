@@ -15,28 +15,42 @@ class Analyze:
     def getSentimentData(self, tp, speaker):
         # diff contains the difference between Abbot's and Costello's sentiment rankings
         lines = []
-        print "++++++++++++++++++++++++++++++++++++++++++"
+        #print "++++++++++++++++++++++++++++++++++++++++++"
         for i in tp.speakerDict[speaker]:
             sentence = tp.dialogues[i].content
-            print sentence
             # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
             ss = self.sid.polarity_scores(sentence)
-            for k in sorted(ss):
-                print ('{0} : {1}, '.format(k, ss[k]))
+            #for k in sorted(ss):
+            #    print ('{0} : {1}, '.format(k, ss[k]))
             lines.append((sentence ,[ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
         return lines
 
+    """
+    Gets the sentiment of the conversation no matter who the speaker is.
+    Sentiment analysis on all of the lines.
+    """
+    def getConversationSentiment(self, tp):
+        lines = []
+        for diag in tp.dialogues:
+            sentence = diag.content
+            # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
+            ss = self.sid.polarity_scores(sentence)
+            #for k in sorted(ss):
+                #print ('{0} : {1}, '.format(k, ss[k]))
+            lines.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
+        return lines
+
+    #TODO: getDifference does not work
     def getDifference (self, tp, speakerArray):
-        #diff contains the difference between Abbot's and Costello's sentiment rankings
         diff = []
         for sp in tp.speakerDict.keys():
             for i in tp.speakerDict[sp]:
                 sentence = tp.dialogues[i].content
-                print sentence
+                #print sentence
                 # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
                 ss = self.sid.polarity_scores(sentence)
-                for k in sorted(ss):
-                    print ('{0} : {1}, '.format(k, ss[k]))
+                #for k in sorted(ss):
+                #    print ('{0} : {1}, '.format(k, ss[k]))
                 diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
 
     """
@@ -61,4 +75,5 @@ if __name__ == '__main__':
     tp = TextParsing.TextParsing("exampleData.rtf")
     a = Analyze()
     print a.getAverageScores(tp)
-    print a.getSentimentData(tp, "Tempus")
+    #print a.getSentimentData(tp, "Tempus")
+    print a.getConversationSentiment(tp)
