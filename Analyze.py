@@ -44,7 +44,7 @@ class Analyze:
             lines.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
         return lines
 
-    #TODO: getDifference does not work
+    #TODO: getDifference
     def getDifference (self, tp, speakerArray, sentiment):
         funcArr = []
         diff = []
@@ -54,12 +54,14 @@ class Analyze:
         k = 0
         for sp in speakerArray:
             funcArr.append([[],[]])
-            print sp, len(tp.speakerDict[sp])
+            print "***********************************************************************"
+            print sp, len(tp.speakerDict[sp]), len(tp.dialogues)
             for i in tp.speakerDict[sp]:
+                print i
                 sentence = tp.dialogues[i].content
                 # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
                 ss = self.sid.polarity_scores(sentence)
-                #print sentence, i
+                print sentence, i, sp
                 funcArr[k][0].append(float(i))
                 funcArr[k][1].append(float(ss[sentiment]))
                 #diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
@@ -106,4 +108,5 @@ if __name__ == '__main__':
     print a.getAverageScores(tp)
     #print a.getSentimentData(tp, "Tempus")
     print a.getConversationSentiment(tp)
-    a.getDifference(tp, ["Tempus", "Bunnycrusher", "Daner"], "pos")
+    #a.getDifference(tp, ["Tempus", "Bunnycrusher", "Daner"], "pos")
+    a.getDifference(tp, tp.speakerDict.keys(), "compound")
