@@ -6,7 +6,7 @@ This project requires the nltk python library as a dependency. For directions to
 
 http://www.nltk.org/install.html
 
-In addition, the Vader_Lexicon package is required. To obtain this package, after succesfully installing nltk, open the Python shell on the command line and type the following:
+In addition, the Vader_Lexicon[2] package is required. To obtain this package, after succesfully installing nltk, open the Python shell on the command line and type the following:
 
 import nltk
 
@@ -22,3 +22,4 @@ Then type:
 vader_lexicon
 
 [1] M. Mahajan and B. R. Jadhav, "Review of dual sentiment analysis," International Journal of Science and Research (IJSR), vol. 4, no. 11, pp. 2323–2326, Nov. 2015.
+[2] Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.
