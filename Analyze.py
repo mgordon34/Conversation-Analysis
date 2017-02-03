@@ -9,6 +9,21 @@ from scipy.interpolate import interp1d
 class Analyze:
     def __init__(self):
         self.sid = SentimentIntensityAnalyzer()
+        self.emotionDict = {"anticipation":{}, "fear":{}, "anger":{}, "trust":{}, "surprise":{}, "sadness":{}, "joy":{}, "disgust":{}}
+        fi = open("NRC-Hashtag-Emotion-Lexicon-v0.2/NRC-Hashtag-Emotion-Lexicon-v0.2.txt")
+        for line in fi.readlines():
+            arr = line.split()
+            if len(arr[1].split("#")) > 1:
+                self.emotionDict[arr[0]][arr[1].split("#")[1]] = float(arr[2])
+            else:
+                self.emotionDict[arr[0]][arr[1]] = float(arr[2])
+        fi.close()
+
+        for emotion in self.emotionDict.keys():
+            print emotion
+            eDict = self.emotionDict[emotion]
+            for word in eDict.keys():
+                print emotion, word, eDict[word]
 
 
     """
@@ -103,10 +118,18 @@ class Analyze:
             ls[i] = ls[i]/len(tp.dialogues)
         return tuple(ls)
 
+    """
+    method that calculates the desired emotion inputted. Possible emotions include:
+    anticipation, fear, anger, trust, surprise, sadness, joy, disgust
+    """
+    def getEmotionScores(self):
+       pass
+
 if __name__ == '__main__':
     tp = TextParsing.TextParsing("exampleData.rtf")
     a = Analyze()
-    print a.getAverageScores(tp)
+
+    #print a.getAverageScores(tp)
     #print a.getSentimentData(tp, "Tempus")
-    print a.getConversationSentiment(tp)
-    a.getDifference(tp, ["Tempus", "Bunnycrusher", "Daner"], "pos")
+    #print a.getConversationSentiment(tp)
+    #a.getDifference(tp, ["Tempus", "Bunnycrusher", "Daner"], "pos")
