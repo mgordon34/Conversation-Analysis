@@ -1,5 +1,4 @@
 django
 matplotlib
 nltk
-numpy
 twython
