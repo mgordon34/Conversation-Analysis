@@ -9,4 +9,6 @@ class Dialog:
         self.date = d
         self.time= t
         self.startsAt = sa
+        self.emotions =  {"anticipation":[], "fear":[], "anger":[], "trust":[], "surprise":[], "sadness":[], "joy":[], "disgust":[]}
+
 

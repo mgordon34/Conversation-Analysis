@@ -49,7 +49,6 @@ class TextParsing:
                 i += 2
                 line = lines[i]
                 startsAt = line[5:(len(line) - 12)]
-
                 self.dialogues.append(Dialog.Dialog(timestamp, content, date, time, speaker, recipients, startsAt))
                 self.speakerDict[speaker].append(index)
                 index += 1

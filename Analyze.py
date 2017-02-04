@@ -18,13 +18,13 @@ class Analyze:
             else:
                 self.emotionDict[arr[0]][arr[1]] = float(arr[2])
         fi.close()
-
+        """
         for emotion in self.emotionDict.keys():
             print emotion
             eDict = self.emotionDict[emotion]
             for word in eDict.keys():
                 print emotion, word, eDict[word]
-
+        """
 
     """
     Takes in a TextParsing (tp) and a speaker that is the text.
@@ -43,6 +43,25 @@ class Analyze:
             #    print ('{0} : {1}, '.format(k, ss[k]))
             lines.append((sentence ,[ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
         return lines
+
+    """
+    populates a dialog's emotion scores arrray
+    """
+    def popDialogEmotion(self, tp):
+        for diag in tp.dialogues:
+            sent = diag.content.split()
+            print sent
+            print "___________________________________________________"
+            for e in self.emotionDict.keys():
+                eDict = self.emotionDict[e]
+                for word in sent:
+                    try:
+                        diag.emotions[e].append(eDict[word.lower()])
+                    except:
+                        diag.emotions[e].append(0.0)
+                print e, diag.emotions[e]
+            print "___________________________________________________"
+
 
     """
     Gets the sentiment of the conversation no matter who the speaker is.
@@ -119,15 +138,28 @@ class Analyze:
         return tuple(ls)
 
     """
-    method that calculates the desired emotion inputted. Possible emotions include:
-    anticipation, fear, anger, trust, surprise, sadness, joy, disgust
+    method that calculates the desired emotion scores for each sentence said by the desired speaker.
+    Possible emotions include: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
     """
-    def getEmotionScores(self):
-       pass
+    def getEmotionScores(self, speaker, emotion):
+        lines = tp.speakerDict[speaker]
+        eDict = self.emotionDict[emotion]
+        for i in lines:
+            for word in tp.dialogues[i].content.split():
+                continue
 
+
+
+        for emotion in self.emotionDict.keys():
+            print emotion
+            eDict = self.emotionDict[emotion]
+            for word in eDict.keys():
+                print emotion, word, eDict[word]
 if __name__ == '__main__':
     tp = TextParsing.TextParsing("exampleData.rtf")
     a = Analyze()
+    a.popDialogEmotion(tp)
+
 
     #print a.getAverageScores(tp)
     #print a.getSentimentData(tp, "Tempus")
