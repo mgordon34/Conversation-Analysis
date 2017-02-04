@@ -7,6 +7,13 @@ import matplotlib.cm as cm
 from scipy.interpolate import interp1d
 
 class Analyze:
+    """
+    init goes ahead and populates the dictionary of emotions that will be used to analyze documents
+    emotionDict works as follows:
+        keys: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
+        values: Dictionaries whose keys are the words and values are the score of that word
+        example: emotionDict["anticipation"]["kim"] ==> 0.816092414706127
+    """
     def __init__(self):
         self.sid = SentimentIntensityAnalyzer()
         self.emotionDict = {"anticipation":{}, "fear":{}, "anger":{}, "trust":{}, "surprise":{}, "sadness":{}, "joy":{}, "disgust":{}}
@@ -27,25 +34,22 @@ class Analyze:
         """
 
     """
-    Takes in a TextParsing (tp) and a speaker that is the text.
+    Takes in a TextParsing (tp) and a speaker that is in the text.
     Outputs an array of tuples (content, [compund, negative, neutral, postive])
     All of the content in the output is spoken by the designated speaker
     """
     def getSentimentData(self, tp, speaker):
-        # diff contains the difference between Abbot's and Costello's sentiment rankings
         lines = []
         #print "++++++++++++++++++++++++++++++++++++++++++"
         for i in tp.speakerDict[speaker]:
             sentence = tp.dialogues[i].content
             # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
             ss = self.sid.polarity_scores(sentence)
-            #for k in sorted(ss):
-            #    print ('{0} : {1}, '.format(k, ss[k]))
             lines.append((sentence ,[ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
         return lines
 
     """
-    populates a dialog's emotion scores arrray
+    populates a dialog's emotion scores array
     """
     def popDialogEmotion(self, tp):
         for diag in tp.dialogues:
@@ -59,8 +63,9 @@ class Analyze:
                         diag.emotions[e].append(eDict[word.lower()])
                     except:
                         diag.emotions[e].append(0.0)
-                print e, diag.emotions[e]
+                print e, diag.getAverageEmotion(e), diag.emotions[e]
             print "___________________________________________________"
+
 
 
     """
@@ -75,6 +80,7 @@ class Analyze:
             ss = self.sid.polarity_scores(sentence)
             #for k in sorted(ss):
                 #print ('{0} : {1}, '.format(k, ss[k]))
+            diag.sentiment = [ss['compound'], ss['neg'], ss['neu'], ss['pos']]
             lines.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
         return lines
 
@@ -139,8 +145,9 @@ class Analyze:
 
     """
     method that calculates the desired emotion scores for each sentence said by the desired speaker.
-    Possible emotions include: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
+    String emotion: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
     """
+    #TODO
     def getEmotionScores(self, speaker, emotion):
         lines = tp.speakerDict[speaker]
         eDict = self.emotionDict[emotion]
