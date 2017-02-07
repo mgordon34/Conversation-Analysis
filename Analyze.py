@@ -1,5 +1,6 @@
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import Dialog
+import string
 import TextParsing
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,6 +18,8 @@ class Analyze:
     def __init__(self):
         self.sid = SentimentIntensityAnalyzer()
         self.emotionDict = {"anticipation":{}, "fear":{}, "anger":{}, "trust":{}, "surprise":{}, "sadness":{}, "joy":{}, "disgust":{}}
+        self.twittDict = {}
+        self.vaderDict = {}
         fi = open("NRC-Hashtag-Emotion-Lexicon-v0.2/NRC-Hashtag-Emotion-Lexicon-v0.2.txt")
         for line in fi.readlines():
             arr = line.split()
@@ -25,6 +28,31 @@ class Analyze:
             else:
                 self.emotionDict[arr[0]][arr[1]] = float(arr[2])
         fi.close()
+        fi = open("NRC-Hashtag-Emotion-Lexicon-v0.2/SemEval2015-English-Twitter-Lexicon.txt")
+        for  line in fi.readlines():
+            arr = line.split()
+            #if there is a '#' in front of the words we want to disregard it.
+            if len(arr[1].split("#")) > 1:
+                self.twittDict[arr[1].split("#")[1]] = float(arr[0])
+        fi.close()
+        fi = open("vader_lexicon.txt")
+        #Vader has the values such that -4 is really negative and 4 is really postiive
+        for line in fi.readlines():
+            arr = line.split()
+            # if there is a '#' in front of the words we want to disregard it.
+            #if len(arr[1].split("#")) > 1:
+            #print arr[0].lower(), float(arr[1])/4
+            self.vaderDict[arr[0].lower()] = float(arr[1])/4 #normalize
+        fi.close()
+        fi = open("vaderEmoticons.txt")
+        # Vader has the values such that -4 is really negative and 4 is really postiive
+        for line in fi.readlines():
+            arr = line.split()
+            # if there is a '#' in front of the words we want to disregard it.
+            # if len(arr[1].split("#")) > 1:
+            self.vaderDict[arr[0].lower()] = float(arr[1]) / 4  # normalize
+        self.vaderDict["( '}{' )"] = 1.6/4
+        fi.close()
         """
         for emotion in self.emotionDict.keys():
             print emotion
@@ -32,6 +60,31 @@ class Analyze:
             for word in eDict.keys():
                 print emotion, word, eDict[word]
         """
+    """
+    Gets the overall sentiment according to the vader text document. Scores go from a range of -1 to 1.
+    -1 is negative----- 0 neutral ----- 1 positive
+    Outpus a list of lists of list. Each list is a sentence in the converstation. Inside is each word of the sentence
+    along with the score.
+    ex: [['good', 0.475], ['evening', 0.475], ['guys', 0.475]]
+    """
+    def getSentimentTextVader(self, tp):
+        retArr = []
+        for diag in tp.dialogues:
+            sentence = diag.content
+            words = sentence.split()
+            sentVader = []
+            val = 0
+            for i in range(len(words)):
+                wd = words[i].lower()
+                wd = wd.translate(string.maketrans("", ""), string.punctuation)
+                try:
+                    val = self.vaderDict[wd]
+                    sentVader.append([wd, val])
+                except:
+                    sentVader.append([wd, val])
+            retArr.append(sentVader)
+            print sentVader
+        return retArr
 
     """
     Takes in a TextParsing (tp) and a speaker that is in the text.
@@ -54,8 +107,8 @@ class Analyze:
     def popDialogEmotion(self, tp):
         for diag in tp.dialogues:
             sent = diag.content.split()
-            print sent
-            print "___________________________________________________"
+            #print sent
+            #print "___________________________________________________"
             for e in self.emotionDict.keys():
                 eDict = self.emotionDict[e]
                 for word in sent:
@@ -63,24 +116,62 @@ class Analyze:
                         diag.emotions[e].append(eDict[word.lower()])
                     except:
                         diag.emotions[e].append(0.0)
-                print e, diag.getAverageEmotion(e), diag.emotions[e]
-            print "___________________________________________________"
+                #print e, diag.getAverageEmotion(e), diag.emotions[e]
+            #print "___________________________________________________"
 
 
+    def getTwitterDictSentiment(self, tp):
+        retArr = []
+        for diag in tp.dialogues:
+            sentence = diag.content
+            words = sentence.split()
+            sentTwit = []
+            val = 0
+            for i in range(len(words)):
+                if words[i] == "don't":
+                    w = words[i+1]
+                    wd = words[i] + " " + w.translate(string.maketrans("",""), string.punctuation)
+                    wd.lower()
+                else:
+                    wd = words[i].lower()
+                    wd = wd.translate(string.maketrans("",""), string.punctuation)
+                try:
+                    val = self.twittDict[wd]
+                    sentTwit.append([wd, val])
+                except:
+                    sentTwit.append([wd, val])
+            retArr.append(sentTwit)
+            #print sentTwit
+        return retArr
 
     """
     Gets the sentiment of the conversation no matter who the speaker is.
     Sentiment analysis on all of the lines.
     """
-    def getConversationSentiment(self, tp):
+    def setDialogSentiment(self, tp):
         lines = []
         for diag in tp.dialogues:
             sentence = diag.content
+            words = sentence.split()
+            sentTwit = []
+            val = 0
+            for i in range(len(words)):
+                wd = words[i]
+                wd.translate(None, string.punctuation)
+                if words[i] == "don't":
+                    wd = words[i] + " " + words[i+1]
+                try:
+                    val = self.twittDict[wd]
+                    sentTwit.append([wd, val])
+                except:
+                    sentTwit.append([wd, val])
+
             # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
             ss = self.sid.polarity_scores(sentence)
             #for k in sorted(ss):
                 #print ('{0} : {1}, '.format(k, ss[k]))
             diag.sentiment = [ss['compound'], ss['neg'], ss['neu'], ss['pos']]
+            print sentence, diag.sentiment
             lines.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
         return lines
 
@@ -97,7 +188,7 @@ class Analyze:
         k = 0
         for sp in speakerArray:
             funcArr.append([[],[]])
-            print sp, len(tp.speakerDict[sp])
+            #print sp, len(tp.speakerDict[sp])
             for i in tp.speakerDict[sp]:
                 sentence = tp.dialogues[i].content
                 # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
@@ -127,7 +218,7 @@ class Analyze:
 
     """
      Calculates the average compound, negative, neutral and positive scores of all speakers in the conversation to determine
-     the overall sentiment of the converstation (compound, negative, neutral, positive)
+     the overall sentiment of the conversation (compound, negative, neutral, positive)
      Returns a tuple of sentiment values:
     """
     def getAverageScores(self, tp):
@@ -144,30 +235,56 @@ class Analyze:
         return tuple(ls)
 
     """
+         Calculates the average compound, negative, neutral and positive scores of all speakers in the conversation to determine
+         the overall sentiment of the conversation (compound, negative, neutral, positive)
+         Returns a tuple of sentiment values:
+        """
+
+    def getVaderSentimentWords(self, tp):
+        # (compoud, neg, neu, pos)
+        ls = [0, 0, 0, 0]
+        retArr = []
+        for i in range(len(tp.dialogues)):
+            # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line
+            sent = tp.dialogues[i].content
+            sData = []
+            for w in sent.split():
+                #wd = wd.translate(string.maketrans("", ""), string.punctuation)
+                ss = self.sid.polarity_scores(w)
+                sData.append(ss)
+                print w, ss
+            retArr.append(sData)
+            for i, k in enumerate(["compound", "neg", "neu", "pos"]):
+                ls[i] += ss[k]
+
+        for i in range(len(ls)):
+            ls[i] = ls[i] / len(tp.dialogues)
+        return retArr
+
+    """
     method that calculates the desired emotion scores for each sentence said by the desired speaker.
     String emotion: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
+    Returns a list of dictionaries corresponding to the emotions of the sentence as stored in Dialog
     """
     #TODO
     def getEmotionScores(self, speaker, emotion):
         lines = tp.speakerDict[speaker]
-        eDict = self.emotionDict[emotion]
+        diags = tp.dialogues
+        retSent = []
         for i in lines:
-            for word in tp.dialogues[i].content.split():
-                continue
+            retSent.append(diags[i].emotions)
+        return retSent
 
 
-
-        for emotion in self.emotionDict.keys():
-            print emotion
-            eDict = self.emotionDict[emotion]
-            for word in eDict.keys():
-                print emotion, word, eDict[word]
 if __name__ == '__main__':
     tp = TextParsing.TextParsing("exampleData.rtf")
     a = Analyze()
     a.popDialogEmotion(tp)
-
-
+    #a.getConversationSentiment(tp)
+    a.setDialogSentiment(tp)
+    #a.getTwitterDictSentiment(tp)
+    #a.getSentimentTextVader(tp)
+    #a.getVaderSentimentWords(tp)
     #print a.getAverageScores(tp)
     #print a.getSentimentData(tp, "Tempus")
     #print a.getConversationSentiment(tp)
