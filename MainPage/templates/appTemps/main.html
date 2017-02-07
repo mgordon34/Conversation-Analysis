@@ -1,21 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Conversational Analysis</title>
-    </head>
-    <body>
-    <!-- List of uploaded documents -->
-
-        <!-- Upload form. Note enctype attribute! -->
-        <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <p>Select a file to upload</p>
-            <p>
-                {{ form.docfile.errors }}
-                {{ form.docfile }}
-            </p>
-            <p><input type="submit" value="Upload" /></p>
-        </form>
-    </body>
-</html>
+{% extends 'appTemps/base.html' %}
+{% block 'body' %}
+  <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <p>Select a file to upload</p>
+      <p>
+          {{ form.docfile.errors }}
+          {{ form.docfile }}
+      </p>
+      <p><input type="submit" value="Upload" /></p>
+  </form>
+{% endblock %}
