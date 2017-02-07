@@ -1,8 +1,10 @@
 import Dialog
+import Person
 class TextParsing:
     def __init__(self, str):
         self.dialogues = []
         self.speakerDict = {}
+        self.speakerToClass = {}
         self.parse(str)
 
     def parse(self, str):
@@ -41,6 +43,7 @@ class TextParsing:
                 speaker = line[5:(len(line) - 7)]
                 if speaker not in self.speakerDict:
                     self.speakerDict[speaker] = []
+                    self.speakerToClass[speaker] = Person.Person(speaker, self.speakerDict[speaker])
 
                 i += 2
                 line = lines[i]
@@ -49,6 +52,7 @@ class TextParsing:
                 i += 2
                 line = lines[i]
                 startsAt = line[5:(len(line) - 12)]
+
                 self.dialogues.append(Dialog.Dialog(timestamp, content, date, time, speaker, recipients, startsAt))
                 self.speakerDict[speaker].append(index)
                 index += 1

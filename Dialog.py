@@ -32,6 +32,7 @@ class Dialog:
         self.startsAt = sa
         self.emotions =  {"anticipation":[], "fear":[], "anger":[], "trust":[], "surprise":[], "sadness":[], "joy":[], "disgust":[]}
         self.sentiment = [0.0, 0.0, 0.0,0.0]
+        self.colors = []
 
     """
     Calculates the average emotion score for the content of the sentence.
