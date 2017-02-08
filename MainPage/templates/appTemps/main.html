@@ -1,21 +1,55 @@
 <!DOCTYPE html>
+{% load static %}
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'MainPage/main.css' %}" />
+<link rel="shortcut icon" type="image/png" href="{% static '' %}"/>
+
 <html>
     <head>
         <meta charset="utf-8">
         <title>Conversational Analysis</title>
+        <h1>Conversational Analysis</h1>
     </head>
     <body>
-    <!-- List of uploaded documents -->
+        <input id="tab1" type="radio" name="tabs" checked>
+        <label for="tab1">Home</label>
 
-        <!-- Upload form. Note enctype attribute! -->
-        <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <p>Select a file to upload</p>
+        <input id="tab2" type="radio" name="tabs">
+        <label for="tab2">About Sentiment Analysis</label>
+
+        <input id="tab3" type="radio" name="tabs">
+        <label for="tab3">Previous Analyses</label>
+
+        <section id="content1">
+
+                <!-- List of uploaded documents -->
+
+                <!-- Upload form. Note enctype attribute! -->
+                <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <p>Select a file to upload</p>
+
+                    <p>
+                        {{ form.docfile.errors }}
+                        {{ form.docfile }}
+                    </p>
+                    <p><input type="submit" value="Upload" /></p>
+
+                </form>
+        </section>
+
+        <section id="content2">
             <p>
-                {{ form.docfile.errors }}
-                {{ form.docfile }}
+                THIS IS INFO ABOUT HOW IT WORKS
             </p>
-            <p><input type="submit" value="Upload" /></p>
-        </form>
+        </section>
+
+        <section id="content3">
+            <p>
+                THIS IS A SECTION FOR ANALYSES!!!!! still need to add sub-tabs to this
+            </p>
+        </section>
+
     </body>
 </html>
