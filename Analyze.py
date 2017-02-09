@@ -163,7 +163,8 @@ class Analyze:
                     ys.append(val)
             trace = Scatter(
                 x=xs,
-                y=ys
+                y=ys,
+                name=sp
             )
             traces.append(trace)
             # diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
