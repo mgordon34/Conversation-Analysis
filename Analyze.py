@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.cm as cm
 from scipy.interpolate import interp1d
+from plotly.graph_objs import *
+import plotly.plotly as py
 
 class Analyze:
     """
@@ -28,7 +30,7 @@ class Analyze:
                 self.emotionDict[arr[0]][arr[1].split("#")[1]] = float(arr[2])
             else:
                 self.emotionDict[arr[0]][arr[1]] = float(arr[2])
-                print arr[0], arr[1], arr[2]
+                #print arr[0], arr[1], arr[2]
         fi.close()
         fi = open("NRC-Hashtag-Emotion-Lexicon-v0.2/SemEval2015-English-Twitter-Lexicon.txt")
         for  line in fi.readlines():
@@ -138,13 +140,71 @@ class Analyze:
             lines.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
         return lines
 
+    def plotlyEmotion(self, tp, speakerArray, emote):
+        if len(speakerArray) < 2:
+            print "please enter in two or more speakers"
+            return
+        k = 0
+        traces = []
+        for sp in speakerArray:
+            xs = []
+            ys = []
+            for i in tp.speakerToClass[sp].lines:
+                val = float(tp.dialogues[i].getAverageEmotion(emote))
+                if val != 0:
+                    xs.append(float(i))
+                    ys.append(val)
+            trace = Scatter(
+                x=xs,
+                y=ys
+            )
+            traces.append(trace)
+            # diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
+            k += 1
+        data = Data(traces)
+        py.plot(data, filename='testy-plotly')
+
+
+    def scatterGraphEmotion(self, tp, speakerArray, emote):
+        funcArr = []
+        if len(speakerArray) < 2:
+            print "please enter in two or more speakers"
+            return
+        k = 0
+        for sp in speakerArray:
+
+            funcArr.append([[], []])
+            for i in tp.speakerToClass[sp].lines:
+                val = float(tp.dialogues[i].getAverageEmotion(emote))
+                if val != 0:
+
+                    funcArr[k][0].append(float(i))
+                    funcArr[k][1].append(val)
+                # diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
+            k += 1
+        py.plot(data, filename='basic-line')
+        #PY-Plot stuff
+        fig = plt.figure()
+        ax1 = fig.add_subplot(111)
+        colors = cm.rainbow(np.linspace(0, 1, len(funcArr)))
+        plt.ylabel('sentiment score')
+        plt.xlabel("line number")
+        plt.title(emote)
+        for i in range(len(funcArr)):
+            # xnew = np.linspace(0, 65, endpoint=True)
+            ax1.scatter(funcArr[i][0], funcArr[i][1], s=10, c=colors[i], marker="s", label=speakerArray[i])
+            # f = interp1d(funcArr[i][0], funcArr[i][1])
+            # plt.plot(funcArr[i][0], funcArr[i][1], 'o',funcArr[i][0], f(funcArr[i][1]))
+            # plt.plot(funcArr[i][0], funcArr[i][1], 'o', xnew, f(xnew), '-')
+        # plt.legend(speakerArray, loc='best')
+        plt.legend(loc='upper left')
+        plt.show()
     """
     Creates a scatter plot of the speakers in teh speaker array and the sentiment desired. 
     possible sentiments: pos, neg, neu, compund
     """
     def scatterPlotSentiment (self, tp, speakerArray, sentiment):
         funcArr = []
-        diff = []
         if len(speakerArray) < 2:
             print "please enter in two or more speakers"
             return
@@ -152,7 +212,8 @@ class Analyze:
         for sp in speakerArray:
             funcArr.append([[],[]])
             #print sp, len(tp.speakerDict[sp])
-            for i in sp.lines:
+            #print sp.lines
+            for i in tp.speakerToClass[sp].lines:
                 sentence = tp.dialogues[i].content
                 # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
                 ss = self.sid.polarity_scores(sentence)
@@ -301,10 +362,12 @@ if __name__ == '__main__':
     tp = TextParsing.TextParsing("exampleData.rtf")
     a = Analyze()
     a.popDialogEmotion(tp)
-    a.getSentimentOfWords(tp)
+    #a.getSentimentOfWords(tp)
     speakers = tp.speakerDict.keys()
-    a.getEmotionSpeaker(tp, speakers[0], "anticipation")
-    print speakers[0], a.getAverageEmotionScore(speakers[0], "anticipation")
+    #a.getEmotionSpeaker(tp, speakers[0], "anticipation")
+    a.lineGraphSentiment(tp, speakers, "joy")
+    #a.scatterPlotSentiment(tp, speakers, "pos")
+    #print speakers[0], a.getAverageEmotionScore(speakers[0], "anticipation")
 
     #a.getConversationSentiment(tp)
     #a.setDialogSentiment(tp)
