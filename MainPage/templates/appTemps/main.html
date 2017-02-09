@@ -1,55 +1,43 @@
 <!DOCTYPE html>
-{% load static %}
+{% extends 'appTemps/base.html' %}
+{% block 'body' %}
 
+  <input id="tab1" type="radio" name="tabs" checked>
+  <label for="tab1">Home</label>
 
-<link rel="stylesheet" type="text/css" href="{% static 'MainPage/main.css' %}" />
-<link rel="shortcut icon" type="image/png" href="{% static '' %}"/>
+  <input id="tab2" type="radio" name="tabs">
+  <label for="tab2">About Sentiment Analysis</label>
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Conversational Analysis</title>
-        <h1>Conversational Analysis</h1>
-    </head>
-    <body>
-        <input id="tab1" type="radio" name="tabs" checked>
-        <label for="tab1">Home</label>
+  <input id="tab3" type="radio" name="tabs">
+  <label for="tab3">Previous Analyses</label>
 
-        <input id="tab2" type="radio" name="tabs">
-        <label for="tab2">About Sentiment Analysis</label>
+  <section id="content1">
 
-        <input id="tab3" type="radio" name="tabs">
-        <label for="tab3">Previous Analyses</label>
+          <!-- List of uploaded documents -->
 
-        <section id="content1">
+          <!-- Upload form. Note enctype attribute! -->
+          <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <p>Select a file to upload</p>
 
-                <!-- List of uploaded documents -->
+              <p>
+                  {{ form.docfile.errors }}
+                  {{ form.docfile }}
+              </p>
+              <p><input type="submit" value="Upload" /></p>
 
-                <!-- Upload form. Note enctype attribute! -->
-                <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <p>Select a file to upload</p>
+          </form>
+  </section>
 
-                    <p>
-                        {{ form.docfile.errors }}
-                        {{ form.docfile }}
-                    </p>
-                    <p><input type="submit" value="Upload" /></p>
+  <section id="content2">
+      <p>
+          THIS IS INFO ABOUT HOW IT WORKS
+      </p>
+  </section>
 
-                </form>
-        </section>
-
-        <section id="content2">
-            <p>
-                THIS IS INFO ABOUT HOW IT WORKS
-            </p>
-        </section>
-
-        <section id="content3">
-            <p>
-                THIS IS A SECTION FOR ANALYSES!!!!! still need to add sub-tabs to this
-            </p>
-        </section>
-
-    </body>
-</html>
+  <section id="content3">
+      <p>
+          THIS IS A SECTION FOR ANALYSES!!!!! still need to add sub-tabs to this
+      </p>
+  </section>
+{% endblock %}
