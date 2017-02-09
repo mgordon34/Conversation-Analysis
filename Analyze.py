@@ -140,6 +140,13 @@ class Analyze:
             lines.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
         return lines
 
+    """
+    Tester method to get the emotion scores of the desired speakers.
+    speakerArray --> Array of speaker names as strings
+    tp ==> TextParsing object
+    emote --> the emotion desired as a string: options include:
+        anticipation, fear, anger, trust, surprise, sadness, joy, disgust
+    """
     def plotlyEmotion(self, tp, speakerArray, emote):
         if len(speakerArray) < 2:
             print "please enter in two or more speakers"
@@ -182,7 +189,6 @@ class Analyze:
                     funcArr[k][1].append(val)
                 # diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
             k += 1
-        py.plot(data, filename='basic-line')
         #PY-Plot stuff
         fig = plt.figure()
         ax1 = fig.add_subplot(111)
@@ -200,7 +206,7 @@ class Analyze:
         plt.legend(loc='upper left')
         plt.show()
     """
-    Creates a scatter plot of the speakers in teh speaker array and the sentiment desired. 
+    Creates a scatter plot of the speakers in teh speaker array and the sentiment desired.
     possible sentiments: pos, neg, neu, compund
     """
     def scatterPlotSentiment (self, tp, speakerArray, sentiment):
