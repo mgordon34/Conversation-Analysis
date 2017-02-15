@@ -1,11 +1,8 @@
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import Dialog
-import string
 import TextParsing
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.cm as cm
-from scipy.interpolate import interp1d
 from plotly.graph_objs import *
 import plotly.plotly as py
 
@@ -67,9 +64,17 @@ class Analyze:
 
 
     """
-    Takes in a TextParsing (tp) and a speaker that is in the text.
-    Outputs an array of tuples (content, [compund, negative, neutral, postive])
-    All of the content in the output is spoken by the designated speaker
+     Takes in a TextParsing (tp) and a speaker that is in the text.
+     Outputs an array of tuples (content, [compund, negative, neutral, postive])
+     All of the content in the output is spoken by the designated speaker
+     About the scoring:
+     The 'compound' score is computed by summing the valence scores of each word in the lexicon, adjusted
+     according to the rules, and then normalized to be between -1 (most extreme negative) and +1 (most extreme positive).
+     This is the most useful metric if you want a single unidimensional measure of sentiment for a given sentence.
+     Calling it a 'normalized, weighted composite score' is accurate.
+     The 'pos', 'neu', and 'neg' scores are ratios for proportions of text that fall in each category (so these
+     should all add up to be 1... or close to it with float operation).  These are the most useful metrics if
+     you want multidimensional measures of sentiment for a given sentence.
     """
     def getSentimentData(self, tp, speaker):
         lines = []
@@ -100,7 +105,6 @@ class Analyze:
                 except:
                     line.append([word.lower(), 0.0])
             lines.append(line)
-            #print line
         return lines
 
 
@@ -206,6 +210,7 @@ class Analyze:
         # plt.legend(speakerArray, loc='best')
         plt.legend(loc='upper left')
         plt.show()
+
     """
     Creates a scatter plot of the speakers in teh speaker array and the sentiment desired.
     possible sentiments: pos, neg, neu, compund
@@ -295,7 +300,7 @@ class Analyze:
     String emotion: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
     Returns a list of dictionaries corresponding to the emotions of the sentence as stored in Dialog
     """
-    def getAverageEmotionScore(self, speaker, emotion):
+    def getAverageEmotionRemoveZerosScore(self, speaker, emotion):
         lines = tp.speakerDict[speaker]
         diags = tp.dialogues
         val = 0
@@ -308,6 +313,27 @@ class Analyze:
             val = 0
         else:
             val = val/cnt
+        return val
+
+    """
+        method that calculates the desired emotion scores for each sentence said by the desired speaker.
+        String emotion: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
+        Returns a list of dictionaries corresponding to the emotions of the sentence as stored in Dialog
+        """
+
+    def getAverageEmotionScore(self, speaker, emotion):
+        lines = tp.speakerDict[speaker]
+        diags = tp.dialogues
+        val = 0
+        cnt = 0
+        for i in lines:
+            for k in diags[i].emotions[emotion]:
+                val += k
+                cnt += 1
+        if cnt == 0:
+            val = 0
+        else:
+            val = val / cnt
         return val
 
     """
@@ -335,6 +361,58 @@ class Analyze:
             retArr.append(sentVader)
             #print sentVader
         return retArr
+
+    """
+    Compares the overall emotion sp1 feels toward sp2.
+    Finds all of the lines sp1 says to sp2 and finds the average emotion scores of sp1 while taking to sp2
+    If you type "everyone" as sp2, it will calculate sp1's overall emotion toward the group.
+    Returns a dictionary of emotions that sp1 feels while talking to sp2.
+    {"anticipation":0.0, "fear":0.0, "anger":0.0,"trust":0.0, "surprise":0.0, "sadness":0.0, "joy":0.0, "disgust":0.0}
+    """
+    def emotAverageBwSpeakers(self,tp, sp1, sp2):
+        if sp1 == "everyone":
+            print "Speaker 1 cannont be everyone"
+            return {}
+        lineNums = tp.speakerToClass[sp1]
+        emotions = {"anticipation":0.0, "fear":0.0, "anger":0.0,"trust":0.0, "surprise":0.0, "sadness":0.0, "joy":0.0, "disgust":0.0}
+        first = True
+        for num in lineNums:
+            if sp2 == tp.diaglouges[num].recipeint:
+                diag = tp.diaglouges[num]
+                for e in emotions:
+                    if first:
+                        emotions[e] = diag.getAverageEmotion(e)
+                    else:
+                        emotions[e] = (emotions[e] + diag.getAverageEmotion(e)) / 2
+        return emotions
+
+    """
+        Compares the overall sentiment sp1 feels toward sp2.
+        Finds all of the lines sp1 says to sp2 and finds the average sentiment scores of sp1 while taking to sp2
+        If you type "everyone" as sp2, it will calculate sp1's overall emotion toward the group.
+        Returns an array of sentiment scores that sp1 feels while talking to sp2.
+
+        """
+
+    def sentimentfAverageBwSpeakers(self, tp, sp1, sp2):
+        if sp1 == "everyone":
+            print "Speaker 1 cannont be everyone"
+            return {}
+        lineNums = tp.speakerToClass[sp1]
+        sentiment = [0.0,0.0,0.0]
+        first = True
+        for num in lineNums:
+            if sp2 == tp.diaglouges[num].recipeint:
+                diag = tp.diaglouges[num]
+                for s in range(len(sentiment)):
+                    if first:
+                        sentiment[s] = diag.sentiment[s]
+                    else:
+                        sentiment[s] = (sentiment[s] + diag.sentiment[s])/2
+        return sentiment
+
+
+
 
     """
        Uses the Twitter Dictionary to get the overall sentiment score of a word. -1 is very negative while 1 is positive
