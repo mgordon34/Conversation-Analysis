@@ -46,6 +46,7 @@ class Dialog:
         n = 0
         total = 0
         for val in self.emotions[emotion]:
+            #print val
             n +=1
             total += val
         if n > 0:
