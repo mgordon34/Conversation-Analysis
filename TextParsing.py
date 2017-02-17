@@ -7,6 +7,16 @@ class TextParsing:
         self.speakerToClass = {}
         self.parse(str)
 
+#TODO Complete this method
+    def csvparse(self, str):
+        fh = open(str, 'r')
+        content = fh.readlines()
+        for line in content:
+            arr = line.split()
+            print arr
+
+        fh.close()
+
     def parse(self, str):
         fh = open(str, 'r')
         content = fh.readlines()
@@ -59,4 +69,4 @@ class TextParsing:
                 i += 4
             else:
                 i += 1
-        #print 'end\n'
+

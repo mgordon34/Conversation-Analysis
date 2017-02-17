@@ -18,7 +18,6 @@ class Analyze:
         self.sid = SentimentIntensityAnalyzer()
         self.sentimentDict = {}
         self.emotionDict = {"anticipation":{}, "fear":{}, "anger":{}, "trust":{}, "surprise":{}, "sadness":{}, "joy":{}, "disgust":{}}
-        #Keys: words , values: number ranging from -1 to 1. -1 is negative and 1 is positive
         fi = open("NRC-Hashtag-Emotion-Lexicon-v0.2/NRC-Hashtag-Emotion-Lexicon-v0.2.txt")
         for line in fi.readlines():
             arr = line.split()
@@ -416,7 +415,7 @@ class Analyze:
                     else:
                         emotions[e] = (emotions[e] + diag.getAverageEmotion(e)) / 2
         if not p:
-            print "%s never spoke to %s".format(sp1, sp2)
+            print sp1, " never spoke to ", sp2
         return emotions
 
     """
@@ -446,9 +445,34 @@ class Analyze:
                     else:
                         sentiment[s] = (sentiment[s] + diag.sentiment[s])/2
         if not p:
-            print "{:s} never spoke to {:s}".format(sp1, sp2)
+            print sp1, " never spoke to ", sp2
         return sentiment
 
+    """
+    calculates the overall emotion scores of the converation by averaging all of the average emotion scores between speakers.
+    """
+    def getConversationScore(self, tp):
+        emotions = {"anticipation": 0.0, "fear": 0.0, "anger": 0.0, "trust": 0.0, "surprise": 0.0, "sadness": 0.0,
+                    "joy": 0.0, "disgust": 0.0}
+        n=0
+        for s1 in tp.speakerDict:
+            e = self.emotAverageBwSpeakers(tp, s1, "everyone")
+            for em in emotions.keys():
+                emotions[em] += e[em]
+            n += 1
+            for s2 in tp.speakerDict:
+                 if s1 != s2:
+                    e = self.emotAverageBwSpeakers(tp, s1, s2)
+                    for em in emotions.keys():
+                        emotions[em] += e[em]
+                    n +=1
+
+        if n > 0:
+            for e in emotions.keys():
+                emotions[e] = emotions[e]/n
+            return emotions
+        else:
+            return {}
 
 
 
@@ -493,7 +517,10 @@ if __name__ == '__main__':
     #e = a.emotAverageBwSpeakers(tp, "Tempus", "Bunnycrusher")
     #s = a.sentimentAverageBwSpeakers(tp, "Tempus", "everyone")
     #a.plotlyEmotionTester(tp, speakers, "joy")
-    print a.getAverageVaderSentimentWords(tp)
+    #print a.getAverageVaderSentimentWords(tp)
+    p = a.getConversationScore(tp)
+    for e in p.keys():
+        print e, p[e]
     #print s
     #for k in e.keys():
     #    print k, e[k]
