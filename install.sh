@@ -5,6 +5,6 @@ case "$(uname -s)" in
     echo 'Install numpy and scipy for Mac'
     ;;
   Linux)
-    apt-get install python-numpy python scipy
+    apt-get install python-numpy python-scipy
     ;;
 esac

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 
 from MainPage.models import Document
@@ -8,6 +9,7 @@ from MainPage.forms import DocumentForm
 import TextParsing
 import Analyze
 
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -59,3 +61,8 @@ def results(request):
         form = DocumentForm() # A empty, unbound form
 
     return render(request, 'appTemps/results.html', {'score': score})
+
+def get_tags(request):
+    tags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5']
+    response = json.dumps({'tags': tags })
+    return HttpResponse(response, content_type='application/json')

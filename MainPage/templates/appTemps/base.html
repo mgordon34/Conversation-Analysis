@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+{% load static %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'MainPage/main.css' %}" />
+<link rel="shortcut icon" type="image/png" href="{% static '' %}"/>
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -6,6 +11,9 @@
     </head>
     <h1>Conversation Analysis</h1>
     <body>
+      {% load static %}
+      <script src='{% static "jquery-3.1.1.js" %}'></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       {% block 'body' %}
       {% endblock %}
     </body>
