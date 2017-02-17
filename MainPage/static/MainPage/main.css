@@ -46,6 +46,10 @@ p {
   background: #fff;
 }
 
+.dialog-text {
+  color: black;
+}
+
 section {
   min-width: 100%;
   max-width: 100%;
@@ -157,4 +161,8 @@ form[enctype="multipart/form-data"]{
   100% {
     opacity: 1;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> commenting
