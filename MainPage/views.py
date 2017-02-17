@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 
 from MainPage.models import Document
+from MainPage.models import Result
 from MainPage.forms import DocumentForm
 import TextParsing
 import Analyze
@@ -62,7 +63,8 @@ def results(request):
 
     return render(request, 'appTemps/results.html', {'score': score})
 
-def get_tags(request):
-    tags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5']
-    response = json.dumps({'tags': tags })
-    return HttpResponse(response, content_type='application/json')
+def tags(request):
+    if request.method == 'GET':
+        tags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5']
+        tag_model = Result(tags=json.dumps({'tags': tags }))
+        return HttpResponse(tag_model.tags, content_type='application/json')

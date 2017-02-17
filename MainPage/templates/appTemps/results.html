@@ -32,40 +32,6 @@
     </div>
   </div>
 
-  <script>
-    var tag = null;
-    $.ajax({
-      url: '/get_tags',
-      type: 'GET',
-      async: false,
-      success: function(data) {
-        tag = data.tags;
-        console.log(tag);
-      }
-    });
-    var myPlot = document.getElementById('graph'),
-      x1 = [1, 2, 3, 4, 5],
-      y1 = [1, 2, 4, 8, 16],
-      data = [{x: x1, y: y1, text: tag, hoverinfo: ''}],
-      layout = {
-        hovermode:'closest',
-        title: 'Results Data'
-      };
-    var graph = Plotly.newPlot(myPlot, data, layout);
-    var pointIndex;
-
-    myPlot.on('plotly_click', function(data) {
-      var index = data.points[0].x - 1;
-      pointIndex = index;
-      $('#modalInput').val(tag[index]);
-      $('#tagModal').modal('show');
-    });
-
-    $('button#modalSubmit').click(function(){
-      var text = $('#modalInput').val();
-      tag[pointIndex] = text;
-      $('#tagModal').modal('hide');
-      Plotly.redraw(myPlot);
-    });
-  </script>
+  {% load static %}
+  <script src='{% static "tags.js" %}'></script>
 {% endblock %}
