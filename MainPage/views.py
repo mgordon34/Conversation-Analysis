@@ -46,7 +46,7 @@ def results(request):
             newdoc.save()
             parser = TextParsing.TextParsing(request.FILES['docfile'].name)
             analyzer = Analyze.Analyze()
-            score = analyzer.getAverageScores(parser)
+            score = analyzer.getAverageConversationScores(parser)
             labels = ['compound', 'neg', 'neu', 'pos']
             ind = np.arange(4)
             width = .5
