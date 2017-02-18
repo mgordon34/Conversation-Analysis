@@ -48,7 +48,7 @@ def results(request):
             parser = TextParsing.TextParsing(request.FILES['docfile'].name)
             analyzer = Analyze.Analyze()
             arr = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
-            # score = analyzer.getAverageConversationScores(parser)
+            score = analyzer.getAverageConversationScores(parser)
             # labels = ['compound', 'neg', 'neu', 'pos']
             # ind = np.arange(4)
             # width = .5
@@ -63,7 +63,7 @@ def results(request):
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr})
+    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score})
 
 def tags(request):
     if request.method == 'GET':
