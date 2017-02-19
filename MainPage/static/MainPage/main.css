@@ -21,7 +21,7 @@ html, body {
 body {
   font: 14px 'Raleway', sans-serif;
   color: #173e43;
-  background: #e7e4dd;
+  background: #ffffff;
   margin: 0 10px 10px 10px;
 }
 
@@ -111,7 +111,7 @@ input[type=submit] {
 
 input[type="submit"]:hover {
     background-color: #3fb0ac;
-    color: #e7e4dd;
+    color: #ffffff;
     -webkit-transition: all 0.5s ease-in-out
 }
 
@@ -248,7 +248,7 @@ input[type="file"] {
     cursor: pointer;
     font-weight: bold;
 }*/
-.about_container .about_content {
+/*.about_container .about_content {
     display: none;
     padding : 5px;
-}
+}*/
