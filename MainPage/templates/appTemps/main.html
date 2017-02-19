@@ -2,42 +2,101 @@
 {% extends 'appTemps/base.html' %}
 {% block 'body' %}
 
-  <input id="tab1" type="radio" name="tabs" checked>
-  <label for="tab1">Home</label>
+<head>
 
-  <input id="tab2" type="radio" name="tabs">
-  <label for="tab2">About Sentiment Analysis</label>
+</head>
 
-  <input id="tab3" type="radio" name="tabs">
-  <label for="tab3">Previous Analyses</label>
 
-  <section id="content1">
+<div class="tab">
+  <ul class="tabs">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About Sentiment Analysis</a></li>
+    <li><a href="#">Previous Results</a></li>
+  </ul> <!-- / tabs -->
 
-          <!-- List of uploaded documents -->
+    <div class="tab_content">
 
-          <!-- Upload form. Note enctype attribute! -->
-          <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
-              {% csrf_token %}
-              <p>Select a file to upload</p>
+      <div class="tabs_item">
+        <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <p>Select a conversation</p>
 
-              <p>
-                  {{ form.docfile.errors }}
-                  {{ form.docfile }}
-              </p>
-              <p><input type="submit" value="Upload" /></p>
+          <p>
+              {{ form.docfile.errors }}
+              {{ form.docfile }}
+          </p>
+          <p><input type="submit" value="Upload" /></p>
 
-          </form>
-  </section>
+        </form>
+      </div> <!-- / tabs_item -->
 
-  <section id="content2">
-      <p>
-          THIS IS INFO ABOUT HOW IT WORKS
-      </p>
-  </section>
+      <div class="tabs_item">
+        <h4>Our Sentiment Analysis Algorithm</h4>
+        <p>The purpose of our project is to conduct sentiment analysis on multi-voiced text and produce a visualization of the sentiments and statistics given.</p>
 
-  <section id="content3">
-      <p>
-          THIS IS A SECTION FOR ANALYSES!!!!! still need to add sub-tabs to this
-      </p>
-  </section>
+        <div class="about_container">
+          <div class="about_header"><span>About Sentiment Analysis</span></div>
+          <div class="about_content">
+            <p>Sentiment Analysis is defined as “the process of computationally identifying and categorizing opinions expressed in a piece of text, especially in order to determine whether the writer’s attitude towards a particular topic, product, etc., is positive, negative, or neutral” [1]. While there is currently technology that can perform sentiment analysis for texts from a single voice, there are no algorithms that conduct sentiment analysis on multi-voiced texts, a dialogue, specifically. In other words, there are accurate algorithms to determine the opinions of the speaker within text as long as that speaker is the only one voicing an opinion. As soon as another voice enters this dialogue, the algorithms used to analyze text do not produce meaningful output. This means researchers are unable to analyze entire genres of text and conversations. A program that could analyze and display the data from chat conversations, forums, or transcribed group discussions would be useful for researchers to help them study verbal and written communication.</p>
+
+            <p>This application uses the NRC-Hashtag-Emotion-Lexicon for the emotion mappings. In addition, we use the Vader_Lexicon[2] through Python NLTK and the SemEval2015-English-Twitter-Lexicon library [4] in order to map words and sentences to sentiment values.</p>
+          </div>
+
+          <div class="about-header"><span>Algorithm</span></div>
+            <div class="about-algorithm">
+              <ol>
+                <li>First we will read in the document, for each line we keep track of the following information:</li>
+                  <ul>
+                    <li>the speaker</li>
+                    <li>the recipient</li>
+                    <li>the time stamp</li>
+                    <li>the contents of the line</li>
+                    <li>the date</li>
+                    <li>the emotion scores of each line for the following emotions:</li>
+                      <ul>
+                        <li>anticipation</li>
+                        <li>fear</li>
+                        <li>anger</li>
+                        <li>trust</li>
+                        <li>surprise</li>
+                        <li>sadness</li>
+                        <li>joy</li>
+                        <li>disgust</li>
+                      </ul>
+                    <li>the positive, negative, neutral and compound sentiment
+                      <p>The compound score is computed by summing the valence scores of each word in the lexicon, and ranges from -1 (most extreme negative) to +1 (most extreme positive). This is the most useful metric if you want a single unidimensional measure of sentiment for a given sentence.
+                      </p>The pos, neu, and neg scores are ratios for proportions of text that fall in each category (so these should all add up to be 1... or close to it with float operation).These are the most useful metrics if you want multidimensional measures of sentiment for a given sentence.
+                      <p>
+                      </p>
+                    </li>
+                  </ul>
+                <li>We then calculate the sentiment scores of each sentence based on the Vader Library. Each sentence gets a positive, negative, neutral and a compound score.</li>
+                <li>We also run a sentiment analysis on each sentence on the word level by using the Vader Library for words as well as the SemEval2015-English-Twitter-Lexicon. Each word is assigned a score from -1 to +1, where negative 1 corresponds the most negative sentiment and 1 corresponds to the most positive.</li>
+                <li>We run an emotion analysis on the word level for each sentiment using the NRC-Hashtag-Emotion-Lexicon. Each word is mapped to a value ranging from -1 to 1, where negative 1 corresponds the most unlike that emotion and 1 corresponds to the most like that emotion.</li>
+                <li>We can then use this data to focus in on a particular speaker to see how he felt to the overall group and the overall emotion he felt while conversing with the group or an individual person if desired.</li>
+                <li>We also then calculate the average conversation score for each emotion by taking the average emotion scores over all speakers toward a single person as well as their dialog towards everyone in the group.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="about-header"><span>References</span></div>
+            <div class="about-references">
+              <p>[1] M. Mahajan and B. R. Jadhav, "Review of dual sentiment analysis," International Journal of Science and Research (IJSR), vol. 4, no. 11, pp. 2323–2326, Nov. 2015.</p>
+              <p>[2] Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.</p>
+              <p>[3] Sentiment Analysis of Short Informal Texts. Svetlana Kiritchenko, Xiaodan Zhu and Saif Mohammad. Journal of Artificial Intelligence Research, volume 50, pages 723-762, August 2014.</p>
+              <p>[4] NRC-Canada: Building the State-of-the-Art in Sentiment Analysis of Tweets, Saif M. Mohammad, Svetlana Kiritchenko, and Xiaodan Zhu, In Proceedings of the seventh international workshop on Semantic Evaluation Exercises (SemEval-2013), June 2013, Atlanta, USA.</p>
+
+            </div>
+
+        </div> <!-- / tabs_item -->
+
+        <div class="tabs_item">
+            <h4>old analyses</h4>
+            <p>OLD STUFF WOOOOOOOO</p>
+        </div> <!-- / tabs_item -->
+
+    </div> <!-- / tab_content -->
+</div> <!-- / tab -->
+
+
 {% endblock %}
