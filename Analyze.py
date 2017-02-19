@@ -190,21 +190,33 @@ class Analyze:
         for sp in speakerArray:
             xs = []
             ys = []
+            txt = []
+            #TODO: txt does not work to show boxes ;-(
             for i in tp.speakerToClass[sp].lines:
                 a = Analyze()
                 a.popDialogEmotion(tp)
                 val = tp.dialogues[i].getAverageEmotion(emote)
-                # if val != 0:
-                # print float(i)
-                # print val
                 xs.append(float(i))
                 ys.append(val)
+                txt.append("<b>Speaker: <\/b> {} <br \/><b>Score: <\/b> {} <br \/>".format(sp, val))
+                print "<b>Speaker: <\/b> {} <br \/><b>Score: <\/b> {} <br \/>".format(sp, val)
             trace = {
                 "type": "scatter",
                 "name": sp,
                 "x": xs,
-                "y": ys
-                # mode='markers+lines',
+                "y": ys,
+                # "text": txt,
+                # "hoverinfo": "text",
+                # "mode": "lines+markers",
+                # "marker": {
+                #     "size": 11,
+                #     "color": "hsl(0, 80%, 50%)",
+                #     "symbol": 4
+                # },
+                # "line": {
+                #     "width": 2
+                # },
+                # "yaxis":"y"
                 # showLine=True
             }
 
@@ -213,22 +225,6 @@ class Analyze:
             # diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
             k += 1
         json_data = traces
-        # x = []
-        # y = []
-        # for i in tp.speakerToClass[speakerArray[0]].lines:
-        #     a = Analyze()
-        #     a.popDialogEmotion(tp)
-        #     val = tp.dialoques[i].getAverageEmotion(emote)
-        #     if val != 0:
-        #         x.append(float(i))
-        #         y.append(val)
-        # trace = go.Scatter(
-        #     x = x
-        #     y = y
-        #
-        # )
-        # py.plot(data, filename='testy-plotly')
-        # print traces
         return json_data
 
     def plotlyEmotionTester(self, tp, speakerArray, emote):
