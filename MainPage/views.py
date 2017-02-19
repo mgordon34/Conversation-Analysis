@@ -49,6 +49,7 @@ def results(request):
             analyzer = Analyze.Analyze()
             arr = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
             score = analyzer.getAverageConversationScores(parser)
+            convo = analyzer.getConversationScore(parser)["trust"]
             # labels = ['compound', 'neg', 'neu', 'pos']
             # ind = np.arange(4)
             # width = .5
@@ -63,7 +64,7 @@ def results(request):
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score})
+    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo})
 
 def tags(request):
     if request.method == 'GET':
