@@ -9,7 +9,9 @@ $.ajax({
   }
 });
 
-var myPlot = document.getElementById('graph'),
+
+
+var myPlot = document.getElementById('graph');
   x1 = [1, 2, 3, 4, 5],
   y1 = [1, 2, 4, 8, 16],
   data = [{x: x1, y: y1, text: tags, hoverinfo: 'text'}],
