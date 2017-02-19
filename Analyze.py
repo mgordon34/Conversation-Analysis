@@ -1,8 +1,14 @@
+"""
+[2] Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.
+[3] Sentiment Analysis of Short Informal Texts. Svetlana Kiritchenko, Xiaodan Zhu and Saif Mohammad. Journal of Artificial Intelligence Research, volume 50, pages 723-762, August 2014.
+[4] NRC-Canada: Building the State-of-the-Art in Sentiment Analysis of Tweets, Saif M. Mohammad, Svetlana Kiritchenko, and Xiaodan Zhu, In Proceedings of the seventh international workshop on Semantic Evaluation Exercises (SemEval-2013), June 2013, Atlanta, USA.
+"""
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import TextParsing
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.cm as cm
+import json
 from plotly.graph_objs import *
 import plotly.plotly as py
 
@@ -149,6 +155,32 @@ class Analyze:
     emote --> the emotion desired as a string: options include:
         anticipation, fear, anger, trust, surprise, sadness, joy, disgust
     """
+    # def plotlyEmotion(self, tp, speakerArray, emote):
+    #     if len(speakerArray) < 2:
+    #         print "please enter in two or more speakers"
+    #         return
+    #     k = 0
+    #     traces = []
+    #     for sp in speakerArray:
+    #         xs = []
+    #         ys = []
+    #         for i in tp.speakerToClass[sp].lines:
+    #             val = float(tp.dialogues[i].getAverageEmotion(emote))
+    #             if val != 0:
+    #                 xs.append(float(i))
+    #                 ys.append(val)
+    #         trace = Scatter(
+    #             x=xs,
+    #             y=ys,
+    #             name=sp
+    #         )
+    #         traces.append(trace)
+    #         # diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
+    #         k += 1
+    #     data = Data(traces)
+    #     py.plot(data, filename='testy-plotly')
+    #     return data
+
     def plotlyEmotion(self, tp, speakerArray, emote):
         if len(speakerArray) < 2:
             print "please enter in two or more speakers"
@@ -159,23 +191,45 @@ class Analyze:
             xs = []
             ys = []
             for i in tp.speakerToClass[sp].lines:
-                val = float(tp.dialogues[i].getAverageEmotion(emote))
-                if val != 0:
-                    xs.append(float(i))
-                    ys.append(val)
+                a = Analyze()
+                a.popDialogEmotion(tp)
+                val = tp.dialogues[i].getAverageEmotion(emote)
+                # if val != 0:
+                # print float(i)
+                # print val
+                xs.append(float(i))
+                ys.append(val)
+            trace = {
+                "type": "scatter",
+                "name": sp,
+                "x": xs,
+                "y": ys
+                # mode='markers+lines',
+                # showLine=True
+            }
 
-
-            trace = Scatter(
-                x=xs,
-                y=ys,
-                name=sp
-            )
-            traces.append(trace)
+            # traces[sp] = trace
+            traces.append(json.dumps(trace, separators=(',', ':')))
             # diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
             k += 1
-        data = Data(traces)
-        py.plot(data, filename='testy-plotly')
-        return data
+        json_data = traces
+        # x = []
+        # y = []
+        # for i in tp.speakerToClass[speakerArray[0]].lines:
+        #     a = Analyze()
+        #     a.popDialogEmotion(tp)
+        #     val = tp.dialoques[i].getAverageEmotion(emote)
+        #     if val != 0:
+        #         x.append(float(i))
+        #         y.append(val)
+        # trace = go.Scatter(
+        #     x = x
+        #     y = y
+        #
+        # )
+        # py.plot(data, filename='testy-plotly')
+        # print traces
+        return json_data
 
     def plotlyEmotionTester(self, tp, speakerArray, emote):
         if len(speakerArray) < 2:

@@ -15,7 +15,7 @@ Below is the current functionlity of Analyze. Analyze can create/do the followin
     on the given emotion
         scatterGraphEmotion
     7. Creates a scatter plot of the speakers in teh speaker array and the sentiment desired.
-    possible sentiments: pos, neg, neu, compund
+    possible sentiments: pos, neg, neu, compound
         scatterPlotSentiment
     8. Calculates the average compound, negative, neutral and positive scores of all speakers in the conversation
         to determine the overall sentiment of the conversation (compound, negative, neutral, positive)
@@ -50,7 +50,7 @@ Algorithm Stages:
         as the SemEval2015-English-Twitter-Lexicon. Each word is assigned a score from -1 to 1, where negative 1
         corresponds the most negative sentiment and 1 corresponds to the most positive.
     4. We run an emotion analysis on the word level for each sentiment using the NRC-Hashtag-Emotion-Lexicon. Each word
-       is mapped to a value ranging from _____________________
+       is mapped to a value ranging from 1 to 1, where negative 1 corresponds the most unlike that emotion and 1 corresponds to the most like that emotion.
     5. We can then use this data to focus in on a particular speaker to see how he felt to the overall group and the
     overall emotion he felt while conversing with the group or an individual person if desired.
     6. We also then calculate the average conversation score for each emotion by taking the average emotion scores over all
