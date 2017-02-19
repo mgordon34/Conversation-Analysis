@@ -199,15 +199,15 @@ class Analyze:
                 xs.append(float(i))
                 ys.append(val)
                 txt.append("<b>Speaker: <\/b> {} <br \/><b>Score: <\/b> {} <br \/>".format(sp, val))
-                print "<b>Speaker: <\/b> {} <br \/><b>Score: <\/b> {} <br \/>".format(sp, val)
+                #print "<b>Speaker: <\/b> {} <br \/><b>Score: <\/b> {} <br \/>".format(sp, val)
             trace = {
                 "type": "scatter",
                 "name": sp,
                 "x": xs,
                 "y": ys,
-                # "text": txt,
+                "text": txt,
                 # "hoverinfo": "text",
-                # "mode": "lines+markers",
+                #"mode": 'lines+markers+text',
                 # "marker": {
                 #     "size": 11,
                 #     "color": "hsl(0, 80%, 50%)",
