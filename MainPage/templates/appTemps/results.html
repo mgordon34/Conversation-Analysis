@@ -11,7 +11,7 @@
 
   <head>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script type="text/javascript">
+{#    <script type="text/javascript">#}
 {#            var trace1 = {#}
 {#            x: [1, 2, 3, 4],#}
 {#            y: [10, 15, 13, 17],#}
@@ -24,32 +24,32 @@
 {#            };#}
 {#            var data1 = [trace1, trace2];#}
 {#            console.log(data1);#}
-        window.onload = function() {
-            if (document.getElementById("info").value == null) {
-                console.log("not working");
-            } else {
-                var data = document.getElementById("info").value;
+{#        window.onload = function() {#}
+{#            if (document.getElementById("info").value == null) {#}
+{#                console.log("not working");#}
+{#            } else {#}
+{#                var data = document.getElementById("info").value;#}
 {#                    console.log(data);#}
 {#                var i= 0;#}
 {#                var outData = [];#}
 {#                for (d in data) {#}
 {#                    outData[i++] = JSON.parse(d);#}
 {#                }#}
-                var outData = JSON.parse(data);
-                var layout = {
-                    "showlegend":true,
-                    "yaxis": {
-                        "title": "<b>Trust<\/b>"
-                    },
-                    "xaxis": {
-                        "title": "<b>Line Number<\/b>"
-                    }
-                };
+{#                var outData = JSON.parse(data);#}
+{#                var layout = {#}
+{#                    "showlegend":true,#}
+{#                    "yaxis": {#}
+{#                        "title": "<b>Trust<\/b>"#}
+{#                    },#}
+{#                    "xaxis": {#}
+{#                        "title": "<b>Line Number<\/b>"#}
+{#                    }#}
+{#                };#}
 {#                    console.log(outData);#}
-                Plotly.newPlot('myDiv', [outData], layout);
-            }
-        }
-    </script>
+{#                Plotly.newPlot('myDiv', [outData], layout);#}
+{#            }#}
+{#        }#}
+{#    </script>#}
   </head>
 
   <div>

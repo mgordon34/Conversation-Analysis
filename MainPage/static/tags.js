@@ -1,4 +1,9 @@
 var tags = null;
+var pointIndex = null;
+var myPlot = null;
+var data = null;
+var layout = null;
+var graph = null;
 $.ajax({
   url: '/tags',
   type: 'GET',
@@ -9,29 +14,51 @@ $.ajax({
   }
 });
 
+// var myPlot = document.getElementById('graph'),
+//   x1 = [1, 2, 3, 4, 5],
+//   y1 = [1, 2, 4, 8, 16],
+//   outData = [{x: x1, y: y1, text: tags, hoverinfo: 'text'}],
+//   layout = {
+//     hovermode:'closest',
+//     title: 'Results Data'
+//   };
+window.onload = function() {
+    myPlot = document.getElementById('graph');
+    var midData = JSON.parse(document.getElementById("info").value);
+    var mid = [];
+    for (i in midData.y) {
+        mid[i] = midData.y[i];
+    }
+    tags = mid;
+    data = [{x: midData.x, y: midData.y, name: midData.name, text: tags, hoverinfo: 'text', type: 'scatter'}];
+    //var outData = JSON.parse(data);
+    // console.log(outData);
+    layout = {
+        "showlegend": true,
+        "yaxis": {
+            "title": "<b>Trust<\/b>"
+        },
+        "xaxis": {
+            "title": "<b>Line Number<\/b>"
+        },
+        hovermode: 'closest',
+        title: 'Results Data'
+    };
+    console.log(tags);
+    graph = Plotly.newPlot(myPlot, data, layout);
 
 
-var myPlot = document.getElementById('graph');
-  x1 = [1, 2, 3, 4, 5],
-  y1 = [1, 2, 4, 8, 16],
-  data = [{x: x1, y: y1, text: tags, hoverinfo: 'text'}],
-  layout = {
-    hovermode:'closest',
-    title: 'Results Data'
-  };
-var graph = Plotly.newPlot(myPlot, data, layout);
-var pointIndex;
+    myPlot.on('plotly_click', function (data) {
+        var index = data.points[0].x - 1;
+        pointIndex = index;
+        $('#modalInput').val(tags[index]);
+        $('#tagModal').modal('show');
+    });
 
-myPlot.on('plotly_click', function(data) {
-  var index = data.points[0].x - 1;
-  pointIndex = index;
-  $('#modalInput').val(tags[index]);
-  $('#tagModal').modal('show');
-});
-
-$('button#modalSubmit').click(function(){
-  var text = $('#modalInput').val();
-  tags[pointIndex] = text;
-  $('#tagModal').modal('hide');
-  Plotly.redraw(myPlot);
-});
+    $('button#modalSubmit').click(function () {
+        var text = $('#modalInput').val();
+        tags[pointIndex] = text;
+        $('#tagModal').modal('hide');
+        Plotly.redraw(myPlot);
+    });
+}

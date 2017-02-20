@@ -14,6 +14,8 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
+arr = []
+
 def main(request):
     # Handle file upload
     if request.method == 'POST':
@@ -39,8 +41,8 @@ def main(request):
 
 def results(request):
     # Handle file upload
-    print "I'm being called"
     if request.method == 'POST':
+        print "Results being called"
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             newdoc = Document(docfile = request.FILES['docfile'])
@@ -67,7 +69,8 @@ def results(request):
     return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo})
 
 def tags(request):
+    print "Tags being called"
     if request.method == 'GET':
-        tags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5']
-        tag_model = Result(tags=json.dumps({'tags': tags }))
+        # tags = json.dumps(arr[1].y)
+        tag_model = Result(tags=json.dumps({'tags': tags}))
         return HttpResponse(tag_model.tags, content_type='application/json')

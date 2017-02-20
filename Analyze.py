@@ -202,6 +202,8 @@ class Analyze:
             trace = {
                 "type": "scatter",
                 "name": sp,
+                # "text": ys,
+                # "hoverinfo": 'text',
                 "x": xs,
                 "y": ys
                 # mode='markers+lines',
@@ -468,8 +470,8 @@ class Analyze:
                         first = False
                     else:
                         emotions[e] = (emotions[e] + diag.getAverageEmotion(e)) / 2
-        if not p:
-            print sp1, " never spoke to ", sp2
+        # if not p:
+            # print sp1, " never spoke to ", sp2
         return emotions
 
     """
