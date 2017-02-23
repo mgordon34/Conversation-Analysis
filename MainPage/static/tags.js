@@ -49,7 +49,7 @@ window.onload = function() {
 
 
     myPlot.on('plotly_click', function (data) {
-        var index = data.points[0].x - 1;
+        var index = data.points[0].pointNumber;
         pointIndex = index;
         $('#modalInput').val(tags[index]);
         $('#tagModal').modal('show');
