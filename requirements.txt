@@ -1,0 +1,4 @@
+django
+matplotlib
+nltk
+twython

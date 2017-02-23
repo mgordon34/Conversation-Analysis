@@ -1,9 +1,21 @@
 import Dialog
+import Person
 class TextParsing:
     def __init__(self, str):
         self.dialogues = []
         self.speakerDict = {}
+        self.speakerToClass = {}
         self.parse(str)
+
+#TODO Complete this method
+    def csvparse(self, str):
+        fh = open(str, 'r')
+        content = fh.readlines()
+        for line in content:
+            arr = line.split()
+            print arr
+
+        fh.close()
 
     def parse(self, str):
         fh = open(str, 'r')
@@ -13,7 +25,7 @@ class TextParsing:
             lines.append(line)
         fh.close()
         i = 0
-        index = 1
+        index = 0
         while (i < len(lines)):
             line = lines[i]
 
@@ -41,6 +53,7 @@ class TextParsing:
                 speaker = line[5:(len(line) - 7)]
                 if speaker not in self.speakerDict:
                     self.speakerDict[speaker] = []
+                    self.speakerToClass[speaker] = Person.Person(speaker, self.speakerDict[speaker])
 
                 i += 2
                 line = lines[i]
@@ -51,9 +64,9 @@ class TextParsing:
                 startsAt = line[5:(len(line) - 12)]
 
                 self.dialogues.append(Dialog.Dialog(timestamp, content, date, time, speaker, recipients, startsAt))
-                self.speakerDict[speaker].append(index+1)
+                self.speakerDict[speaker].append(index)
                 index += 1
                 i += 4
             else:
                 i += 1
-        #print 'end\n'
+

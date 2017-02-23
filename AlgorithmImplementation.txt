@@ -1,0 +1,57 @@
+Below is the current functionlity of Analyze. Analyze can create/do the following:
+    1. a dictionary of words from the NCR-Hashtag-Emotion-Lexicon library. This library maps words to
+    scores given by certain emotions. It also works with emoticons.
+        emotionDict
+    2. a dictionary using the Vader_lexicon to be used for mapping words to general sentiment scores
+    ranging from -1 to 1, where the more negative the score, the more negative the sentiment is associated with the word.
+        sentimentDict
+    3. a line by line postive, negative, neutral and compound sentiment score for a particular speaker.
+        getSentimentData(self, tp, speaker)
+    4. a list of the speaker's emotion scores for a particular emotion for all of his lines.
+        getEmotionSpeaker
+    5. creates a JASON object to be used for plotly
+        plotlyEmotion
+    6. a scatter plot using py plot. We track all of the speakers' (inputted as strings) emotion scores
+    on the given emotion
+        scatterGraphEmotion
+    7. Creates a scatter plot of the speakers in teh speaker array and the sentiment desired.
+    possible sentiments: pos, neg, neu, compound
+        scatterPlotSentiment
+    8. Calculates the average compound, negative, neutral and positive scores of all speakers in the conversation
+        to determine the overall sentiment of the conversation (compound, negative, neutral, positive)
+        getAverageConversationScores
+    9. calculates the desired emotion scores for each sentence said by the desired speaker.
+        getAverageEmotionScore
+    10.calculates the sentiment of each word in the dialog according to the vader text document.
+        Scores go from a range of -1 to 1.
+        -1 is negative----- 0 neutral ----- 1 positive
+        getVaderSentimentOfWords
+    11. Compare the overall emotion a single speaker feels toward a single recipient or everyone in the group.
+        emotAverageBwSpeakers
+    12. Compare the overall sentiment a single speaker feels toward a single recipient or everyone in the group.
+        sentimentAverageBwSpeakers
+    13. calculates the average sentiment of the entire conversation based on the vader lexicon text document. Scores
+    range from -1 to 1. -1 represents a very negative sentiment while 1 represent an overall postive sentiment.
+        getAverageVaderSentimentWords
+
+Algorithm Stages:
+    1. First we will read in the document, for each line we keep track of the following information:
+        -the speaker
+        -the recipient
+        -the time stamp
+        -the contents of the line
+        -the date
+        -the emotion scores of each line
+        self.emotions =  {"anticipation":[], "fear":[], "anger":[], "trust":[], "surprise":[], "sadness":[], "joy":[], "disgust":[]}
+        self.sentiment = [0.0, 0.0, 0.0,0.0]
+    2. We then calculate the sentiment scores of each sentence based on the Vader Library.
+      Each sentence gets a positive, negative, neutral and a compound score.
+    3. We also run a sentiment analysis on each sentence on the word level by using the Vader Library for words as well
+        as the SemEval2015-English-Twitter-Lexicon. Each word is assigned a score from -1 to 1, where negative 1
+        corresponds the most negative sentiment and 1 corresponds to the most positive.
+    4. We run an emotion analysis on the word level for each sentiment using the NRC-Hashtag-Emotion-Lexicon. Each word
+       is mapped to a value ranging from 1 to 1, where negative 1 corresponds the most unlike that emotion and 1 corresponds to the most like that emotion.
+    5. We can then use this data to focus in on a particular speaker to see how he felt to the overall group and the
+    overall emotion he felt while conversing with the group or an individual person if desired.
+    6. We also then calculate the average conversation score for each emotion by taking the average emotion scores over all
+    speakers toward a single person as well as their dialog towards everyone in the group.
