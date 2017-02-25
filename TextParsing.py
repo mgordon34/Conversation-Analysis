@@ -18,12 +18,21 @@ fdist1 |= fdist2 	        ======> update fdist1 with counts from fdist2
 fdist1 < fdist2 	        ======> test if samples in fdist1 occur less frequently than in fdist2
 """
 
+"""
+self.dialogues -> a list of Dialog objects that occur in the conversation. These Dialogs are in the order of occurence
+self.speakerDict ==> a dictionary that maps speakers to a list of indices into self.dialogs. These corresponds to a speaker's lines in the dialog.
+self.speakerText --> a dictionary that maps speakers to a nltk.Text document of their particular lines
+self.speakerToClass =-> dictionary that maps the speaker to his or her corresponding class
+self.text ==> a nltk text document that represents the entire conversation
+"""
 class TextParsing:
     def __init__(self, str):
         self.dialogues = []
         self.speakerDict = {}
+        self.speakerText = {}
         self.speakerToClass = {}
         self.text = None
+
         self.parse(str)
 
 #TODO Complete this method
@@ -73,6 +82,7 @@ class TextParsing:
                 speaker = line[5:(len(line) - 7)]
                 if speaker not in self.speakerDict:
                     self.speakerDict[speaker] = []
+                    self.speakerText[speaker] = []
                     self.speakerToClass[speaker] = Person.Person(speaker, self.speakerDict[speaker])
 
                 i += 2
@@ -85,13 +95,20 @@ class TextParsing:
                 tokens.extend(word_tokenize(content.strip()))
                 self.dialogues.append(Dialog.Dialog(timestamp, content, date, time, speaker, recipients, startsAt))
                 self.speakerDict[speaker].append(index)
+                self.speakerText[speaker].extend(word_tokenize(content.strip()))
                 index += 1
                 i += 4
             else:
                 i += 1
         self.text = nltk.Text(tokens)
+        for sp in self.speakerText.keys():
+            self.speakerText[sp] = nltk.Text(self.speakerText[sp])
 
-
+    """
+    returns a frequency distribution nltk object using only the words of a particular speaker particular speaker
+    """
+    def getFrequDistSpeaker(self, speaker):
+        return nltk.FreqDist(self.speakerText[speaker])
 
 if __name__ == '__main__':
     tp = TextParsing("exampleData.rtf")
@@ -103,6 +120,8 @@ if __name__ == '__main__':
     #counts the number of time the word kill was said in the conversation
     #print tp.text.count("kill")
     fdist1 = nltk.FreqDist(tp.text)
+    #print tp.speakerText.keys()
+    #print tp.getFrequDistSpeaker("Bunnycrusher").most_common(50)
     #gets the first 50 commen words that were spoken in the conversation
     #returns a list of tuples. ex: ('Yea', 19)
     #print fdist1.most_common(50)
