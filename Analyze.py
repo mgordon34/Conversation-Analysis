@@ -205,7 +205,10 @@ class Analyze:
                 "name": sp,
                 "x": xs,
                 "y": ys,
-                "text": txt,
+                'text': txt,
+                'hoverinfo': 'text'
+                #"text": txt,
+                #'hoverinfo': 'text'
                 # "hoverinfo": "text",
                 #"mode": 'lines+markers+text',
                 # "marker": {

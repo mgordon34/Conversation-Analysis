@@ -8,16 +8,16 @@ $.ajax({
     console.log(tags);
   }
 });
-
+var dat = document.getElementById('info')
+console.log(dat)
+var outData = JSON.parse(data);
 var myPlot = document.getElementById('graph'),
-  x1 = [1, 2, 3, 4, 5],
-  y1 = [1, 2, 4, 8, 16],
-  data = [{x: x1, y: y1, text: tags, hoverinfo: 'text'}],
+//  data = [{x: x1, y: y1, text: tags, hoverinfo: 'text'}],
   layout = {
     hovermode:'closest',
     title: 'Results Data'
   };
-var graph = Plotly.newPlot(myPlot, data, layout);
+var graph = Plotly.newPlot(myPlot, [outData], layout);
 var pointIndex;
 
 myPlot.on('plotly_click', function(data) {
