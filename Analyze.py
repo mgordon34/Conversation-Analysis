@@ -90,7 +90,13 @@ class Analyze:
             lines.append((sentence ,[ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
         return lines
 
-
+    def getDummyExample(self):
+        sentence = "Hello World! I love Georgia Tech!"
+        sentence2 = "Goodbye World! I HATE Georgia Tech!"
+        ss1 = self.sid.polarity_scores(sentence)
+        ss2 = self.sid.polarity_scores(sentence2)
+        print "compound: ", ss1['compound'], " negative: ", ss1['neg'], " positive: ", ss1['pos']
+        print "compound: ", ss2['compound'], " negative: ", ss2['neg'], " positive: ", ss2['pos']
     """
     takes in a Text Parsing, the speaker's name, and the emotion you desire
     Outputs a list of the speaker's emotion scores for all of his lines.
@@ -565,8 +571,9 @@ if __name__ == '__main__':
     tp = TextParsing.TextParsing("exampleData.rtf")
     a = Analyze()
     a.popDialogEmotion(tp)
+    a.getDummyExample()
     #a.getSentimentOfWords(tp)
-    speakers = tp.speakerDict.keys()
+    #speakers = tp.speakerDict.keys()
     #di= tp.dialogues
     #a.getEmotionSpeaker(tp, speakers[0], "anticipation")
     #a.lineGraphSentiment(tp, speakers, "joy")
@@ -574,9 +581,10 @@ if __name__ == '__main__':
     #s = a.sentimentAverageBwSpeakers(tp, "Tempus", "everyone")
     #a.plotlyEmotionTester(tp, speakers, "joy")
     #print a.getAverageVaderSentimentWords(tp)
-    p = a.getConversationScore(tp)
-    for e in p.keys():
-        print e, p[e]
+    #p = a.getConversationScore(tp)
+    #for e in p.keys():
+    #    print e, p[e]
+
     #print s
     #for k in e.keys():
     #    print k, e[k]
