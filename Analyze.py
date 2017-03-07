@@ -90,13 +90,12 @@ class Analyze:
             lines.append((sentence ,[ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
         return lines
 
-    def getDummyExample(self):
-        sentence = "Hello World! I love Georgia Tech!"
-        sentence2 = "Goodbye World! I HATE Georgia Tech!"
+    def getDummyExample(self,sentence):
+        #sentence2 = "Goodbye World! I HATE Georgia Tech!"
         ss1 = self.sid.polarity_scores(sentence)
-        ss2 = self.sid.polarity_scores(sentence2)
+        #ss2 = self.sid.polarity_scores(sentence2)
         print "compound: ", ss1['compound'], " negative: ", ss1['neg'], " positive: ", ss1['pos']
-        print "compound: ", ss2['compound'], " negative: ", ss2['neg'], " positive: ", ss2['pos']
+        #print "compound: ", ss2['compound'], " negative: ", ss2['neg'], " positive: ", ss2['pos']
     """
     takes in a Text Parsing, the speaker's name, and the emotion you desire
     Outputs a list of the speaker's emotion scores for all of his lines.
@@ -447,9 +446,24 @@ class Analyze:
                     val = self.sentimentDict[wd]
                     sentVader.append([wd, val])
                 except:
-                    sentVader.append([wd, val])
+                    sentVader.append([wd, 0.0])
             retArr.append(sentVader)
         return retArr
+
+    def getDummySentimentOfWords(self, sentence):
+        words = sentence.split()
+        sentVader = []
+        val = 0
+        for i in range(len(words)):
+            wd = words[i].lower()
+            #wd = wd.translate(string.maketrans("", ""), string.punctuation)
+            try:
+                val = self.sentimentDict[wd]
+                sentVader.append([wd, val])
+            except:
+                sentVader.append([wd, 0.0])
+
+        return sentVader
 
     """
     Compares the overall emotion sp1 feels toward sp2.
@@ -571,7 +585,21 @@ if __name__ == '__main__':
     tp = TextParsing.TextParsing("exampleData.rtf")
     a = Analyze()
     a.popDialogEmotion(tp)
-    a.getDummyExample()
+    sent = "I love Georgia Tech! :-)"
+    sent2 = "I hate Georgia Tech. :-("
+    a.getDummyExample(sent)
+    #print a.getDummySentimentOfWords(sent)
+    st = ""
+    for i in a.getDummySentimentOfWords(sent):
+        st += i[0]+ " : "+ str(i[1]) + ", "
+    print st
+    print "------------------------------------------------------------"
+    a.getDummyExample(sent2)
+    #print a.getDummySentimentOfWords(sent2)
+    st = ""
+    for i in a.getDummySentimentOfWords(sent2):
+        st += i[0] + " : " + str(i[1]) + ", "
+    print st
     #a.getSentimentOfWords(tp)
     #speakers = tp.speakerDict.keys()
     #di= tp.dialogues
