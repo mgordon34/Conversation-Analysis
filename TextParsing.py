@@ -2,6 +2,9 @@ import Dialog
 import Person
 import nltk
 from nltk import word_tokenize
+import json
+import plotly.plotly as py
+import plotly.graph_objs as go
 """
 fdist = FreqDist(samples)   ======> create a frequency distribution containing the given samples
 fdist[sample] += 1          ======> increment the count for this sample
@@ -32,7 +35,7 @@ class TextParsing:
         self.speakerText = {}
         self.speakerToClass = {}
         self.text = None
-
+        self.freqDist = None
         self.parse(str)
 
 #TODO Complete this method
@@ -101,30 +104,71 @@ class TextParsing:
             else:
                 i += 1
         self.text = nltk.Text(tokens)
+        self.freqDist = nltk.FreqDist(self.text)
         for sp in self.speakerText.keys():
             self.speakerText[sp] = nltk.Text(self.speakerText[sp])
 
     """
     returns a frequency distribution nltk object using only the words of a particular speaker particular speaker
+    example: [(',', 176), ('the', 155), ('I', 105), ('you', 89), ('to', 85), ('it', 85), ('we', 82), ('?', 69)]
     """
     def getFrequDistSpeaker(self, speaker):
+        if speaker == "everyone":
+            return self.freqDist
         return nltk.FreqDist(self.speakerText[speaker])
+
+    # gets the first 50 common words that were spoken in the conversation
+    # returns a list of tuples. ex: ('Yea', 19)
+    def getNCommonWords(self, n):
+        return self.fdist.most_common(n)
+
+    def plotlyBarFreqDist(self, speaker):
+        k = 0
+        if speaker == "everyone":
+            fdist1 = nltk.FreqDist(self.text)
+        else:
+            fdist1 = self.getFrequDistSpeaker(speaker)
+        xs = []
+        ys = []
+        for point in fdist1:
+            xs.append(point[0])
+            ys.append(point[1])
+        data = [go.Bar(
+            x=xs,
+            y=ys
+        )]
+        #data.append(json.dumps(trace, separators=(',', ':')))
+
+        json_data = data
+        return json_data
+
+    # Concordance tells you all of the times the word is in said in the conversation along with its context
+    def getConcordance(self, word):
+        return self.text.concordance(word)
+
+    # counts the number of time the word was said in the conversation
+    def getFrequecyOfWord(self, word):
+        return self.text.count(word)
+
+
+
+
 
 if __name__ == '__main__':
     tp = TextParsing("exampleData.rtf")
-    #Concordance tells you all of the times the word is in said in the conversation along with its context
+
     #print tp.text.concordance('kill')
     #This positional information can be displayed using a dispersion plot.
     # Each stripe represents an instance of a word, and each row represents the entire text.
     #tp.text.dispersion_plot(["kill", "bunny"])
-    #counts the number of time the word kill was said in the conversation
+
     #print tp.text.count("kill")
     fdist1 = nltk.FreqDist(tp.text)
     #print tp.speakerText.keys()
     #print tp.getFrequDistSpeaker("Bunnycrusher").most_common(50)
-    #gets the first 50 commen words that were spoken in the conversation
+    #gets the first 50 common words that were spoken in the conversation
     #returns a list of tuples. ex: ('Yea', 19)
-    #print fdist1.most_common(50)
-    #fdist1.plot(50, cumulative=True)
+    print fdist1.most_common(50)
+    fdist1.plot(50, cumulative=True)
     #Returns a list of words that only appear once
     #print fdist1.hapaxes()

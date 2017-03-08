@@ -61,6 +61,7 @@
       <p>Conversation: {{ convo }} </p>
   </div>
   <div id="graph"></div>
+  <div id="barg"></div>
 
   <div id="tagModal" class="modal fade dialog-text" role="dialog">
     <div class="modal-dialog">
@@ -86,8 +87,10 @@
     <script src='{% static "tags.js" %}'></script>
     <body>
 
-        <div id="myDiv" style="width: 480px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
         <input id="info" value={{ arr.1 }}> </input>
+        <input id="bInfo" value={{ arr2.1 }}> </input>
+
+
     </body>
     <div id="container" class="ui-widget-content" style=border:transparent></div>
   <input id="clickMe" type="button" value="clickme" onclick="comment();" />
