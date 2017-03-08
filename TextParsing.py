@@ -120,17 +120,19 @@ class TextParsing:
     # gets the first n common words that were spoken in the conversation
     # returns a list of tuples. ex: ('Yea', 19)
     def getNCommonWords(self, n):
-        return self.fdist.most_common(n)
+        return self.freqDist.most_common(n)
 
     def plotlyBarFreqDist(self, speaker):
         k = 0
         if speaker == "everyone":
-            fdist1 = nltk.FreqDist(self.text)
+            fdist1 = self.freqDist
         else:
             fdist1 = self.getFrequDistSpeaker(speaker)
         xs = []
         ys = []
-        for point in fdist1:
+        print fdist1
+        for point in fdist1.most_common(50):
+            print point
             xs.append(point[0])
             ys.append(point[1])
         data = [go.Bar(
@@ -141,6 +143,20 @@ class TextParsing:
 
         json_data = data
         return json_data
+
+    def plotlyBarFreqDistTest(self, speaker):
+        k = 0
+        if speaker == "everyone":
+            fdist1 = self.freqDist
+        else:
+            fdist1 = self.getFrequDistSpeaker(speaker)
+        xs = []
+        ys = []
+        print fdist1
+        for point in fdist1.most_common(50):
+            print point
+            xs.append(point[0])
+            ys.append(point[1])
 
     # Concordance tells you all of the times the word is in said in the conversation along with its context
     def getConcordance(self, word):
@@ -154,9 +170,9 @@ class TextParsing:
 
 
 
-#if __name__ == '__main__':
-    #tp = TextParsing("exampleData.rtf")
-
+if __name__ == '__main__':
+    tp = TextParsing("exampleData.rtf")
+    tp.plotlyBarFreqDistTest("everyone")
     #print tp.text.concordance('kill')
     #This positional information can be displayed using a dispersion plot.
     # Each stripe represents an instance of a word, and each row represents the entire text.
