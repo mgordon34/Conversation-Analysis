@@ -117,7 +117,7 @@ class TextParsing:
             return self.freqDist
         return nltk.FreqDist(self.speakerText[speaker])
 
-    # gets the first 50 common words that were spoken in the conversation
+    # gets the first n common words that were spoken in the conversation
     # returns a list of tuples. ex: ('Yea', 19)
     def getNCommonWords(self, n):
         return self.fdist.most_common(n)
@@ -154,8 +154,8 @@ class TextParsing:
 
 
 
-if __name__ == '__main__':
-    tp = TextParsing("exampleData.rtf")
+#if __name__ == '__main__':
+    #tp = TextParsing("exampleData.rtf")
 
     #print tp.text.concordance('kill')
     #This positional information can be displayed using a dispersion plot.
@@ -163,12 +163,12 @@ if __name__ == '__main__':
     #tp.text.dispersion_plot(["kill", "bunny"])
 
     #print tp.text.count("kill")
-    fdist1 = nltk.FreqDist(tp.text)
+    #fdist1 = nltk.FreqDist(tp.text)
     #print tp.speakerText.keys()
     #print tp.getFrequDistSpeaker("Bunnycrusher").most_common(50)
     #gets the first 50 common words that were spoken in the conversation
     #returns a list of tuples. ex: ('Yea', 19)
-    print fdist1.most_common(50)
-    fdist1.plot(50, cumulative=True)
+    #print fdist1.most_common(50)
+    #fdist1.plot(50, cumulative=True)
     #Returns a list of words that only appear once
     #print fdist1.hapaxes()
