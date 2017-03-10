@@ -137,7 +137,7 @@ class TextParsing:
             x=xs,
             y=ys
         )]
-        data.append(json.dumps(trace, separators=(',', ':')))
+        # data.append(json.dumps(trace, separators=(',', ':')))
 
         json_data = data
         return json_data
