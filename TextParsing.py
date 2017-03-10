@@ -110,7 +110,6 @@ class TextParsing:
 
     """
     returns a frequency distribution nltk object using only the words of a particular speaker particular speaker
-    example: [(',', 176), ('the', 155), ('I', 105), ('you', 89), ('to', 85), ('it', 85), ('we', 82), ('?', 69)]
     """
     def getFrequDistSpeaker(self, speaker):
         if speaker == "everyone":
@@ -118,9 +117,10 @@ class TextParsing:
         return nltk.FreqDist(self.speakerText[speaker])
 
     # gets the first n common words that were spoken in the conversation
-    # returns a list of tuples. ex: ('Yea', 19)
+    # returns a list of tuples. ex: [(',', 176), ('the', 155), ('I', 105), ('you', 89), ('to', 85), ('it', 85), ('we', 82), ('?', 69)]
     def getNCommonWords(self, n):
         return self.freqDist.most_common(n)
+
 
     def plotlyBarFreqDist(self, speaker):
         k = 0
@@ -145,7 +145,6 @@ class TextParsing:
         return json_data
 
     def plotlyBarFreqDistTest(self, speaker):
-        k = 0
         if speaker == "everyone":
             fdist1 = self.freqDist
         else:
@@ -166,7 +165,9 @@ class TextParsing:
     def getFrequecyOfWord(self, word):
         return self.text.count(word)
 
-
+    #Returns a list of words that only appear once
+    def getHapaxes(self):
+        return self.freqDist.hapaxes()
 
 
 
