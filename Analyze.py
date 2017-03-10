@@ -215,10 +215,10 @@ class Analyze:
 
             # traces[sp] = trace
             # traces.append(json.dumps(trace))
-            traces.append(json.dumps(trace, separators=(',', ':')))
+            traces.append(trace)
             # diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
             k += 1
-        json_data = traces
+        json_data = json.dumps(traces, separators=(',', ':'))
         # x = []
         # y = []
         # for i in tp.speakerToClass[speakerArray[0]].lines:

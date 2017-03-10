@@ -25,10 +25,9 @@ $.ajax({
 window.onload = function() {
     myPlot = document.getElementById('graph');
     //console.log($("#info").text());
-    var midDataArray = $("#info").text();
+    var midDataArray = JSON.parse($("#info").text());
     for (i in midDataArray) {
-        console.log(midDataArray[i]);
-        var midData = JSON.parse(midDataArray[i]);
+        var midData = midDataArray[i];
         var mid = [];
         var lines = [];
         for (i in midData.y) {
