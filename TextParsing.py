@@ -5,7 +5,6 @@ from nltk import word_tokenize
 import json
 import plotly.plotly as py
 import plotly.graph_objs as go
-#TESTING MY USERNAME
 
 """
 fdist = FreqDist(samples)   ======> create a frequency distribution containing the given samples
