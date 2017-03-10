@@ -49,10 +49,11 @@ def results(request):
             newdoc.save()
             parser = TextParsing.TextParsing(request.FILES['docfile'].name)
             analyzer = Analyze.Analyze()
-            arr2 = parser.plotlyBarFreqDist("everyone")
             arr = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
             score = analyzer.getAverageConversationScores(parser)
             convo = analyzer.getConversationScore(parser)["trust"]
+            cwords = parser.getNCommonWords(50)
+            # print freqdist
             # labels = ['compound', 'neg', 'neu', 'pos']
             # ind = np.arange(4)
             # width = .5
@@ -67,7 +68,7 @@ def results(request):
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'arr2':arr2})
+    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'cwords':cwords})
 
 def tags(request):
     print "Tags being called"

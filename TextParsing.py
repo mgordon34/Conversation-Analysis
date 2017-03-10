@@ -3,8 +3,8 @@ import Person
 import nltk
 from nltk import word_tokenize
 import json
-import plotly.plotly as py
-import plotly.graph_objs as go
+# import plotly.plotly as py
+# import plotly.graph_objs as go
 """
 fdist = FreqDist(samples)   ======> create a frequency distribution containing the given samples
 fdist[sample] += 1          ======> increment the count for this sample
@@ -120,7 +120,7 @@ class TextParsing:
     # gets the first 50 common words that were spoken in the conversation
     # returns a list of tuples. ex: ('Yea', 19)
     def getNCommonWords(self, n):
-        return self.fdist.most_common(n)
+        return self.freqDist.most_common(n)
 
     def plotlyBarFreqDist(self, speaker):
         k = 0
