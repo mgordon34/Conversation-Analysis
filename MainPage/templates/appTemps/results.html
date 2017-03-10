@@ -21,6 +21,19 @@
     <p>positive: {{ score.3 }} </p>
       <p>Conversation: {{ convo }} </p>
   </div>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Another Emotion
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a id="drpdwn0">Anger</a></li>
+            <li><a id="drpdwn1">Anticipation</a></li>
+            <li><a id="drpdwn2">Disgust</a></li>
+            <li><a id="drpdwn3">Fear</a></li>
+            <li><a id="drpdwn4">Joy</a></li>
+            <li><a id="drpdwn5">Sadness</a></li>
+            <li><a id="drpdwn6">Trust</a></li>
+        </ul>
+    </div>
   <div id="graph"></div>
   <div id="barg"></div>
 
@@ -55,10 +68,13 @@
     {% load static %}
     <script src='{% static "tags.js" %}'></script>
     <body>
-        <div id="myDiv" style="width: 480px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
-        <p id="info" class="hidden">{{ arr.1 }}</p>
-        <!--<input id="info" value={{ arr.1 }}> </input>-->
-        <!--<p id="bInfo" class="hidden">{{ arr2 }}> </p>-->
+        <p id="Anger" class="hidden">{{ arr.0 }}</p>
+        <p id="Anticipation" class="hidden">{{ arr.1 }}</p>
+        <p id="Disgust" class="hidden">{{ arr.2 }}</p>
+        <p id="Fear" class="hidden">{{ arr.3 }}</p>
+        <p id="Joy" class="hidden">{{ arr.4 }}</p>
+        <p id="Sadness" class="hidden">{{ arr.5 }}</p>
+        <p id="Trust" class="hidden">{{ arr.6 }}</p>
     </body>
     <div id="container" class="ui-widget-content" style=border:transparent></div>
   <input id="clickMe" type="button" value="clickme" onclick="comment();" />
