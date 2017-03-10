@@ -71,6 +71,6 @@ def results(request):
 def tags(request):
     print "Tags being called"
     if request.method == 'GET':
-        # tags = json.dumps(arr[1].y)
+        tags = []
         tag_model = Result(tags=json.dumps({'tags': tags}))
         return HttpResponse(tag_model.tags, content_type='application/json')

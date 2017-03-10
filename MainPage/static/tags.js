@@ -24,12 +24,14 @@ $.ajax({
 //   };
 window.onload = function() {
     myPlot = document.getElementById('graph');
-    var midData = JSON.parse(document.getElementById("info").value);
+    var midData = JSON.parse($("#info").text());
     var mid = [];
+    var lines = [];
     for (i in midData.y) {
         mid[i] = midData.y[i];
+        lines[i] = midData.name + ': ' + midData.lines[i]
     }
-    tags = mid;
+    tags = lines;
     data = [{x: midData.x, y: midData.y, name: midData.name, text: tags, hoverinfo: 'text', type: 'scatter'}];
     //var outData = JSON.parse(data);
     // console.log(outData);
@@ -44,7 +46,6 @@ window.onload = function() {
         hovermode: 'closest',
         title: 'Results Data'
     };
-    console.log(tags);
     graph = Plotly.newPlot(myPlot, data, layout);
 
 
