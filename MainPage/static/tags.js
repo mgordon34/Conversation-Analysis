@@ -1,7 +1,7 @@
 var tags = null;
 var pointIndex = null;
 var myPlot = null;
-var data = null;
+var data = [];
 var layout = null;
 var graph = null;
 $.ajax({
@@ -24,15 +24,20 @@ $.ajax({
 //   };
 window.onload = function() {
     myPlot = document.getElementById('graph');
-    var midData = JSON.parse($("#info").text());
-    var mid = [];
-    var lines = [];
-    for (i in midData.y) {
-        mid[i] = midData.y[i];
-        lines[i] = midData.name + ': ' + midData.lines[i]
+    //console.log($("#info").text());
+    var midDataArray = $("#info").text();
+    for (i in midDataArray) {
+        console.log(midDataArray[i]);
+        var midData = JSON.parse(midDataArray[i]);
+        var mid = [];
+        var lines = [];
+        for (i in midData.y) {
+            mid[i] = midData.y[i];
+            lines[i] = midData.name + ': ' + midData.lines[i]
+        }
+        tags = lines;
+        data.push({x: midData.x, y: midData.y, name: midData.name, text: tags, hoverinfo: 'text', type: 'scatter'});
     }
-    tags = lines;
-    data = [{x: midData.x, y: midData.y, name: midData.name, text: tags, hoverinfo: 'text', type: 'scatter'}];
     //var outData = JSON.parse(data);
     // console.log(outData);
     layout = {
