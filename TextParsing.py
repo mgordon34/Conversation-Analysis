@@ -123,7 +123,6 @@ class TextParsing:
 
 
     def plotlyBarFreqDist(self, speaker):
-        k = 0
         if speaker == "everyone":
             fdist1 = self.freqDist
         else:
