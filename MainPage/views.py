@@ -49,20 +49,17 @@ def results(request):
             newdoc.save()
             parser = TextParsing.TextParsing(request.FILES['docfile'].name)
             analyzer = Analyze.Analyze()
-            arr = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
+            anger = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "anger")
+            anticipation = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "anticipation")
+            disgust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "disgust")
+            fear = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "fear")
+            joy = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "joy")
+            sadness = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "sadness")
+            trust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
+            arr = [anger, anticipation, disgust, fear, joy, sadness, trust]
             score = analyzer.getAverageConversationScores(parser)
             convo = analyzer.getConversationScore(parser)["trust"]
-            # labels = ['compound', 'neg', 'neu', 'pos']
-            # ind = np.arange(4)
-            # width = .5
-            # plt.bar(ind, score, width)
-            # plt.ylabel('Normalized Score')
-            # plt.xticks(ind,labels)
-            # fig, ax = plt.subplots()
-            # plot = ax.bar(ind, score, width)
-            # plt.savefig('ConversationAnalysis/media/graph.png')
-            # Redirect to the document list after POST
-            # return HttpResponseRedirect('MainPage.views.main')
+
     else:
         form = DocumentForm() # A empty, unbound form
 

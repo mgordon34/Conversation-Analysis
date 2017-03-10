@@ -11,45 +11,6 @@
 
   <head>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-{#    <script type="text/javascript">#}
-{#            var trace1 = {#}
-{#            x: [1, 2, 3, 4],#}
-{#            y: [10, 15, 13, 17],#}
-{#            type: 'scatter'#}
-{#            };#}
-{#            var trace2 = {#}
-{#            x: [1, 2, 3, 4],#}
-{#            y: [16, 5, 11, 9],#}
-{#            type: 'scatter'#}
-{#            };#}
-{#            var data1 = [trace1, trace2];#}
-{#            console.log(data1);#}
-{#        window.onload = function() {#}
-{#            if (document.getElementById("info").value == null) {#}
-{#                console.log("not working");#}
-{#            } else {#}
-{#                var data = document.getElementById("info").value;#}
-{#                    console.log(data);#}
-{#                var i= 0;#}
-{#                var outData = [];#}
-{#                for (d in data) {#}
-{#                    outData[i++] = JSON.parse(d);#}
-{#                }#}
-{#                var outData = JSON.parse(data);#}
-{#                var layout = {#}
-{#                    "showlegend":true,#}
-{#                    "yaxis": {#}
-{#                        "title": "<b>Trust<\/b>"#}
-{#                    },#}
-{#                    "xaxis": {#}
-{#                        "title": "<b>Line Number<\/b>"#}
-{#                    }#}
-{#                };#}
-{#                    console.log(outData);#}
-{#                Plotly.newPlot('myDiv', [outData], layout);#}
-{#            }#}
-{#        }#}
-{#    </script>#}
   </head>
 
   <div>
@@ -60,6 +21,19 @@
     <p>positive: {{ score.3 }} </p>
       <p>Conversation: {{ convo }} </p>
   </div>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Another Emotion
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a id="drpdwn0">Anger</a></li>
+            <li><a id="drpdwn1">Anticipation</a></li>
+            <li><a id="drpdwn2">Disgust</a></li>
+            <li><a id="drpdwn3">Fear</a></li>
+            <li><a id="drpdwn4">Joy</a></li>
+            <li><a id="drpdwn5">Sadness</a></li>
+            <li><a id="drpdwn6">Trust</a></li>
+        </ul>
+    </div>
   <div id="graph"></div>
 
   <div id="tagModal" class="modal fade dialog-text" role="dialog">
@@ -86,8 +60,15 @@
     <script src='{% static "tags.js" %}'></script>
     <body>
 
-        <div id="myDiv" style="width: 480px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
-        <p id="info">{{ arr }}</p>
+{#        <div id="myDiv" style="width: 480px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>#}
+{#        <p id="info">{{ arr }}</p>#}
+        <p id="Anger" class="hidden">{{ arr.0 }}</p>
+        <p id="Anticipation" class="hidden">{{ arr.1 }}</p>
+        <p id="Disgust" class="hidden">{{ arr.2 }}</p>
+        <p id="Fear" class="hidden">{{ arr.3 }}</p>
+        <p id="Joy" class="hidden">{{ arr.4 }}</p>
+        <p id="Sadness" class="hidden">{{ arr.5 }}</p>
+        <p id="Trust" class="hidden">{{ arr.6 }}</p>
     </body>
     <div id="container" class="ui-widget-content" style=border:transparent></div>
   <input id="clickMe" type="button" value="clickme" onclick="comment();" />
