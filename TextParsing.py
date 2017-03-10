@@ -3,8 +3,9 @@ import Person
 import nltk
 from nltk import word_tokenize
 import json
-# import plotly.plotly as py
-# import plotly.graph_objs as go
+import plotly.plotly as py
+import plotly.graph_objs as go
+
 """
 fdist = FreqDist(samples)   ======> create a frequency distribution containing the given samples
 fdist[sample] += 1          ======> increment the count for this sample
@@ -122,14 +123,12 @@ class TextParsing:
         return self.freqDist.most_common(n)
 
     def plotlyBarFreqDist(self, speaker):
-        k = 0
         if speaker == "everyone":
             fdist1 = self.freqDist
         else:
             fdist1 = self.getFrequDistSpeaker(speaker)
         xs = []
         ys = []
-        print fdist1
         for point in fdist1.most_common(50):
             print point
             xs.append(point[0])
@@ -138,7 +137,7 @@ class TextParsing:
             x=xs,
             y=ys
         )]
-        #data.append(json.dumps(trace, separators=(',', ':')))
+        data.append(json.dumps(trace, separators=(',', ':')))
 
         json_data = data
         return json_data

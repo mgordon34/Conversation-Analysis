@@ -24,6 +24,8 @@ $.ajax({
 //   };
 window.onload = function() {
     myPlot = document.getElementById('graph');
+//    bPlot = document.getElementById('barg')
+//    var bData = JSON.parse($("#bInfo"))
     var midData = JSON.parse($("#info").text());
     var mid = [];
     var lines = [];
@@ -35,6 +37,13 @@ window.onload = function() {
     data = [{x: midData.x, y: midData.y, name: midData.name, text: tags, hoverinfo: 'text', type: 'scatter'}];
     //var outData = JSON.parse(data);
     // console.log(outData);
+//    var bData = JSON.parse(document.getElementById("bInfo").value);
+//    var b2 = []
+//    for (i in bData.y) {
+//        b2[i] = bData.y[i];
+//    }
+//    bTags = b2
+//    b = [{x: b2.x, y: b2.y,type: 'bar'}];
     layout = {
         "showlegend": true,
         "yaxis": {
@@ -47,7 +56,7 @@ window.onload = function() {
         title: 'Results Data'
     };
     graph = Plotly.newPlot(myPlot, data, layout);
-
+//    graphB = Plotly.newPlot(bPlot, b);
 
     myPlot.on('plotly_click', function (data) {
         var index = data.points[0].pointNumber;
