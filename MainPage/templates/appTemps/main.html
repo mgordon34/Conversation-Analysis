@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% extends 'appTemps/base.html' %}
 {% block 'body' %}
+{% load static %}
 
 <head>
 
@@ -19,13 +20,22 @@
       <div class="tabs_item">
         <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
           {% csrf_token %}
-          <p>Select a conversation</p>
+          <p>Select a conversation:</p>
 
           <p>
               {{ form.docfile.errors }}
               {{ form.docfile }}
           </p>
-          <p><input type="submit" value="Upload" /></p>
+          <p><input type="submit" value="Upload" /></p><br>
+
+
+          <div class="directions-header" id="directions-header">
+          <img src="https://img.clipartfest.com/c9209f3ed65eca36770e0e5657388825_transparent-light-bulb-with-white-lightbulb-clipart-transparent-background_420-420.png" width="40" height="40"><br><b>How to Annotate a Conversation</b>
+          </div><br>
+
+          <div class="directions-content" id="directions-content">
+            Create a CSV file which contains the conversation content as shown in this <a href= "{% static "convoTemplate.png" %}" target="_blank">example</a>. The required columns for each line of the conversation are <b>line number</b>, <b>content</b>, <b>speaker</b>, and <b>recipient</b>.
+          </div>
 
         </form>
       </div> <!-- / tabs_item -->
@@ -35,15 +45,15 @@
         <p>The purpose of our project is to conduct sentiment analysis on multi-voiced text and produce a visualization of the sentiments and statistics given.</p>
 
         <div class="about_container">
-          <div class="about_header"><span>About Sentiment Analysis</span></div>
-          <div class="about_content">
+          <div class="about-header" id="about-header"><h5>&#8743; &nbsp; About Sentiment Analysis<h5></div>
+          <div class="about-content" id="about-content">
             <p>Sentiment Analysis is defined as “the process of computationally identifying and categorizing opinions expressed in a piece of text, especially in order to determine whether the writer’s attitude towards a particular topic, product, etc., is positive, negative, or neutral” [1]. While there is currently technology that can perform sentiment analysis for texts from a single voice, there are no algorithms that conduct sentiment analysis on multi-voiced texts, a dialogue, specifically. In other words, there are accurate algorithms to determine the opinions of the speaker within text as long as that speaker is the only one voicing an opinion. As soon as another voice enters this dialogue, the algorithms used to analyze text do not produce meaningful output. This means researchers are unable to analyze entire genres of text and conversations. A program that could analyze and display the data from chat conversations, forums, or transcribed group discussions would be useful for researchers to help them study verbal and written communication.</p>
 
             <p>This application uses the NRC-Hashtag-Emotion-Lexicon for the emotion mappings. In addition, we use the Vader_Lexicon[2] through Python NLTK and the SemEval2015-English-Twitter-Lexicon library [4] in order to map words and sentences to sentiment values.</p>
           </div>
 
-          <div class="about-header"><span>Algorithm</span></div>
-            <div class="about-algorithm">
+          <div class="about-header" id="algo-header"><span><h5>&#8743; &nbsp; Algorithm</h5></span></div>
+            <div class="about-content" id="algo-content">
               <ol>
                 <li>First we will read in the document, for each line we keep track of the following information:</li>
                   <ul>
@@ -79,8 +89,8 @@
             </div>
           </div>
 
-          <div class="about-header"><span>References</span></div>
-            <div class="about-references">
+          <div class="about-header" id="ref-header"><span><h5>&#8743; &nbsp; References</h5></span></div>
+            <div class="about-content" id="ref-content">
               <p>[1] M. Mahajan and B. R. Jadhav, "Review of dual sentiment analysis," International Journal of Science and Research (IJSR), vol. 4, no. 11, pp. 2323–2326, Nov. 2015.</p>
               <p>[2] Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.</p>
               <p>[3] Sentiment Analysis of Short Informal Texts. Svetlana Kiritchenko, Xiaodan Zhu and Saif Mohammad. Journal of Artificial Intelligence Research, volume 50, pages 723-762, August 2014.</p>

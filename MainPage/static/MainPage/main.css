@@ -43,6 +43,12 @@ h1 {
   text-align: center;
 }
 
+h5 {
+  font-weight: bold;
+  color: #3fb0ac;
+  font-size: 18px;
+}
+
 p {
   margin: 0 0 20px;
   line-height: 1.5;
@@ -221,10 +227,13 @@ input[type="file"] {
   color: #3fb0ac;
   font-size: 20px;
 }
+
+
 .tabs_item img {
-  width: 100%;
+  /*width: 100%;*/
+
   float: left;
-  margin-right: 30px;
+  margin-right: 10px;
 }
 .tabs_item:first-child {
   display: block;
@@ -233,6 +242,22 @@ input[type="file"] {
 .current a {
   color: #173e43;
   background: #fae596;
+}
+
+.directions-header {
+  font: 15px 'Raleway', sans-serif;
+  font-weight:250;
+  /*-webkit-border-radius: 5px;*/
+  -webkit-transition: all 0.5s ease-in-out
+}
+.directions-header:hover {
+  color: #3fb0ac;
+  -webkit-transition: all 0.5s ease-in-out
+}
+
+.directions-content {
+  margin-left: 50px;
+  width: 50%;
 }
 
 /*.about_container {

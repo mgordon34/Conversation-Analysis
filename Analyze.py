@@ -193,23 +193,26 @@ class Analyze:
             return
         k = 0
         traces = []
+        a = Analyze()
+        a.popDialogEmotion(tp)
         for sp in speakerArray:
             xs = []
             ys = []
+            lines = []
             for i in tp.speakerToClass[sp].lines:
-                a = Analyze()
-                a.popDialogEmotion(tp)
                 val = tp.dialogues[i].getAverageEmotion(emote)
                 # if val != 0:
                 # print float(i)
                 # print val
                 xs.append(float(i))
                 ys.append(val)
+                lines.append(tp.dialogues[i].content)
             trace = {
                 "type": "scatter",
                 "name": sp,
                 # "text": ys,
                 # "hoverinfo": 'text',
+                "lines": lines,
                 "x": xs,
                 "y": ys
                 # mode='markers+lines',
@@ -217,10 +220,11 @@ class Analyze:
             }
 
             # traces[sp] = trace
-            traces.append(json.dumps(trace, separators=(',', ':')))
+            # traces.append(json.dumps(trace))
+            traces.append(trace)
             # diff.append((sentence, [ss['compound'], ss['neg'], ss['neu'], ss['pos']]))
             k += 1
-        json_data = traces
+        json_data = json.dumps(traces, separators=(',', ':'))
         # x = []
         # y = []
         # for i in tp.speakerToClass[speakerArray[0]].lines:
