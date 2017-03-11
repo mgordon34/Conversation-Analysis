@@ -4,6 +4,9 @@ var myPlot = null;
 var data = [];
 var layout = null;
 var graph = null;
+var graphB = null;
+var bPlot = null;
+var layoutB = null;
 $.ajax({
   url: '/tags',
   type: 'GET',
@@ -38,15 +41,10 @@ window.onload = function() {
         tags = lines;
         data.push({x: midData.x, y: midData.y, name: midData.name, text: tags, hoverinfo: 'text', type: 'scatter'});
     }
-    //var outData = JSON.parse(data);
-    // console.log(outData);
-//    var bData = JSON.parse(document.getElementById("bInfo").value);
-//    var b2 = []
-//    for (i in bData.y) {
-//        b2[i] = bData.y[i];
-//    }
-//    bTags = b2
-//    b = [{x: b2.x, y: b2.y,type: 'bar'}];
+    bPlot = document.getElementById('barg');
+    //var bData = JSON.parse($("#bInfo"));
+    var midB = JSON.parse($("#bInfo").text());
+    console.log(midB);
     layout = {
         "showlegend": true,
         "yaxis": {
@@ -58,8 +56,17 @@ window.onload = function() {
         hovermode: 'closest',
         title: 'Results Data'
     };
+
+    layoutB = {
+        "yaxis": {
+            "title": "<b>Word Count<\/b>"
+        },
+        "xaxis": {
+            "title": "<b>Most Common Words<\/b>"
+        }
+    };
     graph = Plotly.newPlot(myPlot, data, layout);
-//    graphB = Plotly.newPlot(bPlot, b);
+    graphB = Plotly.newPlot(bPlot,[midB], layoutB);
 
     myPlot.on('plotly_click', function (data) {
         var index = data.points[0].pointNumber;

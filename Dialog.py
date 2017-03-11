@@ -61,7 +61,7 @@ class Dialog:
         String emotion: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
         Adds all of the values together and divides by the number of non-zero values
         Outputs a float value representing the average emotion
-        """
+    """
 
     def getAverageRemoveZerosEmotion(self, emotion):
         if self.emotions[emotion] < 1:

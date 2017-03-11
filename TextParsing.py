@@ -133,13 +133,9 @@ class TextParsing:
             print point
             xs.append(point[0])
             ys.append(point[1])
-        data = [go.Bar(
-            x=xs,
-            y=ys
-        )]
         # data.append(json.dumps(trace, separators=(',', ':')))
-
-        json_data = data
+        trace = {"x":xs, "y":ys, "type": "bar"}
+        json_data = json.dumps(trace, separators=(",", ":"))
         return json_data
 
     def plotlyBarFreqDistTest(self, speaker):
