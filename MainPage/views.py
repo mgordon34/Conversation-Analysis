@@ -70,6 +70,14 @@ def results(request):
 def tags(request):
     print "Tags being called"
     if request.method == 'GET':
-        tags = []
+        tags = {
+            'Anger': {},
+            'Anticipation': {},
+            'Disgust': {},
+            'Fear': {},
+            'Joy': {},
+            'Sadness': {},
+            'Trust': {},
+        }
         tag_model = Result(tags=json.dumps({'tags': tags}))
         return HttpResponse(tag_model.tags, content_type='application/json')
