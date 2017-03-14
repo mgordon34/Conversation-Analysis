@@ -5,6 +5,7 @@ from nltk import word_tokenize
 import json
 import plotly.plotly as py
 import plotly.graph_objs as go
+import csv
 
 """
 fdist = FreqDist(samples)   ======> create a frequency distribution containing the given samples
@@ -37,16 +38,41 @@ class TextParsing:
         self.speakerToClass = {}
         self.text = None
         self.freqDist = None
-        self.parse(str)
+        self.csvparse(str)
 
 #TODO Complete this method
     def csvparse(self, str):
-        fh = open(str, 'r')
-        content = fh.readlines()
-        for line in content:
-            arr = line.split()
-            print arr
-
+        fh = open(str, 'rU')
+        reader = csv.reader(fh)
+        i = 0
+        tokens = []
+        index = 0
+        for line in reader:
+            if i != 0:
+                arr = line[0].split('\t')
+                print arr
+                lineNum = arr[0]
+                timestamp = arr[1]
+                content = arr[2]
+                date = arr[3]
+                time = arr[4]
+                speaker = arr[5]
+                if speaker not in self.speakerDict:
+                    self.speakerDict[speaker] = []
+                    self.speakerText[speaker] = []
+                    self.speakerToClass[speaker] = Person.Person(speaker, self.speakerDict[speaker])
+                recipients = arr[6]
+                tokens.extend(word_tokenize(content.strip()))
+                self.dialogues.append(Dialog.Dialog(timestamp, content, date, time, speaker, recipients, ''))
+                self.speakerDict[speaker].append(index)
+                self.speakerText[speaker].extend(word_tokenize(content.strip()))
+                index += 1
+            print line
+            i += 1
+        self.text = nltk.Text(tokens)
+        self.freqDist = nltk.FreqDist(self.text)
+        for sp in self.speakerText.keys():
+            self.speakerText[sp] = nltk.Text(self.speakerText[sp])
         fh.close()
 
     def parse(self, str):
