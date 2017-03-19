@@ -127,8 +127,6 @@ class Analyze:
     def popDialogEmotion(self, tp):
         for diag in tp.dialogues:
             sent = diag.content.split()
-            #print sent
-            #print "___________________________________________________"
             for e in self.emotionDict.keys():
                 eDict = self.emotionDict[e]
                 for word in sent:
@@ -136,8 +134,6 @@ class Analyze:
                         diag.emotions[e].append(eDict[word.lower()])
                     except:
                         diag.emotions[e].append(0.0)
-                #print e, diag.getAverageEmotion(e), diag.emotions[e]
-            #print "___________________________________________________"
 
 
     """
@@ -150,14 +146,13 @@ class Analyze:
             sentence = diag.content
             # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
             ss = self.sid.polarity_scores(sentence)
-            #for k in sorted(ss):
-                #print ('{0} : {1}, '.format(k, ss[k]))
             diag.sentiment = [ss['compound'], ss['neg'], ss['neu'], ss['pos']]
-            #print sentence, diag.sentiment
             lines.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
         return lines
 
-
+    """
+    Takes in the array of speakers (as stings) and an emotion and sets up a JSON object used to plot the data in PLOTLY
+    """
     def plotlyEmotion(self, tp, speakerArray, emote):
         if len(speakerArray) < 2:
             print "please enter in two or more speakers"
@@ -288,9 +283,8 @@ class Analyze:
             return 0
 
     """
-        Calculates the average sentiment score of a particular speakers in the conversation based on the Vader library
-        """
-
+    Calculates the average sentiment score of a particular speakers in the conversation based on the Vader library
+    """
     def getAverageVaderSentimentSpeaker(self, tp, speaker):
         d = self.getVaderSentimentOfWords(tp)
         sum = 0.0
@@ -303,6 +297,7 @@ class Analyze:
             return sum / cnt
         else:
             return 0
+
     """
     method that calculates the desired emotion scores for each sentence said by the desired speaker.
     String emotion: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
@@ -324,11 +319,10 @@ class Analyze:
         return val
 
     """
-        method that calculates the desired emotion scores for each sentence said by the desired speaker.
-        String emotion: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
-        Returns a list of dictionaries corresponding to the emotions of the sentence as stored in Dialog
-        """
-
+    method that calculates the desired emotion scores for each sentence said by the desired speaker.
+    String emotion: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
+    Returns a list of dictionaries corresponding to the emotions of the sentence as stored in Dialog
+    """
     def getAverageEmotionScore(self, speaker, emotion):
         lines = tp.speakerDict[speaker]
         diags = tp.dialogues
@@ -360,7 +354,6 @@ class Analyze:
             val = 0
             for i in range(len(words)):
                 wd = words[i].lower()
-                #wd = wd.translate(string.maketrans("", ""), string.punctuation)
                 try:
                     val = self.sentimentDict[wd]
                     sentVader.append([wd, val])
