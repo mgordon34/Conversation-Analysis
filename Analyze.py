@@ -396,6 +396,19 @@ class Analyze:
                         emotions[e] = (emotions[e] + diag.getAverageEmotion(e)) / 2
         return emotions
 
+
+    """
+    Returns a dictionary of the average vader sentiment sp1 (speaker 1) feels towards every person in the conversation.
+    """
+    def getEmoteAverageAllSp(self, tp, sp1):
+        e = {}
+        for s in tp.speakerDict.keys():
+            if s != sp1:
+                e[s] = self.emotAverageBwSpeakers(tp, sp1, s)
+        e["everyone"] = self.emotAverageBwSpeakers(tp, sp1, "everyone")
+        return e
+
+
     """
         Compares the overall sentiment sp1 feels toward sp2.
         Finds all of the lines sp1 says to sp2 and finds the average sentiment scores of sp1 while taking to sp2
@@ -425,6 +438,20 @@ class Analyze:
         if not p:
             print sp1, " never spoke to ", sp2
         return sentiment
+
+    """
+    Returns a dictionary of the average vader sentiment sp1 (speaker 1) feels towards every person in the conversation.
+
+    """
+    def getSentimentAverageAllSpeakers(self, tp, sp1):
+        averageDict = {}
+        for s in tp.speakerDict.keys():
+            if s != sp1:
+                a = self.sentimentAverageBwSpeakers(tp, sp1, s)
+                averageDict[s] = a
+        averageDict["everyone"] = self.sentimentAverageBwSpeakers(tp, sp1, "everyone")
+        return averageDict
+
 
     """
     calculates the overall emotion scores of the converation by averaging all of the average emotion scores between speakers.

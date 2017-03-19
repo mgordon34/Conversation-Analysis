@@ -107,9 +107,12 @@ class TextParsing:
         self.text = nltk.Text(tokens)
         self.freqDist = nltk.FreqDist(self.text)
         for sp in self.speakerText.keys():
-            self.speakerText[sp] = nltk.Text(self.speakerText[sp])
-            self.speakerToClass[sp].text = nltk.Text(self.speakerText[sp])
+            spLines = self.speakerText[sp]
+            self.speakerText[sp] = nltk.Text(spLines)
+            self.speakerToClass[sp].text = nltk.Text(spLines)
+            self.speakerToClass[sp].contribution = len(spLines)/len(tokens)
             self.speakerToClass[sp].freqDist = self.getFrequDistSpeaker(sp)
+
 
 
     """
