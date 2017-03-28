@@ -133,7 +133,13 @@ class TextParsing:
         self.text = nltk.Text(tokens)
         self.freqDist = nltk.FreqDist(self.text)
         for sp in self.speakerText.keys():
-            self.speakerText[sp] = nltk.Text(self.speakerText[sp])
+            spLines = self.speakerText[sp]
+            self.speakerText[sp] = nltk.Text(spLines)
+            self.speakerToClass[sp].text = nltk.Text(spLines)
+            self.speakerToClass[sp].contribution = len(spLines)/len(tokens)
+            self.speakerToClass[sp].freqDist = self.getFrequDistSpeaker(sp)
+
+
 
     """
     returns a frequency distribution nltk object using only the words of a particular speaker particular speaker
@@ -156,7 +162,7 @@ class TextParsing:
         xs = []
         ys = []
         for point in fdist1.most_common(50):
-            print point
+            #print point
             xs.append(point[0])
             ys.append(point[1])
         # data.append(json.dumps(trace, separators=(',', ':')))
@@ -188,7 +194,6 @@ class TextParsing:
     #Returns a list of words that only appear once
     def getHapaxes(self):
         return self.freqDist.hapaxes()
-
 
 
 if __name__ == '__main__':
