@@ -40,7 +40,6 @@ class TextParsing:
         self.freqDist = None
         self.csvparse(str)
 
-#TODO Complete this method
     def csvparse(self, str):
         fh = open(str, 'rU')
         reader = csv.reader(fh)
@@ -129,6 +128,7 @@ class TextParsing:
                 index += 1
                 i += 4
             else:
+                index += 1
                 i += 1
         self.text = nltk.Text(tokens)
         self.freqDist = nltk.FreqDist(self.text)
