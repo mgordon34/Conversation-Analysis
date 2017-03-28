@@ -13,6 +13,28 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   </head>
 
+  <div class="directions-header" id="directions-header">
+  <img src="https://img.clipartfest.com/c9209f3ed65eca36770e0e5657388825_transparent-light-bulb-with-white-lightbulb-clipart-transparent-background_420-420.png" width="40" height="40"><b>Using the Results Page</b>
+  </div><br>
+
+  <div class="directions-content" id="directions-content">
+    <b>At the top of the results page there is a static list of the average scores for the provided conversation.</p>
+
+    <p>Below this, there is a dynamic graph displaying speakers' emotion scores as the conversation goes on. The default emotion is set
+    to Anger, but by clicking the large blue "Select Another Emotion" drop-down you can select other emotions. The graph will be
+    updated in real-time to the new emotion scores.
+    By mousing-over the graph, additional icons will appear in the top right corner of the graph that allow you to save the graph to a
+    png image file, zoom, pan, various select options, and data point display options.
+    By clicking on one of the data points on the emotion graph, you can assign tags to a line of dialogue.</p>
+
+    <p>Below the emotion line graph, there is a bar graph displaying the words that appeared the most in the conversation and their
+    corresponding frequencies.
+    This graph has similar options to the emotion graph above on mouse-over.</p>
+
+    <p>Finally, at the very bottom of the results page is a button labeled "clickme" which creates resizable and draggable text-boxes
+    that can be used to jot down any comments or observations about the conversation analysis.</p>
+  </div>
+
   <div>
     <h2>Average Scores</h2>
     <p>compound: {{ score.0 }} </p>
