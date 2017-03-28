@@ -27,6 +27,7 @@ $(window).load(function() {
     $('#about-content').hide();
     $('#algo-content').hide();
     $('#ref-content').hide();
+    $('#mi-content').hide();
 
     $('#about-header').on('click', function(event) {
 
@@ -58,6 +59,15 @@ $(window).load(function() {
             $('#ref-header').html('<h5>&#8743; &nbsp; References</h5>');
         }
         $('#ref-content').toggle('show');
+    });
+
+    $('#mi-header').on('click', function(event) {
+        $('#mi-content').toggle('show');
+        if ($('#mi-content').is(':visible')) {
+            $('#mi-header').html('<h5>&#8744; &nbsp; More Information</h5>');
+        } else if (!$('#about-content').is(':visible')){
+            $('#mi-header').html('<h5>&#8743; &nbsp; More Informatione</h5>');
+        }
     });
 
 

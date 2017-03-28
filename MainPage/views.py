@@ -49,6 +49,9 @@ def results(request):
             newdoc.save()
             parser = TextParsing.TextParsing(request.FILES['docfile'].name)
             analyzer = Analyze.Analyze()
+            analyzer.popDialogEmotion(parser)
+            analyzer.setDialogSentiment(parser)
+            p = analyzer.getPersonData(parser)
             arr2 = parser.plotlyBarFreqDist("everyone")
             score = analyzer.getAverageConversationScores(parser)
             convo = analyzer.getConversationScore(parser)["trust"]
@@ -65,7 +68,7 @@ def results(request):
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'cwords':cwords, 'arr2':arr2})
+    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'cwords':cwords, 'arr2':arr2, "person": p})
 
 def tags(request):
     print "Tags being called"
@@ -81,3 +84,6 @@ def tags(request):
         }
         tag_model = Result(tags=json.dumps({'tags': tags}))
         return HttpResponse(tag_model.tags, content_type='application/json')
+
+def about(request):
+    return render(request, 'appTemps/about.html')

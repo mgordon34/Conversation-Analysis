@@ -7,42 +7,6 @@
 
 </head>
 
-
-<div class="tab">
-  <ul class="tabs">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">About Sentiment Analysis</a></li>
-    <li><a href="#">Previous Results</a></li>
-  </ul> <!-- / tabs -->
-
-    <div class="tab_content">
-
-      <div class="tabs_item">
-        <form action="{% url 'results' %}" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <p>Select a conversation:</p>
-
-          <p>
-              {{ form.docfile.errors }}
-              {{ form.docfile }}
-          </p>
-          <p><input type="submit" value="Upload" id="upload-conversation"/></p><br>
-
-          <div id="results"></results>
-
-
-          <div class="directions-header" id="directions-header">
-          <img src="https://img.clipartfest.com/c9209f3ed65eca36770e0e5657388825_transparent-light-bulb-with-white-lightbulb-clipart-transparent-background_420-420.png" width="40" height="40"><br><b>How to Annotate a Conversation</b>
-          </div><br>
-
-          <div class="directions-content" id="directions-content">
-            Create a CSV file which contains the conversation content as shown in this <a href= "{% static "convoTemplate.png" %}" target="_blank">example</a>. The required columns for each line of the conversation are <b>line number</b>, <b>content</b>, <b>speaker</b>, and <b>recipient</b>.
-          </div>
-
-        </form>
-      </div> <!-- / tabs_item -->
-
-      <div class="tabs_item">
         <h4>Our Sentiment Analysis Algorithm</h4>
         <p>The purpose of our project is to conduct sentiment analysis on multi-voiced text and produce a visualization of the sentiments and statistics given.</p>
 
@@ -106,16 +70,5 @@
             </div>
 
         </div><!-- / tabs_item -->
-
-        <div class="tabs_item">
-            <h4>old analyses</h4>
-            <p>OLD STUFF WOOOOOOOO</p>
-        </div> <!-- / tabs_item -->
-
-    </div> <!-- / tab_content -->
-</div> <!-- / tab -->
-
-
-
 
 {% endblock %}
