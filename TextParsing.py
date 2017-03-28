@@ -129,7 +129,6 @@ class TextParsing:
             fdist1 = self.getFrequDistSpeaker(speaker)
         xs = []
         ys = []
-        print fdist1
         for point in fdist1.most_common(50):
             print point
             xs.append(point[0])
