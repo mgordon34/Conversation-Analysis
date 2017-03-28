@@ -81,3 +81,6 @@ def tags(request):
         }
         tag_model = Result(tags=json.dumps({'tags': tags}))
         return HttpResponse(tag_model.tags, content_type='application/json')
+
+def about(request):
+    return render(request, 'appTemps/about.html')
