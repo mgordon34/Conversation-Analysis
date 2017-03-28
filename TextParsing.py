@@ -49,7 +49,7 @@ class TextParsing:
         for line in reader:
             if i != 0:
                 arr = line[0].split('\t')
-                print arr
+                #print arr
                 lineNum = arr[0]
                 timestamp = arr[1]
                 content = arr[2]
@@ -66,12 +66,16 @@ class TextParsing:
                 self.speakerDict[speaker].append(index)
                 self.speakerText[speaker].extend(word_tokenize(content.strip()))
                 index += 1
-            print line
+            #print line
             i += 1
         self.text = nltk.Text(tokens)
         self.freqDist = nltk.FreqDist(self.text)
         for sp in self.speakerText.keys():
-            self.speakerText[sp] = nltk.Text(self.speakerText[sp])
+            spLines = self.speakerText[sp]
+            self.speakerText[sp] = nltk.Text(spLines)
+            self.speakerToClass[sp].text = nltk.Text(spLines)
+            self.speakerToClass[sp].contribution = len(spLines)/len(tokens)
+            self.speakerToClass[sp].freqDist = self.getFrequDistSpeaker(sp)
         fh.close()
 
     def parse(self, str):
@@ -137,6 +141,7 @@ class TextParsing:
             self.speakerText[sp] = nltk.Text(spLines)
             self.speakerToClass[sp].text = nltk.Text(spLines)
             self.speakerToClass[sp].contribution = len(spLines)/len(tokens)
+            print self.speakerToClass[sp].contribution
             self.speakerToClass[sp].freqDist = self.getFrequDistSpeaker(sp)
 
 
@@ -177,9 +182,9 @@ class TextParsing:
             fdist1 = self.getFrequDistSpeaker(speaker)
         xs = []
         ys = []
-        print fdist1
+        #print fdist1
         for point in fdist1.most_common(50):
-            print point
+            #print point
             xs.append(point[0])
             ys.append(point[1])
 

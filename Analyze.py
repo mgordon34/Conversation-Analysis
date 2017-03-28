@@ -484,7 +484,7 @@ class Analyze:
 
 
 if __name__ == '__main__':
-    tp = TextParsing.TextParsing("exampleData.rtf")
+    tp = TextParsing.TextParsing("Workbook1.csv")
     a = Analyze()
     a.popDialogEmotion(tp)
     a.setDialogSentiment(tp)
