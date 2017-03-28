@@ -1,5 +1,5 @@
 @import
-url('https://fonts.googleapis.com/css?family=Raleway:300,500');
+url('https://fonts.googleapis.com/css?family=Raleway:200i,300,500');
 
 /*color scheme: 283347, 2B85D3, 1F9D94, E4D9CC, E65B4A*/
 /*color scheme: 87bcde, 55d1a3, 4e4d5c, 2d4654, 243b4a*/
@@ -52,6 +52,15 @@ h5 {
 p {
   margin: 0 0 20px;
   line-height: 1.5;
+}
+
+footer {
+  font: 12px 'Raleway';
+  font-style: italic;
+  font-weight: 200;
+  position: fixed;
+  left: 20px;
+  bottom: 0px;
 }
 
 .main {
