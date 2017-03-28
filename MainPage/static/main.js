@@ -27,43 +27,37 @@ $(window).load(function() {
     $('#about-content').hide();
     $('#algo-content').hide();
     $('#ref-content').hide();
-    $('#mi-content').hide();
 
     $('#about-header').on('click', function(event) {
-        $('#about-content').toggle('show');
-        if ($('#about-content').is(':visible')) {
+
+        if ($('#about-content').is(':hidden')) {
             $('#about-header').html('<h5>&#8744; &nbsp; About Sentiment Analysis</h5>');
         }
-        if (!$('#about-content').is(':visible')){
+        if ($('#about-content').is(':visible')){
             $('#about-header').html('<h5>&#8743; &nbsp; About Sentiment Analysis</h5>');
         }
+        $('#about-content').toggle('show');
     });
 
     $('#algo-header').on('click', function(event) {
-        $('#algo-content').toggle('show');
-        if ($('#algo-content').is(':visible')) {
+
+        if ($('#algo-content').is(':hidden')) {
             $('#algo-header').html('<h5>&#8744; &nbsp; Algorithm</h5>');
-        } else if (!$('#about-content').is(':visible')){
+        }
+        if ($('#algo-content').is(':visible')){
             $('#algo-header').html('<h5>&#8743; &nbsp; Algorithm</h5>');
         }
+        $('#algo-content').toggle('show');
     });
 
     $('#ref-header').on('click', function(event) {
-        $('#ref-content').toggle('show');
-        if ($('#ref-content').is(':visible')) {
+        if ($('#ref-content').is(':hidden')) {
             $('#ref-header').html('<h5>&#8744; &nbsp; References</h5>');
-        } else if (!$('#about-content').is(':visible')){
+        }
+        if ($('#ref-content').is(':visible')){
             $('#ref-header').html('<h5>&#8743; &nbsp; References</h5>');
         }
-    });
-
-    $('#mi-header').on('click', function(event) {
-        $('#mi-content').toggle('show');
-        if ($('#mi-content').is(':visible')) {
-            $('#mi-header').html('<h5>&#8744; &nbsp; More Information</h5>');
-        } else if (!$('#about-content').is(':visible')){
-            $('#mi-header').html('<h5>&#8743; &nbsp; More Informatione</h5>');
-        }
+        $('#ref-content').toggle('show');
     });
 
 
@@ -71,6 +65,7 @@ $(window).load(function() {
     $('.directions-header').on('click', function(event) {
         $('.directions-content').toggle('show');
     });
+
 
 });
 
