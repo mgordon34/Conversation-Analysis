@@ -1,6 +1,6 @@
 import nltk
 from nltk import word_tokenize
-
+import json
 """
 The person class will hold the following information.
 
@@ -34,7 +34,7 @@ class Person:
     def getFrequecyOfWord(self, word):
         return self.text.count(word)
 
-        # Returns a list of words that only appear once
+    # Returns a list of words that only appear once
     def getHapaxes(self):
         return self.freqDist.hapaxes()
 
@@ -48,7 +48,7 @@ class Person:
         xs = []
         ys = []
         for point in fdist1.most_common(50):
-            print point
+            #print point
             xs.append(point[0])
             ys.append(point[1])
         # data.append(json.dumps(trace, separators=(',', ':')))

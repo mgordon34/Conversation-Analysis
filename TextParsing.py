@@ -136,7 +136,7 @@ class TextParsing:
         xs = []
         ys = []
         for point in fdist1.most_common(50):
-            print point
+            #print point
             xs.append(point[0])
             ys.append(point[1])
         # data.append(json.dumps(trace, separators=(',', ':')))

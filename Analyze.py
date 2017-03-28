@@ -59,7 +59,6 @@ class Analyze:
         self.sentimentDict["( '}{' )"] = 1.6/4 #normalize
         fi.close()
 
-
     """
      Takes in a TextParsing (tp) and a speaker that is in the text.
      Outputs an array of tuples (content, [compund, negative, neutral, postive])
@@ -160,7 +159,7 @@ class Analyze:
         k = 0
         traces = []
         a = Analyze()
-        a.popDialogEmotion(tp)
+        #a.popDialogEmotion(tp)
         for sp in speakerArray:
             xs = []
             ys = []
@@ -246,6 +245,16 @@ class Analyze:
         plt.legend(loc='upper left')
         plt.show()
 
+    """
+    returns a dictionary that maps each speakers to their freqency distribution and the N most common words
+    """
+    def getPersonData(self, tp):
+        d = {}
+        for p in tp.speakerDict.keys():
+            d[p] = {"commonWords":tp.speakerToClass[p].getNCommonWords(50), "freqDist":tp.speakerToClass[p].plotlyBarFreqDist()}
+            d[p]["emotTowardsOthers"] = self.getEmoteAverageAllSp(tp, p)
+            d[p]["sentiTowardsOthers"] = self.getSentimentAverageAllSpeakers(tp, p)
+        return d
 
     """
      Calculates the average compound, negative, neutral and positive scores of all speakers in the conversation to determine
@@ -379,7 +388,6 @@ class Analyze:
         first = True
         for num in lineNums:
             if sp2 == "everyone" or sp2 == tp.dialogues[num].recipient:
-                p = True
                 diag = tp.dialogues[num]
                 for e in emotions:
                     if first:
@@ -387,6 +395,7 @@ class Analyze:
                         first = False
                     else:
                         emotions[e] = (emotions[e] + diag.getAverageEmotion(e)) / 2
+
         return emotions
 
 
@@ -418,10 +427,10 @@ class Analyze:
         sentiment = [0.0,0.0,0.0,0.0]
         first = True
         for num in lineNums:
-            if sp2 == "everyone" or sp2 == tp.dialogues[num].recipient:
+            if sp2 == "everyone" or sp2 == tp.dialogues[num].recipient or "everyone" == tp.dialogues[num].recipient:
                 p = True
                 diag = tp.dialogues[num]
-                print diag.sentiment
+                #print diag.sentiment
                 for s in range(len(sentiment)):
                     if first:
                         sentiment[s] = diag.sentiment[s]
@@ -478,6 +487,7 @@ if __name__ == '__main__':
     tp = TextParsing.TextParsing("exampleData.rtf")
     a = Analyze()
     a.popDialogEmotion(tp)
+    a.setDialogSentiment(tp)
     #a.getSentimentOfWords(tp)
     speakers = tp.speakerDict.keys()
     #di= tp.dialogues
@@ -488,8 +498,20 @@ if __name__ == '__main__':
     #a.plotlyEmotionTester(tp, speakers, "joy")
     #print a.getAverageVaderSentimentWords(tp)
     p = a.getConversationScore(tp)
-    for e in p.keys():
-        print e, p[e]
+    #for e in p.keys():
+    #    print e, p[e]
+    d = a.getPersonData(tp)
+    #print a.emotAverageBwSpeakers(tp, "Illumine", "Andalaul")
+    #print a.sentimentAverageBwSpeakers(tp, "Illumine", "Andalaul")
+
+    for a in d.keys():
+        print "__________________________________________________________________"
+        print a
+        print d[a]["commonWords"]
+        print d[a]["freqDist"]
+        print d[a]["emotTowardsOthers"]
+        print d[a]["sentiTowardsOthers"]
+        print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     #print s
     #for k in e.keys():
     #    print k, e[k]
