@@ -222,4 +222,13 @@ window.onload = function() {
         myPlot.data = data;
         Plotly.redraw(myPlot);
     });
+
+    var form = $("#personform");
+    var people = JSON.parse($("#pInfo").text());
+    for (i in people) {
+      var element = $(document.createElement('option'));
+      element.val(JSON.stringify(people[i])).text(i);
+      $("#personform").append(element);
+      console.log(people[i]);
+    }
 };
