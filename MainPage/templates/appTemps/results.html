@@ -58,7 +58,22 @@
             <li><a id="drpdwn6">Trust</a></li>
         </ul>
     </div>
+  
+
   <div id="graph"></div>
+
+  <div class="row">
+    <form class="col-sm-5" action="{% url 'person' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <h4>Inspect a person:</h4>
+        <div class="form-group col-sm-8">
+          <select class="form-control" name="person" id="personform">
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Inspect</button>
+    </form>
+  </div>
+
   <div id="barg"></div>
 
 
@@ -93,7 +108,7 @@
         <p id="Sadness" class="hidden">{{ arr.5 }}</p>
         <p id="Trust" class="hidden">{{ arr.6 }}</p>
         <p id="bInfo" class="hidden" >{{ arr2 }} </p>
-        <p id="pInfo" class="hidden">{{ p }}</p>
+        <p id="pInfo" class="hidden">{{ person }}</p>
     </body>
     <div id="container" class="ui-widget-content" style=border:transparent></div>
   <input id="clickMe" type="button" value="clickme" onclick="comment();" />

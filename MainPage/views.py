@@ -51,7 +51,7 @@ def results(request):
             analyzer = Analyze.Analyze()
             analyzer.popDialogEmotion(parser)
             analyzer.setDialogSentiment(parser)
-            p = analyzer.getPersonData(parser)
+            p = json.dumps(analyzer.getPersonData(parser), separators=(',', ':'))
             arr2 = parser.plotlyBarFreqDist("everyone")
             score = analyzer.getAverageConversationScores(parser)
             convo = analyzer.getConversationScore(parser)["trust"]
@@ -65,10 +65,22 @@ def results(request):
             sadness = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "sadness")
             trust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
             arr = [anger, anticipation, disgust, fear, joy, sadness, trust]
+
     else:
         form = DocumentForm() # A empty, unbound form
 
     return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'cwords':cwords, 'arr2':arr2, "person": p})
+
+def person(request):
+    if request.method == 'POST':
+        print "Person being called"
+        print(request.POST)
+        person = request.POST.get('person')
+    return render(
+        request,
+        'appTemps/person.html',
+        {'person': person},
+    )
 
 def tags(request):
     print "Tags being called"
