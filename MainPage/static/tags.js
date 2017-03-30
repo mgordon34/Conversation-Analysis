@@ -144,7 +144,7 @@ window.onload = function() {
         myPlot.layout.yaxis.title = "<b>" + emotion + "<\/b>";
         myPlot.data = data;
         Plotly.redraw(myPlot);
-    });
+    };
 
     var form = $("#personform");
     var people = JSON.parse($("#pInfo").text());
