@@ -258,7 +258,9 @@ class Analyze:
             a = self.getEmoteAverageAllSp(tp, p)
             d[p]["emotTowardsOthers"] = a
             d[p]["emotBar"] = self.convertPlotly(p, a)
-            d[p]["sentiTowardsOthers"] = self.getSentimentAverageAllSpeakers(tp, p)
+            b = self.getSentimentAverageAllSpeakers(tp, p)
+            d[p]["sentiTowardsOthers"] = b
+            d[p]["sentiBar"] = self.convertPlotlySenti(p, b)
         return d
 
 
@@ -418,7 +420,7 @@ class Analyze:
         return e
 
     """
-    Creates a dictionary  of a person's
+    Creates a dictionary  of a person's emotion plotly JSON data
     """
     def convertPlotly(self, person, d):
         retD = {}
@@ -431,6 +433,23 @@ class Analyze:
             json_data = json.dumps(trace, separators=(",", ":"))
             retD[i + "Plotly"] = json_data
         return retD
+
+    """
+        outputs JSON data representing a person's sentiment for Plotly
+    """
+
+    def convertPlotlySenti(self, person, d):
+        retD = {}
+        for l,i in enumerate(["Compound", "Negative", "Neutral", "Positive"]):
+            xs = d.keys()
+            ys = []
+            for k in xs:
+                ys.append(d[k][l])
+            trace = {"x": xs, "y": ys, "type": "bar"}
+            json_data = json.dumps(trace, separators=(",", ":"))
+            retD[i + "Plotly"] = json_data
+        return retD
+
     """
 
     xs = []
@@ -539,7 +558,7 @@ if __name__ == '__main__':
     d = a.getPersonData(tp)
     #print a.convertPlotly("Bunnycrusher", a.getEmoteAverageAllSp(tp, "Bunnycrusher"))
     #print a.emotAverageBwSpeakers(tp, "Illumine", "Andalaul")
-    #print a.sentimentAverageBwSpeakers(tp, "Illumine", "Andalaul")
+    #print a.getSentimentAverageAllSpeakers(tp, "Bunnycrusher")
 
     for a in d.keys():
         print "__________________________________________________________________"
@@ -549,6 +568,7 @@ if __name__ == '__main__':
         print d[a]["emotTowardsOthers"]
         print d[a]["sentiTowardsOthers"]
         print d[a]["emotBar"]
+        print d[a]["sentiBar"]
         print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     #print s
     #for k in e.keys():
