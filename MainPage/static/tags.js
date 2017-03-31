@@ -29,6 +29,10 @@ $.ajax({
 //     title: 'Results Data'
 //   };
 window.onload = function() {
+    /*
+    * This sets up the Emotion Graph for EVERYONE in the conversation. It also sets up the editable tag array, so the
+    * user can edit each individual point in the graph.
+    */
     myPlot = document.getElementById('graph');
     var midDataArray = JSON.parse($("#Anger").text());
     for (j in midDataArray) {
@@ -48,6 +52,10 @@ window.onload = function() {
         }
         data.push({x: midData.x, y: midData.y, name: midData.name, text: lines, hoverinfo: 'text', type: 'scatter'});
     }
+
+    /*
+    * Here we begin to set up the bar graph that shows the most common words spoken by everyone in the conversation.
+    */
     bPlot = document.getElementById('barg');
     //var bData = JSON.parse($("#bInfo"));
     var midB = JSON.parse($("#bInfo").text());
@@ -75,6 +83,9 @@ window.onload = function() {
     graph = Plotly.newPlot(myPlot, data, layout);
     graphB = Plotly.newPlot(bPlot,[midB], layoutB);
 
+    /*
+    * This function responds to when the user clicks on a point on the graph, and saves their edited data.
+    */
     myPlot.on('plotly_click', function (data) {
         var index = data.points[0].pointNumber;
         speaker = data.points[0].curveNumber;
@@ -83,6 +94,9 @@ window.onload = function() {
         $('#tagModal').modal('show');
     });
 
+    /*
+    * This responds to the button on the tag edit pop up and saves their edited data
+    */
     $('button#modalSubmit').click(function () {
         var text = $('#modalInput').val();
         tags[emotion][speaker][pointIndex] = text;
@@ -90,6 +104,10 @@ window.onload = function() {
         updateGraph();
     });
 
+    /*
+    * Here we begin to set up functionality for the dropdown menu where users can change what emotion they are currently
+    * looking at for the conversation.
+    */
     $("#drpdwn0").click(function(e){
         emotion = 'Anger';
         updateGraph();
@@ -125,6 +143,10 @@ window.onload = function() {
         updateGraph();
     });
 
+    /*
+    * The update graph method swaps the data out from the previous emotion for the new emotion the user selected and
+    * refreshes the graph.
+    */
     function updateGraph() {
         var midDataArray = JSON.parse($("#" + emotion).text());
         data =[];
@@ -146,6 +168,9 @@ window.onload = function() {
         Plotly.redraw(myPlot);
     };
 
+    /*
+    * This code sets up the Inspect Dropdown to look at each speaker's personal profiles.
+    */
     var form = $("#personform");
     var people = JSON.parse($("#pInfo").text());
     for (i in people) {
