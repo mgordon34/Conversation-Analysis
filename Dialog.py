@@ -33,6 +33,8 @@ class Dialog:
         self.emotions =  {"anticipation":[], "fear":[], "anger":[], "trust":[], "surprise":[], "sadness":[], "joy":[], "disgust":[]}
         self.sentiment = [0.0, 0.0, 0.0,0.0]
         self.colors = []
+        self.text = None
+
 
     """
     Calculates the average emotion score for the content of the sentence.
@@ -59,7 +61,7 @@ class Dialog:
         String emotion: anticipation, fear, anger, trust, surprise, sadness, joy, disgust
         Adds all of the values together and divides by the number of non-zero values
         Outputs a float value representing the average emotion
-        """
+    """
 
     def getAverageRemoveZerosEmotion(self, emotion):
         if self.emotions[emotion] < 1:

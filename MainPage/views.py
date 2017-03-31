@@ -49,28 +49,56 @@ def results(request):
             newdoc.save()
             parser = TextParsing.TextParsing(request.FILES['docfile'].name)
             analyzer = Analyze.Analyze()
-            arr = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
+            analyzer.popDialogEmotion(parser)
+            analyzer.setDialogSentiment(parser)
+            p = json.dumps(analyzer.getPersonData(parser), separators=(',', ':'))
+            arr2 = parser.plotlyBarFreqDist("everyone")
             score = analyzer.getAverageConversationScores(parser)
             convo = analyzer.getConversationScore(parser)["trust"]
-            # labels = ['compound', 'neg', 'neu', 'pos']
-            # ind = np.arange(4)
-            # width = .5
-            # plt.bar(ind, score, width)
-            # plt.ylabel('Normalized Score')
-            # plt.xticks(ind,labels)
-            # fig, ax = plt.subplots()
-            # plot = ax.bar(ind, score, width)
-            # plt.savefig('ConversationAnalysis/media/graph.png')
-            # Redirect to the document list after POST
-            # return HttpResponseRedirect('MainPage.views.main')
+            cwords = parser.getNCommonWords(50)
+            # print freqdist
+            anger = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "anger")
+            anticipation = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "anticipation")
+            disgust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "disgust")
+            fear = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "fear")
+            joy = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "joy")
+            sadness = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "sadness")
+            trust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
+            arr = [anger, anticipation, disgust, fear, joy, sadness, trust]
+
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo})
+    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'cwords':cwords, 'arr2':arr2, "person": p})
+
+def person(request):
+    if request.method == 'POST':
+        print "Person being called"
+        print(request.POST)
+        prePerson = request.POST.get('person')
+        person = json.loads(prePerson)
+        emotBar = person['emotBar']
+        name = person['pname']
+    return render(
+        request,
+        'appTemps/person.html',
+        {'person': prePerson, 'emotionJSON':emotBar, 'pname':name}
+    )
 
 def tags(request):
     print "Tags being called"
     if request.method == 'GET':
-        # tags = json.dumps(arr[1].y)
+        tags = {
+            'Anger': {},
+            'Anticipation': {},
+            'Disgust': {},
+            'Fear': {},
+            'Joy': {},
+            'Sadness': {},
+            'Trust': {},
+        }
         tag_model = Result(tags=json.dumps({'tags': tags}))
         return HttpResponse(tag_model.tags, content_type='application/json')
+
+def about(request):
+    return render(request, 'appTemps/about.html')
