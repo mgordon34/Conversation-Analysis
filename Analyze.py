@@ -247,11 +247,13 @@ class Analyze:
 
     """
     returns a dictionary that maps each speakers to their freqency distribution and the N most common words
+    d["sentiTowardsOthers"]["everyone"] will get the average sentiment towards everyone in the group
+    d["emotTowardsOthers"]["everyone"] will get the average emotion towards everyone in the group
     """
     def getPersonData(self, tp):
         d = {}
         for p in tp.speakerDict.keys():
-            d[p] = {"commonWords":tp.speakerToClass[p].getNCommonWords(50), "freqDist":tp.speakerToClass[p].plotlyBarFreqDist()}
+            d[p] = {"name": p, "commonWords":tp.speakerToClass[p].getNCommonWords(50), "freqDist":tp.speakerToClass[p].plotlyBarFreqDist()}
             d[p]["emotTowardsOthers"] = self.getEmoteAverageAllSp(tp, p)
             d[p]["sentiTowardsOthers"] = self.getSentimentAverageAllSpeakers(tp, p)
         return d
