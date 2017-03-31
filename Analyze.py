@@ -253,10 +253,14 @@ class Analyze:
     def getPersonData(self, tp):
         d = {}
         for p in tp.speakerDict.keys():
-            d[p] = {"name": p, "commonWords":tp.speakerToClass[p].getNCommonWords(50), "freqDist":tp.speakerToClass[p].plotlyBarFreqDist()}
-            d[p]["emotTowardsOthers"] = self.getEmoteAverageAllSp(tp, p)
+            st = p + ""
+            d[p] = {"pname": st, "commonWords":tp.speakerToClass[p].getNCommonWords(50), "freqDist":tp.speakerToClass[p].plotlyBarFreqDist()}
+            a = self.getEmoteAverageAllSp(tp, p)
+            d[p]["emotTowardsOthers"] = a
+            d[p]["emotBar"] = self.convertPlotly(p, a)
             d[p]["sentiTowardsOthers"] = self.getSentimentAverageAllSpeakers(tp, p)
         return d
+
 
     """
      Calculates the average compound, negative, neutral and positive scores of all speakers in the conversation to determine
@@ -401,6 +405,7 @@ class Analyze:
         return emotions
 
 
+
     """
     Returns a dictionary of the average vader sentiment sp1 (speaker 1) feels towards every person in the conversation.
     """
@@ -412,6 +417,34 @@ class Analyze:
         e["everyone"] = self.emotAverageBwSpeakers(tp, sp1, "everyone")
         return e
 
+    """
+    Creates a dictionary  of a person's
+    """
+    def convertPlotly(self, person, d):
+        retD = {}
+        for i in ["anticipation", "fear", "anger", "trust", "surprise", "sadness", "joy", "disgust"]:
+            xs = d.keys()
+            ys = []
+            for k in xs:
+                ys.append(d[k][i])
+            trace = {"x":xs, "y":ys, "type":"bar"}
+            json_data = json.dumps(trace, separators=(",", ":"))
+            retD[i + "Plotly"] = json_data
+        return retD
+    """
+
+    xs = []
+        ys = []
+        for point in fdist1.most_common(50):
+            #print point
+            xs.append(point[0])
+            ys.append(point[1])
+        # data.append(json.dumps(trace, separators=(',', ':')))
+        trace = {"x":xs, "y":ys, "type": "bar"}
+        json_data = json.dumps(trace, separators=(",", ":"))
+        return json_data
+
+    """
 
     """
         Compares the overall sentiment sp1 feels toward sp2.
@@ -502,7 +535,9 @@ if __name__ == '__main__':
     p = a.getConversationScore(tp)
     #for e in p.keys():
     #    print e, p[e]
+    #print a.getEmoteAverageAllSp(tp, "Bunnycrusher")
     d = a.getPersonData(tp)
+    #print a.convertPlotly("Bunnycrusher", a.getEmoteAverageAllSp(tp, "Bunnycrusher"))
     #print a.emotAverageBwSpeakers(tp, "Illumine", "Andalaul")
     #print a.sentimentAverageBwSpeakers(tp, "Illumine", "Andalaul")
 
@@ -513,6 +548,7 @@ if __name__ == '__main__':
         print d[a]["freqDist"]
         print d[a]["emotTowardsOthers"]
         print d[a]["sentiTowardsOthers"]
+        print d[a]["emotBar"]
         print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     #print s
     #for k in e.keys():
