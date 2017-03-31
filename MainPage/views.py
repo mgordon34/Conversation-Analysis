@@ -49,6 +49,9 @@ def results(request):
             newdoc.save()
             parser = TextParsing.TextParsing(request.FILES['docfile'].name)
             analyzer = Analyze.Analyze()
+            analyzer.popDialogEmotion(parser)
+            analyzer.setDialogSentiment(parser)
+            p = json.dumps(analyzer.getPersonData(parser), separators=(',', ':'))
             arr2 = parser.plotlyBarFreqDist("everyone")
             score = analyzer.getAverageConversationScores(parser)
             convo = analyzer.getConversationScore(parser)["trust"]
@@ -62,10 +65,25 @@ def results(request):
             sadness = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "sadness")
             trust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
             arr = [anger, anticipation, disgust, fear, joy, sadness, trust]
+
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'cwords':cwords, 'arr2':arr2})
+    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'cwords':cwords, 'arr2':arr2, "person": p})
+
+def person(request):
+    if request.method == 'POST':
+        print "Person being called"
+        print(request.POST)
+        prePerson = request.POST.get('person')
+        person = json.loads(prePerson)
+        emotBar = person['emotBar']
+        name = person['pname']
+    return render(
+        request,
+        'appTemps/person.html',
+        {'person': prePerson, 'emotionJSON':emotBar, 'pname':name}
+    )
 
 def tags(request):
     print "Tags being called"
@@ -81,3 +99,6 @@ def tags(request):
         }
         tag_model = Result(tags=json.dumps({'tags': tags}))
         return HttpResponse(tag_model.tags, content_type='application/json')
+
+def about(request):
+    return render(request, 'appTemps/about.html')

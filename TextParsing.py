@@ -5,6 +5,7 @@ from nltk import word_tokenize
 import json
 import plotly.plotly as py
 import plotly.graph_objs as go
+import csv
 
 """
 fdist = FreqDist(samples)   ======> create a frequency distribution containing the given samples
@@ -37,16 +38,44 @@ class TextParsing:
         self.speakerToClass = {}
         self.text = None
         self.freqDist = None
-        self.parse(str)
+        self.csvparse(str)
 
-#TODO Complete this method
     def csvparse(self, str):
-        fh = open(str, 'r')
-        content = fh.readlines()
-        for line in content:
-            arr = line.split()
-            print arr
-
+        fh = open(str, 'rU')
+        reader = csv.reader(fh)
+        i = 0
+        tokens = []
+        index = 0
+        for line in reader:
+            if i != 0:
+                arr = line[0].split('\t')
+                #print arr
+                lineNum = arr[0]
+                timestamp = arr[1]
+                content = arr[2]
+                date = arr[3]
+                time = arr[4]
+                speaker = arr[5]
+                if speaker not in self.speakerDict:
+                    self.speakerDict[speaker] = []
+                    self.speakerText[speaker] = []
+                    self.speakerToClass[speaker] = Person.Person(speaker, self.speakerDict[speaker])
+                recipients = arr[6]
+                tokens.extend(word_tokenize(content.strip()))
+                self.dialogues.append(Dialog.Dialog(timestamp, content, date, time, speaker, recipients, ''))
+                self.speakerDict[speaker].append(index)
+                self.speakerText[speaker].extend(word_tokenize(content.strip()))
+                index += 1
+            #print line
+            i += 1
+        self.text = nltk.Text(tokens)
+        self.freqDist = nltk.FreqDist(self.text)
+        for sp in self.speakerText.keys():
+            spLines = self.speakerText[sp]
+            self.speakerText[sp] = nltk.Text(spLines)
+            self.speakerToClass[sp].text = nltk.Text(spLines)
+            self.speakerToClass[sp].contribution = len(spLines)/len(tokens)
+            self.speakerToClass[sp].freqDist = self.getFrequDistSpeaker(sp)
         fh.close()
 
     def parse(self, str):
@@ -103,11 +132,19 @@ class TextParsing:
                 index += 1
                 i += 4
             else:
+                index += 1
                 i += 1
         self.text = nltk.Text(tokens)
         self.freqDist = nltk.FreqDist(self.text)
         for sp in self.speakerText.keys():
-            self.speakerText[sp] = nltk.Text(self.speakerText[sp])
+            spLines = self.speakerText[sp]
+            self.speakerText[sp] = nltk.Text(spLines)
+            self.speakerToClass[sp].text = nltk.Text(spLines)
+            self.speakerToClass[sp].contribution = len(spLines)/len(tokens)
+            print self.speakerToClass[sp].contribution
+            self.speakerToClass[sp].freqDist = self.getFrequDistSpeaker(sp)
+
+
 
     """
     returns a frequency distribution nltk object using only the words of a particular speaker particular speaker
@@ -130,7 +167,7 @@ class TextParsing:
         xs = []
         ys = []
         for point in fdist1.most_common(50):
-            print point
+            #print point
             xs.append(point[0])
             ys.append(point[1])
         # data.append(json.dumps(trace, separators=(',', ':')))
@@ -145,9 +182,9 @@ class TextParsing:
             fdist1 = self.getFrequDistSpeaker(speaker)
         xs = []
         ys = []
-        print fdist1
+        #print fdist1
         for point in fdist1.most_common(50):
-            print point
+            #print point
             xs.append(point[0])
             ys.append(point[1])
 
@@ -162,7 +199,6 @@ class TextParsing:
     #Returns a list of words that only appear once
     def getHapaxes(self):
         return self.freqDist.hapaxes()
-
 
 
 if __name__ == '__main__':

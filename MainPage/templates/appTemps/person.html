@@ -1,0 +1,233 @@
+{% extends 'appTemps/base.html' %}
+{% block 'body' %}
+{% load static %}
+  <script src='{% static "person.js" %}'></script>
+
+  <link rel="stylesheet" href="{% static "jquery-ui-1.12.1/jquery-ui.css"%}"/>
+  <script src="{% static "jquery-ui-1.12.1/jquery-ui.js"%}" type="text/javascript"></script>
+  <script src="{% static "comments.js"%}" type="text/javascript"></script>
+
+<style>.draggable { cursor: pointer; float: right; clear: both; position: absolute; background-color: transparent; border: transparent}</style>
+
+
+  <head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <p id="pInfo" style="display: none">{{ person }}</p>
+      <p id="eInfo" style="display: none">{{ emotionJSON }}</p>
+  </head>
+
+  <div>
+      <div class="page-header text-center">
+          <h2>{{ pname }}</h2>
+      </div>
+      <div id="pos"></div>
+      <div id="neg"></div>
+      <div id="neu"></div>
+      <div id="com"></div>
+      <div id="anger"></div>
+      <div id="anticipation"></div>
+      <div id="disgust"></div>
+      <div id="fear"></div>
+      <div id="joy"></div>
+      <div id="sadness"></div>
+      <div id="surprise"></div>
+      <div id="trust"></div>
+    <div id="graph"></div>
+  </div>
+
+    <script>
+        window.onload = function() {
+            //Word Count Graph
+            var myPlot = document.getElementById("graph");
+            var midB = JSON.parse($("#pInfo").text());
+            console.log(midB);
+            var freqDist = midB["freqDist"];
+            //console.log(freqDist);
+            var layoutB = {
+                title: 'Most Common Words Spoken',
+                "yaxis": {
+                    "title": "<b>Word Count<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Most Common Words<\/b>"
+                }
+            };
+            console.log(JSON.parse(freqDist));
+            var graph = Plotly.newPlot(myPlot, [JSON.parse(freqDist)], layoutB);
+
+            //Emotion JSON
+            var emotions = midB["emotBar"];
+
+            //Anger Graph
+            var angerGraph = document.getElementById("anger");
+            var angerData = JSON.parse(emotions["angerPlotly"]);
+            var layoutAnger = {
+                title: 'Anger',
+                "yaxis": {
+                    "title": "<b>Anger<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph1 = Plotly.newPlot(angerGraph, [angerData], layoutAnger);
+
+            //Anticipation Graph
+            var antiGraph = document.getElementById("anticipation");
+            var antiData = JSON.parse(emotions["anticipationPlotly"]);
+            var layoutAnticipation = {
+                title: 'Anticipation',
+                "yaxis": {
+                    "title": "<b>Anticipation<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph2 = Plotly.newPlot(antiGraph, [antiData], layoutAnticipation);
+
+            //Disgust Graph
+            var disgustGraph = document.getElementById("disgust");
+            var disgustData = JSON.parse(emotions["disgustPlotly"]);
+            var layoutDisgust = {
+                title: 'Disgust',
+                "yaxis": {
+                    "title": "<b>Disgust<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph3 = Plotly.newPlot(disgustGraph, [disgustData], layoutDisgust);
+
+            //Fear Graph
+            var fearGraph = document.getElementById("fear");
+            var fearData = JSON.parse(emotions["fearPlotly"]);
+            var layoutFear = {
+                title: 'Fear',
+                "yaxis": {
+                    "title": "<b>Fear<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph4 = Plotly.newPlot(fearGraph, [fearData], layoutFear);
+
+            //Joy Graph
+            var joyGraph = document.getElementById("joy");
+            var joyData = JSON.parse(emotions["joyPlotly"]);
+            var layoutJoy = {
+                title: 'Joy',
+                "yaxis": {
+                    "title": "<b>Joy<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph5 = Plotly.newPlot(joyGraph, [joyData], layoutJoy);
+
+            //sadness graph
+            var sadGraph = document.getElementById("sadness");
+            var sadData = JSON.parse(emotions["sadnessPlotly"]);
+            var layoutSadness = {
+                title: 'Sadness',
+                "yaxis": {
+                    "title": "<b>Sadness<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph6 = Plotly.newPlot(sadGraph, [sadData], layoutSadness);
+
+            //Surprise Graph
+            var surpriseGraph = document.getElementById("surprise");
+            var surpriseData = JSON.parse(emotions["surprisePlotly"]);
+            var layoutSurprise = {
+                title: 'Surprise',
+                "yaxis": {
+                    "title": "<b>Surprise<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph7 = Plotly.newPlot(surpriseGraph, [surpriseData], layoutSurprise);
+
+            //Trust Graph
+            var trustGraph = document.getElementById("trust");
+            var trustData = JSON.parse(emotions["trustPlotly"]);
+            var layoutTrust = {
+                title: 'Trust',
+                "yaxis": {
+                    "title": "<b>Trust<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph8 = Plotly.newPlot(trustGraph, [trustData], layoutTrust);
+
+            //Sentiment JSON
+            var sentiments = midB["sentiBar"];
+
+            //Positive
+            var posGraph = document.getElementById("pos");
+            var posData = JSON.parse(sentiments["PositivePlotly"]);
+            var layoutPos = {
+                title: 'Positive',
+                "yaxis": {
+                    "title": "<b>Positive<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph9 = Plotly.newPlot(posGraph, [posData], layoutPos);
+
+            //negative
+            var negGraph = document.getElementById("neg");
+            var negData = JSON.parse(sentiments["NegativePlotly"]);
+            var layoutNeg = {
+                title: 'Negative',
+                "yaxis": {
+                    "title": "<b>Negative<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph10 = Plotly.newPlot(negGraph, [negData], layoutNeg);
+
+            //neutral
+            var neuGraph = document.getElementById("neu");
+            var neuData = JSON.parse(sentiments["NeutralPlotly"]);
+            var layoutNeu = {
+                title: 'Neutral',
+                "yaxis": {
+                    "title": "<b>Neutral<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph11 = Plotly.newPlot(neuGraph, [neuData], layoutNeu);
+
+            //compound
+            var comGraph = document.getElementById("com");
+            var comData = JSON.parse(sentiments["CompoundPlotly"]);
+            var layoutCom = {
+                title: 'Compound',
+                "yaxis": {
+                    "title": "<b>Compound<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Recipient<\/b>"
+                }
+            };
+            var graph12 = Plotly.newPlot(comGraph, [comData], layoutCom);
+        }
+    </script>
+{% endblock %}
