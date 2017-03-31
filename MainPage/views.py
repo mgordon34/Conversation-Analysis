@@ -75,11 +75,14 @@ def person(request):
     if request.method == 'POST':
         print "Person being called"
         print(request.POST)
-        person = request.POST.get('person')
+        prePerson = request.POST.get('person')
+        person = json.loads(prePerson)
+        emotBar = person['emotBar']
+        name = person['pname']
     return render(
         request,
         'appTemps/person.html',
-        {'person': person},
+        {'person': prePerson, 'emotionJSON':emotBar, 'pname':name}
     )
 
 def tags(request):
