@@ -13,7 +13,9 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   </head>
 
+  <div>
   <a href="./about.html" target="_blank">About Conversation Analysis</a>
+  </div>
 
   <div class="directions-header" id="directions-header">
   <img src="https://img.clipartfest.com/c9209f3ed65eca36770e0e5657388825_transparent-light-bulb-with-white-lightbulb-clipart-transparent-background_420-420.png" width="40" height="40"><b>Interpreting the Results Page</b>
@@ -29,7 +31,15 @@
     png image file, zoom, pan, various select options, and data point display options.
     By clicking on one of the data points on the emotion graph, you can assign tags to a line of dialogue.</p>
 
-    <p>Below the emotion line graph, there is a bar graph displaying the words that appeared the most in the conversation and their
+    <p>The next drop-down labeled "Inspect a Person" allows you to select a specific speaker. Another tab will be opened containing bar
+    graphs showing various information specific to this speaker:
+    <ul>
+      <li>4 graphs displaying the various sentiment scores towards the other speakers- 1 per sentiment</li>
+      <li>8 graphs displaying the various emotoin scores towards the other speakers- 1 per emotion</li>
+      <li>1 graph displaying the frequency of words used by the speaker</li>
+    </ul>
+    </p>
+    <p>Below the person inspection, there is a bar graph displaying the words that appeared the most in the entire conversation and their
     corresponding frequencies.
     This graph has similar options to the emotion graph above on mouse-over.</p>
 
@@ -58,7 +68,7 @@
             <li><a id="drpdwn6">Trust</a></li>
         </ul>
     </div>
-  
+
 
   <div id="graph"></div>
 
