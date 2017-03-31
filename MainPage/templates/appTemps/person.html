@@ -15,7 +15,27 @@
   </head>
 
   <div>
-    <h2>Person</h2>
+    <h2></h2>
     <p id="pInfo">{{ person }}</p>
+    <div id="graph"></div>
   </div>
+
+    <script>
+        window.onload = function() {
+            var myPlot = document.getElementById("graph");
+            var midB = JSON.parse($("#pInfo").text());
+            console.log(midB);
+            var freqDist = midB["freqDist"];
+            //console.log(freqDist);
+            var layoutB = {
+                "yaxis": {
+                    "title": "<b>Word Count<\/b>"
+                },
+                "xaxis": {
+                    "title": "<b>Most Common Words<\/b>"
+                }
+            };
+            var graph = Plotly.newPlot(myPlot, [JSON.parse(freqDist)], layoutB);
+        }
+    </script>
 {% endblock %}
