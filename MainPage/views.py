@@ -16,6 +16,10 @@ import matplotlib.pyplot as plt
 
 arr = []
 
+"""
+This method handles any requests to load our home page. It handles when the user uploads a document and passes along
+the document to the results page.
+"""
 def main(request):
     # Handle file upload
     if request.method == 'POST':
@@ -39,10 +43,15 @@ def main(request):
         {'documents': documents, 'form': form},
     )
 
+"""
+This method handles any requests to load the results page. It takes in the document passed from main method and passes
+it through our parser (TextParsing.csvparse()). It creates the analyze object and begins the analysis over the given
+conversation. It passes all of our analysis information into the results page. IMPORTANT FOR PLOTLY GRAPHS
+"""
 def results(request):
     # Handle file upload
     if request.method == 'POST':
-        print "Results being called"
+        # print "Results being called"
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             newdoc = Document(docfile = request.FILES['docfile'])
@@ -71,6 +80,10 @@ def results(request):
 
     return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'cwords':cwords, 'arr2':arr2, "person": p})
 
+"""
+This method takes the person of interest to be inspected from the results page, as well as the "person" object
+(which holds personalized data for each spealer) and sends this data to the person page.
+"""
 def person(request):
     if request.method == 'POST':
         print "Person being called"
