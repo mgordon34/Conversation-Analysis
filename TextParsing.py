@@ -40,6 +40,10 @@ class TextParsing:
         self.freqDist = None
         self.csvparse(str)
 
+    """
+    csvparse is used to parse all of the incoming files. It splits the file by '/t' character, and then for each line
+    creates an array of the data. The data is then used to fill out Dialog and Person class objects for each speaker and line.
+    """
     def csvparse(self, str):
         fh = open(str, 'rU')
         reader = csv.reader(fh)
