@@ -158,9 +158,9 @@ class Analyze:
         if len(speakerArray) < 2:
             print "please enter in two or more speakers"
             return
-        k = 0
+        #k = 0
         traces = []
-        a = Analyze()
+        #a = Analyze()
         #a.popDialogEmotion(tp)
         for sp in speakerArray:
             xs = []
@@ -180,7 +180,7 @@ class Analyze:
             }
 
             traces.append(trace)
-            k += 1
+            #k += 1
         json_data = json.dumps(traces, separators=(',', ':'))
         return json_data
 
@@ -405,13 +405,14 @@ class Analyze:
     If you type "everyone" as sp2, it will calculate sp1's overall emotion toward the group.
     Returns a dictionary of emotions that sp1 feels while talking to sp2.
     {"anticipation":0.0, "fear":0.0, "anger":0.0,"trust":0.0, "surprise":0.0, "sadness":0.0, "joy":0.0, "disgust":0.0}
+    Note if a peron shows no feelings towards another, it will output the dictionary above with the values as 0.0
     """
     def emotAverageBwSpeakers(self,tp, sp1, sp2):
-        p = False
         if sp1 == "everyone":
             print "Speaker 1 cannot be everyone"
             return {}
         lineNums = tp.speakerToClass[sp1].lines
+        hasFeelings = False
         emotions = {"anticipation":0.0,
                     "fear":0.0,
                     "anger":0.0,
@@ -421,19 +422,22 @@ class Analyze:
                     "joy":0.0,
                     "disgust":0.0}
         first = True
+        cnt = 0
         for num in lineNums:
             if sp2 == "everyone" or sp2 == tp.dialogues[num].recipient:
+                hasFeelings = True
                 diag = tp.dialogues[num]
+                cnt += 1
                 for e in emotions:
                     if first:
                         emotions[e] = diag.getAverageEmotion(e)
                         first = False
                     else:
-                        emotions[e] = (emotions[e] + diag.getAverageEmotion(e)) / 2
-
+                        emotions[e] = (emotions[e] + diag.getAverageEmotion(e))
+        if hasFeelings:
+            for e in emotions.keys():
+                emotions[e] = emotions[e]/cnt
         return emotions
-
-
 
     """
     Returns a dictionary of the average vader sentiment sp1 (speaker 1) feels towards every person in the conversation.
@@ -499,19 +503,23 @@ class Analyze:
         lineNums = tp.speakerToClass[sp1].lines
         sentiment = [0.0,0.0,0.0,0.0]
         first = True
+        cnt = 0
         for num in lineNums:
             if sp2 == "everyone" or sp2 == tp.dialogues[num].recipient or "everyone" == tp.dialogues[num].recipient:
                 p = True
                 diag = tp.dialogues[num]
                 #print diag.sentiment
+                cnt += 1
                 for s in range(len(sentiment)):
                     if first:
                         sentiment[s] = diag.sentiment[s]
                         first = False
                     else:
-                        sentiment[s] = (sentiment[s] + diag.sentiment[s])/2
+                        sentiment[s] = (sentiment[s] + diag.sentiment[s])
         if not p:
             print sp1, " never spoke to ", sp2
+        for s in range(len(sentiment)):
+            sentiment[s] = sentiment[s]/cnt
         return sentiment
 
     """
