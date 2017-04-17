@@ -63,7 +63,15 @@ def results(request):
             p = json.dumps(analyzer.getPersonData(parser), separators=(',', ':'))
             arr2 = parser.plotlyBarFreqDist("everyone")
             score = analyzer.getAverageConversationScores(parser)
-            convo = analyzer.getConversationScore(parser)["trust"]
+            emo1 = analyzer.getConversationScore(parser)["anger"]
+            emo2 = analyzer.getConversationScore(parser)["anticipation"]
+            emo3 = analyzer.getConversationScore(parser)["disgust"]
+            emo4 = analyzer.getConversationScore(parser)["fear"]
+            emo5 = analyzer.getConversationScore(parser)["joy"]
+            emo6 = analyzer.getConversationScore(parser)["sadness"]
+            emo7 = analyzer.getConversationScore(parser)["surprise"]
+            emo8 = analyzer.getConversationScore(parser)["trust"]
+            emoarr = [emo1, emo2, emo3, emo4, emo5, emo6, emo7, emo8]
             cwords = parser.getNCommonWords(50)
             # print freqdist
             anger = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "anger")
@@ -78,7 +86,7 @@ def results(request):
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'convo':convo, 'cwords':cwords, 'arr2':arr2, "person": p})
+    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p})
 
 """
 This method takes the person of interest to be inspected from the results page, as well as the "person" object

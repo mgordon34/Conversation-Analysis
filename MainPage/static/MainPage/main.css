@@ -269,6 +269,22 @@ input[type="file"] {
   width: 50%;
 }
 
+.stats-header {
+  font: 15px 'Raleway', sans-serif;
+  font-weight:250;
+  /*-webkit-border-radius: 5px;*/
+  -webkit-transition: all 0.5s ease-in-out
+}
+.stats-header:hover {
+  color: #3fb0ac;
+  -webkit-transition: all 0.5s ease-in-out
+}
+
+.stats-content {
+  margin-left: 50px;
+  width: 50%;
+}
+
 /*.about_container {
     width:100%;
     border:1px solid #d3d3d3;
