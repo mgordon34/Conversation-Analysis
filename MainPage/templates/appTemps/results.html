@@ -47,14 +47,25 @@
     that can be used to jot down any comments or observations about the conversation analysis.</p>
   </div>
 
-  <div>
-    <h2>Average Scores</h2>
+  <div class="stats-header" id="stats-header">
+  <img src="https://img.clipartfest.com/c9209f3ed65eca36770e0e5657388825_transparent-light-bulb-with-white-lightbulb-clipart-transparent-background_420-420.png" width="40" height="40"><b>Conversation Average Scores</b>
+  </div><br>
+
+  <div class="stats-content" id="stats-content">
     <p>compound: {{ score.0 }} </p>
     <p>negative: {{ score.1 }} </p>
     <p>neutral: {{ score.2 }} </p>
     <p>positive: {{ score.3 }} </p>
-      <p>Conversation: {{ convo }} </p>
+    <p>anger: {{ emoarr.0 }} </p>
+    <p>anticipation: {{ emoarr.1 }} </p>
+    <p>disgust: {{ emoarr.2 }} </p>
+    <p>fear: {{ emoarr.3 }} </p>
+    <p>joy: {{ emoarr.4 }} </p>
+    <p>sadness: {{ emoarr.5 }} </p>
+    <p>surprise: {{ emoarr.6 }} </p>
+    <p>trust: {{ emoarr.7 }} </p>
   </div>
+
     <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Another Emotion
         <span class="caret"></span></button>

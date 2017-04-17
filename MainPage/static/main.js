@@ -77,6 +77,10 @@ $(window).load(function() {
         $('.directions-content').toggle('show');
     });
 
+    $('.stats-content').hide();
+    $('.stats-header').on('click', function(event) {
+        $('.stats-content').toggle('show');
+    });
 
 });
 
