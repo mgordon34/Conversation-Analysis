@@ -72,6 +72,11 @@
 
   <div id="graph"></div>
 
+    <div class="container" style="height: 100px">
+        <button id="clickMe" type="btn btn-primary" onclick="comment();">Comment</button>
+        <div id='TextBoxesGroup' class='draggable ui-widget-content'></div>
+    </div>
+
   <div class="row">
     <form class="col-sm-5" action="{% url 'person' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
@@ -121,6 +126,4 @@
         <p id="pInfo" class="hidden">{{ person }}</p>
     </body>
     <div id="container" class="ui-widget-content" style=border:transparent></div>
-  <input id="clickMe" type="button" value="clickme" onclick="comment();" />
-    <div id='TextBoxesGroup' class='draggable ui-widget-content' style=></div>
 {% endblock %}
