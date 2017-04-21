@@ -195,7 +195,6 @@ class Analyze:
         for i,d  in enumerate(tp.dialogues):
             xs.append(i)
             ys.append(d.sentiment[0])
-            print d.sentiment
 
         trace = {
             "type": "scatter",
@@ -204,7 +203,6 @@ class Analyze:
             "y": ys
         }
             # k += 1
-        print trace
         json_data = json.dumps(trace, separators=(',', ':'))
         return json_data
 
@@ -588,11 +586,11 @@ class Analyze:
 """
 Main is mainly used for testing purposes.
 """
-if __name__ == '__main__':
-    tp = TextParsing.TextParsing("Workbook1.csv")
-    a = Analyze()
-    a.setDialogSentiment(tp)
-    a.plotlyCompoundSenti(tp)
+#if __name__ == '__main__':
+#    tp = TextParsing.TextParsing("Workbook1.csv")
+#    a = Analyze()
+#    a.setDialogSentiment(tp)
+#    a.plotlyCompoundSenti(tp)
     #print a.sid.polarity_scores("I hate Georgia Tech! :-(")
     #print a.getDummySentimentOfWords("I hate Georgia Tech! :-(")
     #p = a.getConversationScore(tp)
