@@ -47,11 +47,6 @@
     that can be used to jot down any comments or observations about the conversation analysis.</p>
   </div>
 
-   <form action="../doubleresults" method="POST">
-       {% csrf_token %}
-       <button class="btn btn-large btn-info" >Compare Results</button>
-   </form>
-
   <div class="stats-header" id="stats-header">
   <img src="https://img.clipartfest.com/c9209f3ed65eca36770e0e5657388825_transparent-light-bulb-with-white-lightbulb-clipart-transparent-background_420-420.png" width="40" height="40"><b>Conversation Average Scores</b>
   </div><br>
@@ -105,7 +100,9 @@
     </form>
   </div>
 
-  <div id="barg"></div>
+    <button id="convoModal" class="btn btn-primary" data-toggle="modal" data-target="#doubleModal">Compare Another Conversation</button>
+
+    <div id="barg"></div>
 
 
   <div id="tagModal" class="modal fade dialog-text" role="dialog">
@@ -128,6 +125,31 @@
     </div>
   </div>
 
+  <div id="doubleModal" class="modal fade dialog-text" role="dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Choose Second Conversation</h4>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'doubleresults' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <p>Select a conversation:</p>
+
+          <p>
+              {{ form.docfile.errors }}
+              {{ form.docfile }}
+          </p>
+          <p><input type="submit" value="Upload" /></p><br>
+
+        </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
     {% load static %}
     <script src='{% static "tags.js" %}'></script>
     <body>

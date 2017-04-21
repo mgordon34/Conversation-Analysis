@@ -22,6 +22,8 @@ cwords = None
 arr2 = None
 p = None
 cmpd = None
+documents = None
+form = None
 
 """
 This method handles any requests to load our home page. It handles when the user uploads a document and passes along
@@ -95,7 +97,7 @@ def results(request):
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p})
+    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p, "form": form, "documents": documents})
 
 """
 This method takes the person of interest to be inspected from the results page, as well as the "person" object
@@ -116,7 +118,7 @@ def person(request):
     )
 
 def doubleresults(request):
-    global arr, cmpd
+    global arr, score, emoarr, cwords, arr2, p, cmpd
     form = DocumentForm(request.POST, request.FILES)
     if form.is_valid():
         newdoc = Document(docfile = request.FILES['docfile'])
@@ -134,7 +136,7 @@ def doubleresults(request):
         trust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
         arr1 = [anger, anticipation, disgust, fear, joy, sadness, trust]
         cmpd1 = analyzer.plotlyCompoundSenti(parser)
-    return render(request, 'appTemps/doubleresults.html', {'arr': arr, 'cmpd':cmpd, 'arr1':arr1, 'cmpd1':cmpd1})
+    return render(request, 'appTemps/doubleresults.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p, 'arr1':arr1, 'cmpd1':cmpd1})
 
 def tags(request):
     print "Tags being called"
