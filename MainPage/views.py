@@ -21,6 +21,8 @@ emoarr = None
 cwords = None
 arr2 = None
 p = None
+documents = None
+form = None
 
 """
 This method handles any requests to load our home page. It handles when the user uploads a document and passes along
@@ -93,7 +95,7 @@ def results(request):
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p})
+    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p, "form": form, "documents": documents})
 
 """
 This method takes the person of interest to be inspected from the results page, as well as the "person" object
