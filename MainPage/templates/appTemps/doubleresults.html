@@ -47,20 +47,30 @@
     that can be used to jot down any comments or observations about the conversation analysis.</p>
   </div>
 
-   <form action="../doubleresults" method="GET">
-       <input type="hidden" name="emoarr" value="{{emoarr}}" />
-       <input type="hidden" name="arr" value="{{arr}}" />
-       <input type="hidden" name="arr2" value="{{arr2}}" />
-       <input type="hidden" name="score" value="{{score}}" />
-       <input type="hidden" name="person" value="{{person}}" />
-       <button class="btn btn-large btn-info" >Compare Results</button>
-   </form>
-
   <div class="stats-header" id="stats-header">
-  <img src="https://img.clipartfest.com/c9209f3ed65eca36770e0e5657388825_transparent-light-bulb-with-white-lightbulb-clipart-transparent-background_420-420.png" width="40" height="40"><b>Conversation Average Scores</b>
+  <img src="https://img.clipartfest.com/c9209f3ed65eca36770e0e5657388825_transparent-light-bulb-with-white-lightbulb-clipart-transparent-background_420-420.png" width="40" height="40"><b> First Conversation Average Scores</b>
   </div><br>
 
   <div class="stats-content" id="stats-content">
+    <p>compound: {{ score.0 }} </p>
+    <p>negative: {{ score.1 }} </p>
+    <p>neutral: {{ score.2 }} </p>
+    <p>positive: {{ score.3 }} </p>
+    <p>anger: {{ emoarr.0 }} </p>
+    <p>anticipation: {{ emoarr.1 }} </p>
+    <p>disgust: {{ emoarr.2 }} </p>
+    <p>fear: {{ emoarr.3 }} </p>
+    <p>joy: {{ emoarr.4 }} </p>
+    <p>sadness: {{ emoarr.5 }} </p>
+    <p>surprise: {{ emoarr.6 }} </p>
+    <p>trust: {{ emoarr.7 }} </p>
+  </div>
+
+    <div class="stats-header" id="stats-header2">
+  <img src="https://img.clipartfest.com/c9209f3ed65eca36770e0e5657388825_transparent-light-bulb-with-white-lightbulb-clipart-transparent-background_420-420.png" width="40" height="40"><b> Second Conversation Average Scores</b>
+  </div><br>
+
+  <div class="stats-content" id="stats-content2">
     <p>compound: {{ score.0 }} </p>
     <p>negative: {{ score.1 }} </p>
     <p>neutral: {{ score.2 }} </p>
@@ -91,6 +101,7 @@
 
 
   <div id="graph"></div>
+    <div id="graph2"></div>
 
     <div class="container" style="height: 100px">
         <button id="clickMe" type="btn btn-primary" onclick="comment();">Comment</button>
@@ -109,8 +120,20 @@
     </form>
   </div>
 
-  <div id="barg"></div>
+    <div class="row">
+    <form class="col-sm-5" action="{% url 'person' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <h4>Inspect a person:</h4>
+        <div class="form-group col-sm-8">
+          <select class="form-control" name="person" id="personform">
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Inspect</button>
+    </form>
+  </div>
 
+  <div id="barg"></div>
+    <div id="barg2"></div>
 
   <div id="tagModal" class="modal fade dialog-text" role="dialog">
     <div class="modal-dialog">
@@ -144,7 +167,6 @@
         <p id="Trust" class="hidden">{{ arr.6 }}</p>
         <p id="bInfo" class="hidden" >{{ arr2 }} </p>
         <p id="pInfo" class="hidden">{{ person }}</p>
-        <p id="emoarr" class="hidden">{{ emoarr }}</p>
     </body>
     <div id="container" class="ui-widget-content" style=border:transparent></div>
 {% endblock %}

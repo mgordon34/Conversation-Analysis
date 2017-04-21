@@ -177,6 +177,5 @@ window.onload = function() {
       var element = $(document.createElement('option'));
       element.val(JSON.stringify(people[i])).text(i);
       $("#personform").append(element);
-      console.log(people[i]);
     }
 };

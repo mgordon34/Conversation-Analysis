@@ -14,8 +14,6 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
-arr = []
-
 """
 This method handles any requests to load our home page. It handles when the user uploads a document and passes along
 the document to the results page.
@@ -104,6 +102,19 @@ def person(request):
         request,
         'appTemps/person.html',
         {'person': prePerson, 'emotionJSON':emotBar, 'pname':name}
+    )
+
+def doubleresults(request):
+    if request.method == 'GET':
+        arr = request.GET.get('arr')
+        score = request.GET.get('score')
+        emoarr = json.loads(request.GET.get('emoarr'))
+        arr2 = request.GET.get('arr2')
+        person = request.GET.get('person')
+    return render(
+        request,
+        'appTemps/doubleresults.html',
+        {'arr': arr, 'score': score, 'emoarr': emoarr, 'arr2': arr2, 'person': person}
     )
 
 def tags(request):
