@@ -14,13 +14,14 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
-global arr, score, emoarr, cwords, arr2, p
+global arr, score, emoarr, cwords, arr2, p, cmpd
 arr = None
 score = None
 emoarr = None
 cwords = None
 arr2 = None
 p = None
+cmpd = None
 
 """
 This method handles any requests to load our home page. It handles when the user uploads a document and passes along
@@ -56,7 +57,7 @@ conversation. It passes all of our analysis information into the results page. I
 """
 def results(request):
     # Handle file upload
-    global arr, score, emoarr, cwords, arr2, p
+    global arr, score, emoarr, cwords, arr2, p, cmpd
     if request.method == 'POST':
         # print "Results being called"
         form = DocumentForm(request.POST, request.FILES)
@@ -69,6 +70,7 @@ def results(request):
             analyzer.setDialogSentiment(parser)
             p = json.dumps(analyzer.getPersonData(parser), separators=(',', ':'))
             arr2 = parser.plotlyBarFreqDist("everyone")
+            cmpd = analyzer.plotlyCompoundSenti(parser)
             score = analyzer.getAverageConversationScores(parser)
             emo1 = analyzer.getConversationScore(parser)["anger"]
             emo2 = analyzer.getConversationScore(parser)["anticipation"]
@@ -114,7 +116,25 @@ def person(request):
     )
 
 def doubleresults(request):
-    return render(request, 'appTemps/doubleresults.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p})
+    global arr, cmpd
+    form = DocumentForm(request.POST, request.FILES)
+    if form.is_valid():
+        newdoc = Document(docfile = request.FILES['docfile'])
+        newdoc.save()
+        parser = TextParsing.TextParsing(request.FILES['docfile'].name)
+        analyzer = Analyze.Analyze()
+        analyzer.popDialogEmotion(parser)
+        analyzer.setDialogSentiment(parser)
+        anger = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "anger")
+        anticipation = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "anticipation")
+        disgust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "disgust")
+        fear = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "fear")
+        joy = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "joy")
+        sadness = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "sadness")
+        trust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
+        arr1 = [anger, anticipation, disgust, fear, joy, sadness, trust]
+        cmpd1 = analyzer.plotlyCompoundSenti(parser)
+    return render(request, 'appTemps/doubleresults.html', {'arr': arr, 'cmpd':cmpd, 'arr1':arr1, 'cmpd1':cmpd1})
 
 def tags(request):
     print "Tags being called"
