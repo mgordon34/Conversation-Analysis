@@ -186,8 +186,8 @@ class Analyze:
         return json_data
 
     """
-        Takes in the array of speakers (as stings) and an emotion and sets up a JSON object used to plot the data in PLOTLY
-        """
+    Takes in the Text Parsing object and outputs a PLOTLY graph of the compound scores per sentence in the conversation
+    """
 
     def plotlyCompoundSenti(self, tp):
         xs = []
