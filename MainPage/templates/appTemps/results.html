@@ -53,10 +53,12 @@
   </div><br>
 
   <div class="stats-content" id="stats-content">
+    <p class="hidden" id="score">{{ score }}</p>
     <p>compound: {{ score.0 }} </p>
     <p>negative: {{ score.1 }} </p>
     <p>neutral: {{ score.2 }} </p>
     <p>positive: {{ score.3 }} </p>
+    <p class="hidden" id="emoarr">{{ emoarr }}</p>
     <p>anger: {{ emoarr.0 }} </p>
     <p>anticipation: {{ emoarr.1 }} </p>
     <p>disgust: {{ emoarr.2 }} </p>
@@ -124,9 +126,16 @@
     </div>
   </div>
 
+  <button id="savebtn" class="btn btn-primary">Save Analysis</button>
+  <form method="POST" id="save-form">
+    {% csrf_token %}
+    <input type="submit" value="Save Analysis!">
+  </form>
+
     {% load static %}
     <script src='{% static "tags.js" %}'></script>
     <body>
+        <p id="arr" class="hidden">{{arr}}</p>
         <p id="Anger" class="hidden">{{ arr.0 }}</p>
         <p id="Anticipation" class="hidden">{{ arr.1 }}</p>
         <p id="Disgust" class="hidden">{{ arr.2 }}</p>

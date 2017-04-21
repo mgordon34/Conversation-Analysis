@@ -179,4 +179,29 @@ window.onload = function() {
       $("#personform").append(element);
       console.log(people[i]);
     }
+
+    $('#savebtn').click(function() {
+      console.log('save button clicked');
+      $.ajax({
+        url: '/save',
+        type: 'GET',
+        data: {'arr': $('#arr').text(), 'score': $('#score').text(), 'emoarr':$('#emoarr').text(), 'arr2': $('#bInfo').text(), 'person': $('#pInfo').text()},
+        success: function(data) {
+          console.log('save success!');
+          console.log(data);
+        }
+      });
+    });
+
+    $('#save-form').on('submit', function(event){
+      console.log('form submitted');
+      $.ajax({
+        url: '/save',
+        type: 'POST',
+        success: function(data) {
+          console.log('save success!');
+        }
+      });
+    });
+
 };

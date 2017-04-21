@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.core.urlresolvers import reverse
 
 from MainPage.models import Document
@@ -120,6 +121,26 @@ def tags(request):
         }
         tag_model = Result(tags=json.dumps({'tags': tags}))
         return HttpResponse(tag_model.tags, content_type='application/json')
+
+def save(request):
+    print "Save being called"
+    a = {'result': 'success'}
+    if request.method == 'POST':
+        print "Get request"
+        return(HttpResponse(a, content_type='application/json'))
+    if request.method == 'GET':
+        print "Get request"
+        data = {}
+        try:
+            with open('savedData.json') as f:
+                data = json.load(f)
+        except:
+            pass
+        with open('savedData.json', 'w') as f:
+            saved = json.load(request.GET)
+            data['test'] = request.GET
+            f.write(json.dumps(data))
+        return JsonResponse(a)
 
 def about(request):
     return render(request, 'appTemps/about.html')
