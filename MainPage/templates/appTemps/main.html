@@ -111,9 +111,12 @@
 
         <div class="tabs_item">
             <h4>Select previous analyses to view</h4><br>
-            <select id="prev-analyses" style="margin-left:25px;">
-            </select>
-            <input type="submit" value="view-prev" style="margin-left:25px;" onclick="openAnalysis()"/>
+            <form class="col-sm-5" action="{% url 'person' %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <select class="form-control" name="convoName" id="prevAnalysisForm">
+              </select>
+              <input type="submit" value="view-prev" style="margin-left:25px;" onclick="openAnalysis()"/>
+            </form>
         </div> <!-- / tabs_item -->
 
     </div> <!-- / tab_content -->

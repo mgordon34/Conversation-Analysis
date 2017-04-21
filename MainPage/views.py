@@ -123,3 +123,16 @@ def tags(request):
 
 def about(request):
     return render(request, 'appTemps/about.html')
+
+def prevResults(request):
+    with open('savedData.json') as data_file:
+        data = json.load(data_file)
+        convoData = data[request.POST.get('convoName')]
+        arr=convoData['arr']
+        score=convoData['score']
+        emoarr=convoData['emoarr']
+        cwords=convoData['cwords']
+        arr2=convoData['arr2']
+        p=convoData['person']
+        return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p})
+
