@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.cm as cm
 import json
+import TextParsing
 
 class Analyze:
     """
@@ -181,6 +182,34 @@ class Analyze:
 
             traces.append(trace)
             #k += 1
+        json_data = json.dumps(traces, separators=(',', ':'))
+        return json_data
+
+    """
+        Takes in the array of speakers (as stings) and an emotion and sets up a JSON object used to plot the data in PLOTLY
+        """
+
+    def plotlyCompoundSenti(self, tp):
+        traces = []
+        for d in tp.dialogues:
+            xs = []
+            ys = []
+            lines = []
+            for i in tp.speakerToClass[sp].lines:
+                val = tp.dialogues[i].getAverageEmotion(emote)
+                xs.append(float(i))
+                ys.append(val)
+                lines.append(tp.dialogues[i].content)
+            trace = {
+                "type": "scatter",
+                "name": sp,
+                "lines": lines,
+                "x": xs,
+                "y": ys
+            }
+
+            traces.append(trace)
+            # k += 1
         json_data = json.dumps(traces, separators=(',', ':'))
         return json_data
 
@@ -564,40 +593,42 @@ class Analyze:
 """
 Main is mainly used for testing purposes.
 """
-# if __name__ == '__main__':
-#     tp = TextParsing.TextParsing("Workbook1.csv")
-#     a = Analyze()
-#     p = a.getConversationScore(tp)
-#     #for e in p.keys():
-#     #    print e, p[e]
-#     #print a.getEmoteAverageAllSp(tp, "Bunnycrusher")
-#     d = a.getPersonData(tp)
-#     #print a.convertPlotly("Bunnycrusher", a.getEmoteAverageAllSp(tp, "Bunnycrusher"))
-#     #print a.emotAverageBwSpeakers(tp, "Illumine", "Andalaul")
-#     #print a.getSentimentAverageAllSpeakers(tp, "Bunnycrusher")
-#
-#     for a in d.keys():
-#         print "__________________________________________________________________"
-#         print a
-#         print d[a]["commonWords"]
-#         print d[a]["freqDist"]
-#         print d[a]["emotTowardsOthers"]
-#         print d[a]["sentiTowardsOthers"]
-#         print d[a]["emotBar"]
-#         print d[a]["sentiBar"]
-#         print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-#     #print s
-#     #for k in e.keys():
-#     #    print k, e[k]
-#     #a.scatterPlotSentiment(tp, speakers, "pos")
-#     #print speakers[0], a.getAverageEmotionScore(speakers[0], "anticipation")
-#     #a.plotlyEmotion(tp, speakers,"joy")
-#     #a.getConversationSentiment(tp)
-#     #a.setDialogSentiment(tp)
-#     #a.getTwitterDictSentiment(tp)
-#     #a.getSentimentTextVader(tp)
-#     #a.getVaderSentimentWords(tp)
-#     #print a.getAverageScores(tp)
-#     #print a.getSentimentData(tp, "Tempus")
-#     #print a.getConversationSentiment(tp)
+if __name__ == '__main__':
+    #tp = TextParsing.TextParsing("Workbook1.csv")
+    a = Analyze()
+    print a.sid.polarity_scores("I hate Georgia Tech! :-(")
+    print a.getDummySentimentOfWords("I hate Georgia Tech! :-(")
+    #p = a.getConversationScore(tp)
+    #for e in p.keys():
+    #    print e, p[e]
+    #print a.getEmoteAverageAllSp(tp, "Bunnycrusher")
+    #d = a.getPersonData(tp)
+    #print a.convertPlotly("Bunnycrusher", a.getEmoteAverageAllSp(tp, "Bunnycrusher"))
+    #print a.emotAverageBwSpeakers(tp, "Illumine", "Andalaul")
+    #print a.getSentimentAverageAllSpeakers(tp, "Bunnycrusher")
+
+    # for a in d.keys():
+    #     print "__________________________________________________________________"
+    #     print a
+    #     print d[a]["commonWords"]
+    #     print d[a]["freqDist"]
+    #     print d[a]["emotTowardsOthers"]
+    #     print d[a]["sentiTowardsOthers"]
+    #     print d[a]["emotBar"]
+    #     print d[a]["sentiBar"]
+    #     print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    #print s
+    #for k in e.keys():
+    #    print k, e[k]
+    #a.scatterPlotSentiment(tp, speakers, "pos")
+    #print speakers[0], a.getAverageEmotionScore(speakers[0], "anticipation")
+    #a.plotlyEmotion(tp, speakers,"joy")
+    #a.getConversationSentiment(tp)
+    #a.setDialogSentiment(tp)
+    #a.getTwitterDictSentiment(tp)
+    #a.getSentimentTextVader(tp)
+    #a.getVaderSentimentWords(tp)
+    #print a.getAverageScores(tp)
+    #print a.getSentimentData(tp, "Tempus")
+    #print a.getConversationSentiment(tp)
 #     #a.getDifference(tp, ["Tempus", "Bunnycrusher", "Daner"], "pos")
