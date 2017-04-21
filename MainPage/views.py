@@ -14,6 +14,14 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
+global arr, score, emoarr, cwords, arr2, p
+arr = None
+score = None
+emoarr = None
+cwords = None
+arr2 = None
+p = None
+
 """
 This method handles any requests to load our home page. It handles when the user uploads a document and passes along
 the document to the results page.
@@ -48,6 +56,7 @@ conversation. It passes all of our analysis information into the results page. I
 """
 def results(request):
     # Handle file upload
+    global arr, score, emoarr, cwords, arr2, p
     if request.method == 'POST':
         # print "Results being called"
         form = DocumentForm(request.POST, request.FILES)
@@ -105,17 +114,7 @@ def person(request):
     )
 
 def doubleresults(request):
-    if request.method == 'GET':
-        arr = request.GET.get('arr')
-        score = request.GET.get('score')
-        emoarr = json.loads(request.GET.get('emoarr'))
-        arr2 = request.GET.get('arr2')
-        person = request.GET.get('person')
-    return render(
-        request,
-        'appTemps/doubleresults.html',
-        {'arr': arr, 'score': score, 'emoarr': emoarr, 'arr2': arr2, 'person': person}
-    )
+    return render(request, 'appTemps/doubleresults.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p})
 
 def tags(request):
     print "Tags being called"

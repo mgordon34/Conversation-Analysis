@@ -47,12 +47,8 @@
     that can be used to jot down any comments or observations about the conversation analysis.</p>
   </div>
 
-   <form action="../doubleresults" method="GET">
-       <input type="hidden" name="emoarr" value="{{emoarr}}" />
-       <input type="hidden" name="arr" value="{{arr}}" />
-       <input type="hidden" name="arr2" value="{{arr2}}" />
-       <input type="hidden" name="score" value="{{score}}" />
-       <input type="hidden" name="person" value="{{person}}" />
+   <form action="../doubleresults" method="POST">
+       {% csrf_token %}
        <button class="btn btn-large btn-info" >Compare Results</button>
    </form>
 
