@@ -540,8 +540,9 @@ class Analyze:
                         sentiment[s] = (sentiment[s] + diag.sentiment[s])
         if not p:
             print sp1, " never spoke to ", sp2
-        for s in range(len(sentiment)):
-            sentiment[s] = sentiment[s]/cnt
+        if cnt != 0:
+            for s in range(len(sentiment)):
+                sentiment[s] = sentiment[s]/cnt
         return sentiment
 
     """
@@ -576,7 +577,6 @@ class Analyze:
                     for em in emotions.keys():
                         emotions[em] += e[em]
                     n +=1
-
         if n > 0:
             for e in emotions.keys():
                 emotions[e] = emotions[e]/n
@@ -586,11 +586,12 @@ class Analyze:
 """
 Main is mainly used for testing purposes.
 """
-#if __name__ == '__main__':
-#    tp = TextParsing.TextParsing("Workbook1.csv")
-#    a = Analyze()
-#    a.setDialogSentiment(tp)
-#    a.plotlyCompoundSenti(tp)
+if __name__ == '__main__':
+    tp = TextParsing.TextParsing("Workbook1.csv")
+    a = Analyze()
+    a.setDialogSentiment(tp)
+    a.plotlyCompoundSenti(tp)
+
     #print a.sid.polarity_scores("I hate Georgia Tech! :-(")
     #print a.getDummySentimentOfWords("I hate Georgia Tech! :-(")
     #p = a.getConversationScore(tp)
