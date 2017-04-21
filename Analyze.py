@@ -190,27 +190,20 @@ class Analyze:
         """
 
     def plotlyCompoundSenti(self, tp):
-        traces = []
-        for d in tp.dialogues:
-            xs = []
-            ys = []
-            lines = []
-            for i in tp.speakerToClass[sp].lines:
-                val = tp.dialogues[i].getAverageEmotion(emote)
-                xs.append(float(i))
-                ys.append(val)
-                lines.append(tp.dialogues[i].content)
-            trace = {
-                "type": "scatter",
-                "name": sp,
-                "lines": lines,
-                "x": xs,
-                "y": ys
-            }
+        xs = []
+        ys = []
+        for i,d  in enumerate(tp.dialogues):
+            xs.append(i)
+            ys.append(d.setiment[0])
 
-            traces.append(trace)
+        trace = {
+            "type": "scatter",
+            "name": "Conversation 1",
+            "x": xs,
+            "y": ys
+        }
             # k += 1
-        json_data = json.dumps(traces, separators=(',', ':'))
+        json_data = json.dumps(trace, separators=(',', ':'))
         return json_data
 
 
