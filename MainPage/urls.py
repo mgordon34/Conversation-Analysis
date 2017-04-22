@@ -9,4 +9,7 @@ urlpatterns = [
     url(r'^tags', views.tags),
     url(r'^about', views.about, name='about'),
     url(r'^save', views.save),
+    url(r'^doubletags', views.doubletags),
+    url(r'^about', views.about, name='about'),
+    url(r'^doubleresults', views.doubleresults, name='doubleresults')
 ]

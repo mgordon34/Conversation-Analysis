@@ -1,13 +1,17 @@
+/**
+ * Created by elizabethdudley on 4/21/17.
+ */
 var tags = null;
+var tags1 = null;
 var pointIndex = null;
 var speaker = null;
 var myPlot = null;
 var data = [];
+var data1 = [];
+var data2 = [];
 var layout = null;
 var graph = null;
-var graphB = null;
-var bPlot = null;
-var layoutB = null;
+var graph1 = null;
 var emotion = 'Anger';
 $.ajax({
   url: '/tags',
@@ -15,6 +19,7 @@ $.ajax({
   async: false,
   success: function(data) {
     tags = data.tags;
+    tags1 = data.tags;
   }
 });
 
@@ -53,13 +58,6 @@ window.onload = function() {
         data.push({x: midData.x, y: midData.y, name: midData.name, text: lines, hoverinfo: 'text', type: 'scatter'});
     }
 
-    /*
-    * Here we begin to set up the bar graph that shows the most common words spoken by everyone in the conversation.
-    */
-    bPlot = document.getElementById('barg');
-    //var bData = JSON.parse($("#bInfo"));
-    var midB = JSON.parse($("#bInfo").text());
-    console.log(midB);
     layout = {
         "showlegend": true,
         "yaxis": {
@@ -69,19 +67,70 @@ window.onload = function() {
             "title": "<b>Line Number<\/b>"
         },
         hovermode: 'closest',
-        title: 'Results Data'
+        title: 'Conversation One'
     };
 
-    layoutB = {
+    myPlot1 = document.getElementById('graph1');
+
+
+    graph = Plotly.newPlot(myPlot, data, layout);
+
+    var midDataArray1 = JSON.parse($("#Anger1").text());
+    for (j in midDataArray1) {
+        var midData1 = midDataArray1[j];
+        var mid1 = [];
+        var lines1 = [];
+        for (i in tags1) {
+          tags1[i][j] = {}
+        }
+        tags1['Anger'][j] = {};
+        for (i in midData1.y) {
+            mid1[i] = midData1.y[i];
+            lines1[i] = midData1.name + ': ' + midData1.lines[i]
+            if (typeof tags1['Anger'][j][i] != 'undefined') {
+              lines1[i] += '<br>' + 'tag: ' + tags1[emotion][j][i];
+            }
+        }
+        data1.push({x: midData1.x, y: midData1.y, name: midData1.name, text: lines1, hoverinfo: 'text', type: 'scatter'});
+    }
+
+    layout1 = {
+        "showlegend": true,
         "yaxis": {
-            "title": "<b>Word Count<\/b>"
+            "title": "<b>Anger<\/b>"
         },
         "xaxis": {
-            "title": "<b>Most Common Words<\/b>"
-        }
+            "title": "<b>Line Number<\/b>"
+        },
+        hovermode: 'closest',
+        title: 'Conversation Two'
     };
-    graph = Plotly.newPlot(myPlot, data, layout);
-    graphB = Plotly.newPlot(bPlot,[midB], layoutB);
+
+    graph1 = Plotly.newPlot(myPlot1, data1, layout1);
+
+    var compPlot = document.getElementById('compoundGraph');
+
+    var line1 = JSON.parse($("#compound").text());
+    line1.name = "Conversation 1";
+    var line2 = JSON.parse($("#compound1").text());
+    line2.name = "Conversation 2";
+    data2 = [line1, line2];
+    console.log(data2);
+
+    var layout2 = {
+        "showlegend": true,
+        "yaxis": {
+            "title": "<b>Anger<\/b>"
+        },
+        "xaxis": {
+            "title": "<b>Line Number<\/b>"
+        },
+        hovermode: 'closest',
+        title: 'Compound Scores of Both Conversations'
+    };
+
+    var compGraph = Plotly.newPlot(compPlot, data2, layout2);
+
 
     /*
     * This function responds to when the user clicks on a point on the graph, and saves their edited data.
@@ -94,6 +143,14 @@ window.onload = function() {
         $('#tagModal').modal('show');
     });
 
+    myPlot1.on('plotly_click', function (data) {
+        var index = data.points[0].pointNumber;
+        speaker = data.points[0].curveNumber;
+        pointIndex = index;
+        $('#modalInput').val(tags1[emotion][speaker][index]);
+        $('#tagModal1').modal('show');
+    });
+
     /*
     * This responds to the button on the tag edit pop up and saves their edited data
     */
@@ -104,6 +161,13 @@ window.onload = function() {
         updateGraph();
     });
 
+    $('button#modalSubmit1').click(function () {
+        var text = $('#modalInput').val();
+        tags1[emotion][speaker][pointIndex] = text;
+        $('#tagModal1').modal('hide');
+        updateGraph1();
+    });
+
     /*
     * Here we begin to set up functionality for the dropdown menu where users can change what emotion they are currently
     * looking at for the conversation.
@@ -111,36 +175,43 @@ window.onload = function() {
     $("#drpdwn0").click(function(e){
         emotion = 'Anger';
         updateGraph();
+        updateGraph1();
     });
 
     $("#drpdwn1").click(function(e){
         emotion = 'Anticipation';
         updateGraph();
+        updateGraph1();
     });
 
     $("#drpdwn2").click(function(e){
-        emotion = 'Disgust'; 
+        emotion = 'Disgust';
         updateGraph();
+        updateGraph1();
     });
 
     $("#drpdwn3").click(function(e){
-        emotion = 'Fear'; 
+        emotion = 'Fear';
         updateGraph();
+        updateGraph1();
     });
 
     $("#drpdwn4").click(function(e){
-        emotion = 'Joy'; 
+        emotion = 'Joy';
         updateGraph();
+        updateGraph1();
     });
 
     $("#drpdwn5").click(function(e){
-        emotion = 'Sadness'; 
+        emotion = 'Sadness';
         updateGraph();
+        updateGraph1();
     });
 
     $("#drpdwn6").click(function(e){
-        emotion = 'Trust'; 
+        emotion = 'Trust';
         updateGraph();
+        updateGraph1();
     });
 
     /*
@@ -168,42 +239,24 @@ window.onload = function() {
         Plotly.redraw(myPlot);
     };
 
-    /*
-    * This code sets up the Inspect Dropdown to look at each speaker's personal profiles.
-    */
-    var form = $("#personform");
-    var people = JSON.parse($("#pInfo").text());
-    for (i in people) {
-      var element = $(document.createElement('option'));
-      element.val(JSON.stringify(people[i])).text(i);
-      $("#personform").append(element);
+    function updateGraph1() {
+        var midDataArray = JSON.parse($("#" + emotion + "1").text());
+        data1 =[];
+        for (j in midDataArray) {
+            var midData = midDataArray[j];
+            var mid = [];
+            var lines = [];
+            for (i in midData.y) {
+                mid[i] = midData.y[i];
+                lines[i] = midData.name + ': ' + midData.lines[i];
+                if (typeof tags1[emotion][j][i] != 'undefined') {
+                  lines[i] += '<br>' + 'tag: ' + tags1[emotion][j][i];
+                }
+            }
+            data1.push({x: midData.x, y: midData.y, name: midData.name, text: lines, hoverinfo: 'text', type: 'scatter'});
+        }
+        myPlot1.layout.yaxis.title = "<b>" + emotion + "<\/b>";
+        myPlot1.data = data1;
+        Plotly.redraw(myPlot1);
     }
-
-    $('#savebtn').click(function() {
-      console.log('save button clicked');
-
-      console.log($('#filename').text());
-      arrs = {'filename': $('#filename').text(), 'arr': $('#arr').text(), 'score': $('#score').text(), 'emoarr':$('#emoarr').text(), 'arr2': $('#bInfo').text(), 'person': $('#pInfo').text()},
-      $.ajax({
-        url: '/save',
-        type: 'GET',
-        data: arrs,
-        success: function(data) {
-          console.log('save success!');
-          console.log(data);
-        }
-      });
-    });
-
-    $('#save-form').on('submit', function(event){
-      console.log('form submitted');
-      $.ajax({
-        url: '/save',
-        type: 'POST',
-        success: function(data) {
-          console.log('save success!');
-        }
-      });
-    });
-
 };

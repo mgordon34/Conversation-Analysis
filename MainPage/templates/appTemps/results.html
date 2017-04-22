@@ -103,7 +103,9 @@
     </form>
   </div>
 
-  <div id="barg"></div>
+    <button id="convoModal" class="btn btn-primary" data-toggle="modal" data-target="#doubleModal">Compare Another Conversation</button>
+
+    <div id="barg"></div>
 
 
   <div id="tagModal" class="modal fade dialog-text" role="dialog">
@@ -126,8 +128,34 @@
     </div>
   </div>
 
+
   <button id="savebtn" class="btn btn-primary">Save Analysis</button>
 
+  <div id="doubleModal" class="modal fade dialog-text" role="dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Choose Second Conversation</h4>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'doubleresults' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <p>Select a conversation:</p>
+
+          <p>
+              {{ form.docfile.errors }}
+              {{ form.docfile }}
+          </p>
+          <p><input type="submit" value="Upload" /></p><br>
+
+        </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
     {% load static %}
     <script src='{% static "tags.js" %}'></script>
     <body>
@@ -142,6 +170,7 @@
         <p id="bInfo" class="hidden" >{{ arr2 }} </p>
         <p id="pInfo" class="hidden">{{ person }}</p>
         <p id="filename" class="hidden">{{ filename }}</p>
+        <p id="emoarr" class="hidden">{{ emoarr }}</p>
     </body>
     <div id="container" class="ui-widget-content" style=border:transparent></div>
 {% endblock %}

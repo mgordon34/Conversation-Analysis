@@ -4,13 +4,11 @@
 [4] NRC-Canada: Building the State-of-the-Art in Sentiment Analysis of Tweets, Saif M. Mohammad, Svetlana Kiritchenko, and Xiaodan Zhu, In Proceedings of the seventh international workshop on Semantic Evaluation Exercises (SemEval-2013), June 2013, Atlanta, USA.
 """
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import TextParsing
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.cm as cm
 import json
-from plotly.graph_objs import *
-import plotly.plotly as py
+import TextParsing
 
 class Analyze:
     """
@@ -23,7 +21,14 @@ class Analyze:
     def __init__(self):
         self.sid = SentimentIntensityAnalyzer()
         self.sentimentDict = {}
-        self.emotionDict = {"anticipation":{}, "fear":{}, "anger":{}, "trust":{}, "surprise":{}, "sadness":{}, "joy":{}, "disgust":{}}
+        self.emotionDict = {"anticipation":{},
+                            "fear":{},
+                            "anger":{},
+                            "trust":{},
+                            "surprise":{},
+                            "sadness":{},
+                            "joy":{},
+                            "disgust":{}}
 
         #Reading in the Vader Emotion Lexicon: Setting up emotionDict
         fi = open("NRC-Hashtag-Emotion-Lexicon-v0.2/NRC-Hashtag-Emotion-Lexicon-v0.2.txt")
@@ -141,7 +146,7 @@ class Analyze:
         lines = []
         for diag in tp.dialogues:
             sentence = diag.content
-            # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
+            # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line
             ss = self.sid.polarity_scores(sentence)
             diag.sentiment = [ss['compound'], ss['neg'], ss['neu'], ss['pos']]
             lines.append([ss['compound'], ss['neg'], ss['neu'], ss['pos']])
@@ -154,9 +159,9 @@ class Analyze:
         if len(speakerArray) < 2:
             print "please enter in two or more speakers"
             return
-        k = 0
+        #k = 0
         traces = []
-        a = Analyze()
+        #a = Analyze()
         #a.popDialogEmotion(tp)
         for sp in speakerArray:
             xs = []
@@ -176,8 +181,29 @@ class Analyze:
             }
 
             traces.append(trace)
-            k += 1
+            #k += 1
         json_data = json.dumps(traces, separators=(',', ':'))
+        return json_data
+
+    """
+        Takes in the array of speakers (as stings) and an emotion and sets up a JSON object used to plot the data in PLOTLY
+        """
+
+    def plotlyCompoundSenti(self, tp):
+        xs = []
+        ys = []
+        for i,d  in enumerate(tp.dialogues):
+            xs.append(i)
+            ys.append(d.sentiment[0])
+
+        trace = {
+            "type": "scatter",
+            "name": "Conversation",
+            "x": xs,
+            "y": ys
+        }
+            # k += 1
+        json_data = json.dumps(trace, separators=(',', ':'))
         return json_data
 
 
@@ -197,7 +223,6 @@ class Analyze:
             for i in tp.speakerToClass[sp].lines:
                 val = float(tp.dialogues[i].getAverageEmotion(emote))
                 if val != 0:
-
                     funcArr[k][0].append(float(i))
                     funcArr[k][1].append(val)
             k += 1
@@ -226,7 +251,7 @@ class Analyze:
             funcArr.append([[],[]])
             for i in tp.speakerToClass[sp].lines:
                 sentence = tp.dialogues[i].content
-                # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating of a single line of Abbott's
+                # ss is a dictionary containing the compound, negative (neg) and positive sentiment rating
                 ss = self.sid.polarity_scores(sentence)
                 funcArr[k][0].append(float(i))
                 funcArr[k][1].append(float(ss[sentiment]))
@@ -252,7 +277,8 @@ class Analyze:
         d = {}
         for p in tp.speakerDict.keys():
             st = p + ""
-            d[p] = {"pname": st, "commonWords":tp.speakerToClass[p].getNCommonWords(50), "freqDist":tp.speakerToClass[p].plotlyBarFreqDist()}
+            d[p] = {"pname": st, "commonWords":tp.speakerToClass[p].getNCommonWords(50),
+                    "freqDist":tp.speakerToClass[p].plotlyBarFreqDist()}
             a = self.getEmoteAverageAllSp(tp, p)
             d[p]["emotTowardsOthers"] = a
             d[p]["emotBar"] = self.convertPlotly(p, a)
@@ -263,8 +289,8 @@ class Analyze:
 
 
     """
-     Calculates the average compound, negative, neutral and positive scores of all speakers in the conversation to determine
-     the overall sentiment of the conversation (compound, negative, neutral, positive)
+     Calculates the average compound, negative, neutral and positive scores of all speakers
+     in the conversation to determine the overall sentiment of the conversation (compound, negative, neutral, positive)
      Returns a tuple of sentiment values:
     """
     def getAverageConversationScores(self, tp):
@@ -401,28 +427,39 @@ class Analyze:
     If you type "everyone" as sp2, it will calculate sp1's overall emotion toward the group.
     Returns a dictionary of emotions that sp1 feels while talking to sp2.
     {"anticipation":0.0, "fear":0.0, "anger":0.0,"trust":0.0, "surprise":0.0, "sadness":0.0, "joy":0.0, "disgust":0.0}
+    Note if a peron shows no feelings towards another, it will output the dictionary above with the values as 0.0
     """
     def emotAverageBwSpeakers(self,tp, sp1, sp2):
-        p = False
         if sp1 == "everyone":
-            print "Speaker 1 cannont be everyone"
+            print "Speaker 1 cannot be everyone"
             return {}
         lineNums = tp.speakerToClass[sp1].lines
-        emotions = {"anticipation":0.0, "fear":0.0, "anger":0.0,"trust":0.0, "surprise":0.0, "sadness":0.0, "joy":0.0, "disgust":0.0}
+        hasFeelings = False
+        emotions = {"anticipation":0.0,
+                    "fear":0.0,
+                    "anger":0.0,
+                    "trust":0.0,
+                    "surprise":0.0,
+                    "sadness":0.0,
+                    "joy":0.0,
+                    "disgust":0.0}
         first = True
+        cnt = 0
         for num in lineNums:
             if sp2 == "everyone" or sp2 == tp.dialogues[num].recipient:
+                hasFeelings = True
                 diag = tp.dialogues[num]
+                cnt += 1
                 for e in emotions:
                     if first:
                         emotions[e] = diag.getAverageEmotion(e)
                         first = False
                     else:
-                        emotions[e] = (emotions[e] + diag.getAverageEmotion(e)) / 2
-
+                        emotions[e] = (emotions[e] + diag.getAverageEmotion(e))
+        if hasFeelings:
+            for e in emotions.keys():
+                emotions[e] = emotions[e]/cnt
         return emotions
-
-
 
     """
     Returns a dictionary of the average vader sentiment sp1 (speaker 1) feels towards every person in the conversation.
@@ -488,19 +525,24 @@ class Analyze:
         lineNums = tp.speakerToClass[sp1].lines
         sentiment = [0.0,0.0,0.0,0.0]
         first = True
+        cnt = 0
         for num in lineNums:
             if sp2 == "everyone" or sp2 == tp.dialogues[num].recipient or "everyone" == tp.dialogues[num].recipient:
                 p = True
                 diag = tp.dialogues[num]
                 #print diag.sentiment
+                cnt += 1
                 for s in range(len(sentiment)):
                     if first:
                         sentiment[s] = diag.sentiment[s]
                         first = False
                     else:
-                        sentiment[s] = (sentiment[s] + diag.sentiment[s])/2
+                        sentiment[s] = (sentiment[s] + diag.sentiment[s])
         if not p:
             print sp1, " never spoke to ", sp2
+        if cnt != 0:
+            for s in range(len(sentiment)):
+                sentiment[s] = sentiment[s]/cnt
         return sentiment
 
     """
@@ -517,7 +559,8 @@ class Analyze:
 
 
     """
-    calculates the overall emotion scores of the converation by averaging all of the average emotion scores between speakers.
+    calculates the overall emotion scores of the
+    conversation by averaging all of the average emotion scores between speakers.
     """
     def getConversationScore(self, tp):
         emotions = {"anticipation": 0.0, "fear": 0.0, "anger": 0.0, "trust": 0.0, "surprise": 0.0, "sadness": 0.0,
@@ -544,40 +587,44 @@ class Analyze:
 """
 Main is mainly used for testing purposes.
 """
-# if __name__ == '__main__':
-#     tp = TextParsing.TextParsing("Workbook1.csv")
-#     a = Analyze()
-#     p = a.getConversationScore(tp)
-#     #for e in p.keys():
-#     #    print e, p[e]
-#     #print a.getEmoteAverageAllSp(tp, "Bunnycrusher")
-#     d = a.getPersonData(tp)
-#     #print a.convertPlotly("Bunnycrusher", a.getEmoteAverageAllSp(tp, "Bunnycrusher"))
-#     #print a.emotAverageBwSpeakers(tp, "Illumine", "Andalaul")
-#     #print a.getSentimentAverageAllSpeakers(tp, "Bunnycrusher")
-#
-#     for a in d.keys():
-#         print "__________________________________________________________________"
-#         print a
-#         print d[a]["commonWords"]
-#         print d[a]["freqDist"]
-#         print d[a]["emotTowardsOthers"]
-#         print d[a]["sentiTowardsOthers"]
-#         print d[a]["emotBar"]
-#         print d[a]["sentiBar"]
-#         print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-#     #print s
-#     #for k in e.keys():
-#     #    print k, e[k]
-#     #a.scatterPlotSentiment(tp, speakers, "pos")
-#     #print speakers[0], a.getAverageEmotionScore(speakers[0], "anticipation")
-#     #a.plotlyEmotion(tp, speakers,"joy")
-#     #a.getConversationSentiment(tp)
-#     #a.setDialogSentiment(tp)
-#     #a.getTwitterDictSentiment(tp)
-#     #a.getSentimentTextVader(tp)
-#     #a.getVaderSentimentWords(tp)
-#     #print a.getAverageScores(tp)
-#     #print a.getSentimentData(tp, "Tempus")
-#     #print a.getConversationSentiment(tp)
+#if __name__ == '__main__':
+#    tp = TextParsing.TextParsing("Workbook1.csv")
+#    a = Analyze()
+#    a.setDialogSentiment(tp)
+#    a.plotlyCompoundSenti(tp)
+    #print a.sid.polarity_scores("I hate Georgia Tech! :-(")
+    #print a.getDummySentimentOfWords("I hate Georgia Tech! :-(")
+    #p = a.getConversationScore(tp)
+    #for e in p.keys():
+    #    print e, p[e]
+    #print a.getEmoteAverageAllSp(tp, "Bunnycrusher")
+    #d = a.getPersonData(tp)
+    #print a.convertPlotly("Bunnycrusher", a.getEmoteAverageAllSp(tp, "Bunnycrusher"))
+    #print a.emotAverageBwSpeakers(tp, "Illumine", "Andalaul")
+    #print a.getSentimentAverageAllSpeakers(tp, "Bunnycrusher")
+
+    # for a in d.keys():
+    #     print "__________________________________________________________________"
+    #     print a
+    #     print d[a]["commonWords"]
+    #     print d[a]["freqDist"]
+    #     print d[a]["emotTowardsOthers"]
+    #     print d[a]["sentiTowardsOthers"]
+    #     print d[a]["emotBar"]
+    #     print d[a]["sentiBar"]
+    #     print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    #print s
+    #for k in e.keys():
+    #    print k, e[k]
+    #a.scatterPlotSentiment(tp, speakers, "pos")
+    #print speakers[0], a.getAverageEmotionScore(speakers[0], "anticipation")
+    #a.plotlyEmotion(tp, speakers,"joy")
+    #a.getConversationSentiment(tp)
+    #a.setDialogSentiment(tp)
+    #a.getTwitterDictSentiment(tp)
+    #a.getSentimentTextVader(tp)
+    #a.getVaderSentimentWords(tp)
+    #print a.getAverageScores(tp)
+    #print a.getSentimentData(tp, "Tempus")
+    #print a.getConversationSentiment(tp)
 #     #a.getDifference(tp, ["Tempus", "Bunnycrusher", "Daner"], "pos")
