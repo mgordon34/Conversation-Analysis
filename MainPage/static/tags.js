@@ -182,10 +182,13 @@ window.onload = function() {
 
     $('#savebtn').click(function() {
       console.log('save button clicked');
+
+      console.log($('#filename').text());
+      arrs = {'filename': $('#filename').text(), 'arr': $('#arr').text(), 'score': $('#score').text(), 'emoarr':$('#emoarr').text(), 'arr2': $('#bInfo').text(), 'person': $('#pInfo').text()},
       $.ajax({
         url: '/save',
         type: 'GET',
-        data: {'arr': $('#arr').text(), 'score': $('#score').text(), 'emoarr':$('#emoarr').text(), 'arr2': $('#bInfo').text(), 'person': $('#pInfo').text()},
+        data: arrs,
         success: function(data) {
           console.log('save success!');
           console.log(data);

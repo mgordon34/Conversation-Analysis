@@ -57,7 +57,8 @@ def results(request):
         if form.is_valid():
             newdoc = Document(docfile = request.FILES['docfile'])
             newdoc.save()
-            parser = TextParsing.TextParsing(request.FILES['docfile'].name)
+            filename = (request.FILES['docfile'].name)
+            parser = TextParsing.TextParsing(filename)
             analyzer = Analyze.Analyze()
             analyzer.popDialogEmotion(parser)
             analyzer.setDialogSentiment(parser)
@@ -87,7 +88,7 @@ def results(request):
     else:
         form = DocumentForm() # A empty, unbound form
 
-    return render(request, 'appTemps/results.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p})
+    return render(request, 'appTemps/results.html', {'filename': filename, 'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p})
 
 """
 This method takes the person of interest to be inspected from the results page, as well as the "person" object
@@ -125,9 +126,6 @@ def tags(request):
 def save(request):
     print "Save being called"
     a = {'result': 'success'}
-    if request.method == 'POST':
-        print "Get request"
-        return(HttpResponse(a, content_type='application/json'))
     if request.method == 'GET':
         print "Get request"
         data = {}
@@ -137,8 +135,9 @@ def save(request):
         except:
             pass
         with open('savedData.json', 'w') as f:
-            saved = json.load(request.GET)
-            data['test'] = request.GET
+            print(type(request.GET))
+            print(request.GET)
+            data[request.GET['filename']] = request.GET
             f.write(json.dumps(data))
         return JsonResponse(a)
 

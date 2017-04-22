@@ -127,10 +127,6 @@
   </div>
 
   <button id="savebtn" class="btn btn-primary">Save Analysis</button>
-  <form method="POST" id="save-form">
-    {% csrf_token %}
-    <input type="submit" value="Save Analysis!">
-  </form>
 
     {% load static %}
     <script src='{% static "tags.js" %}'></script>
@@ -145,6 +141,7 @@
         <p id="Trust" class="hidden">{{ arr.6 }}</p>
         <p id="bInfo" class="hidden" >{{ arr2 }} </p>
         <p id="pInfo" class="hidden">{{ person }}</p>
+        <p id="filename" class="hidden">{{ filename }}</p>
     </body>
     <div id="container" class="ui-widget-content" style=border:transparent></div>
 {% endblock %}
