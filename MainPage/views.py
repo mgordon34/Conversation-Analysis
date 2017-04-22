@@ -136,7 +136,7 @@ def doubleresults(request):
         trust = analyzer.plotlyEmotion(parser, parser.speakerDict.keys(), "trust")
         arr1 = [anger, anticipation, disgust, fear, joy, sadness, trust]
         cmpd1 = analyzer.plotlyCompoundSenti(parser)
-    return render(request, 'appTemps/doubleresults.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p, 'arr1':arr1, 'cmpd1':cmpd1})
+    return render(request, 'appTemps/doubleresults.html', {'arr': arr, 'score':score, 'emoarr':emoarr, 'cwords':cwords, 'arr2':arr2, "person": p, 'arr1':arr1, 'cmpd1':cmpd1, 'cmpd':cmpd})
 
 def tags(request):
     print "Tags being called"
@@ -152,6 +152,21 @@ def tags(request):
         }
         tag_model = Result(tags=json.dumps({'tags': tags}))
         return HttpResponse(tag_model.tags, content_type='application/json')
+
+def doubletags(request):
+    print "Double Tags being called"
+    if request.method == 'GET':
+        tags1 = {
+            'Anger': {},
+            'Anticipation': {},
+            'Disgust': {},
+            'Fear': {},
+            'Joy': {},
+            'Sadness': {},
+            'Trust': {},
+        }
+        tag_model1 = Result(tags1=json.dumps({'tags1': tags1}))
+        return HttpResponse(tag_model1.tags1, content_type='application/json')
 
 def about(request):
     return render(request, 'appTemps/about.html')

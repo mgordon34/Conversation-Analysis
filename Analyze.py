@@ -198,7 +198,7 @@ class Analyze:
 
         trace = {
             "type": "scatter",
-            "name": "Conversation 1",
+            "name": "Conversation",
             "x": xs,
             "y": ys
         }
