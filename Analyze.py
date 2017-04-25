@@ -198,7 +198,7 @@ class Analyze:
 
         trace = {
             "type": "scatter",
-            "name": "Conversation 1",
+            "name": "Conversation",
             "x": xs,
             "y": ys
         }
@@ -540,8 +540,9 @@ class Analyze:
                         sentiment[s] = (sentiment[s] + diag.sentiment[s])
         if not p:
             print sp1, " never spoke to ", sp2
-        for s in range(len(sentiment)):
-            sentiment[s] = sentiment[s]/cnt
+        if cnt != 0:
+            for s in range(len(sentiment)):
+                sentiment[s] = sentiment[s]/cnt
         return sentiment
 
     """

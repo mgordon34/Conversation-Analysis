@@ -1,0 +1,105 @@
+{% extends 'appTemps/base.html' %}
+{% block 'body' %}
+{% load static %}
+
+  <link rel="stylesheet" href="{% static "jquery-ui-1.12.1/jquery-ui.css"%}"/>
+  <script src="{% static "jquery-ui-1.12.1/jquery-ui.js"%}" type="text/javascript"></script>
+  <script src="{% static "comments.js"%}" type="text/javascript"></script>
+
+<style>.draggable { cursor: pointer; float: right; clear: both; position: absolute; background-color: transparent; border: transparent}</style>
+
+
+  <head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+
+    <div id="compoundGraph"></div>
+
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Another Emotion
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a id="drpdwn0">Anger</a></li>
+            <li><a id="drpdwn1">Anticipation</a></li>
+            <li><a id="drpdwn2">Disgust</a></li>
+            <li><a id="drpdwn3">Fear</a></li>
+            <li><a id="drpdwn4">Joy</a></li>
+            <li><a id="drpdwn5">Sadness</a></li>
+            <li><a id="drpdwn6">Trust</a></li>
+        </ul>
+    </div>
+
+
+  <div id="graph"></div>
+
+  <div id="graph1"></div>
+
+    <div class="container" style="height: 100px">
+        <button id="clickMe" type="btn btn-primary" onclick="comment();">Comment</button>
+        <div id='TextBoxesGroup' class='draggable ui-widget-content'></div>
+    </div>
+
+  <div id="tagModal" class="modal fade dialog-text" role="dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit Tag Comment</h4>
+        </div>
+        <div class="modal-body">
+          <input id="modalInput" type="text" class="form-control" value="Edit tag here">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="modalSubmit" type="button" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+    <div id="tagModal1" class="modal fade dialog-text" role="dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit Tag Comment</h4>
+        </div>
+        <div class="modal-body">
+          <input id="modalInput" type="text" class="form-control" value="Edit tag here">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="modalSubmit1" type="button" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+    {% load static %}
+    <script src='{% static "doubleresults.js" %}'></script>
+    <body>
+        <p id="Anger" class="hidden">{{ arr.0 }}</p>
+        <p id="Anticipation" class="hidden">{{ arr.1 }}</p>
+        <p id="Disgust" class="hidden">{{ arr.2 }}</p>
+        <p id="Fear" class="hidden">{{ arr.3 }}</p>
+        <p id="Joy" class="hidden">{{ arr.4 }}</p>
+        <p id="Sadness" class="hidden">{{ arr.5 }}</p>
+        <p id="Trust" class="hidden">{{ arr.6 }}</p>
+
+        <p id="Anger1" class="hidden">{{ arr1.0 }}</p>
+        <p id="Anticipation1" class="hidden">{{ arr1.1 }}</p>
+        <p id="Disgust1" class="hidden">{{ arr1.2 }}</p>
+        <p id="Fear1" class="hidden">{{ arr1.3 }}</p>
+        <p id="Joy1" class="hidden">{{ arr1.4 }}</p>
+        <p id="Sadness1" class="hidden">{{ arr1.5 }}</p>
+        <p id="Trust1" class="hidden">{{ arr1.6 }}</p>
+
+        <p id="compound" class="hidden">{{ cmpd }}</p>
+        <p id="compound1" class="hidden">{{ cmpd1 }}</p>
+    </body>
+    <div id="container" class="ui-widget-content" style=border:transparent></div>
+{% endblock %}
