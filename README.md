@@ -5,35 +5,35 @@ The purpose of our project is to conduct sentiment analysis on multi-voiced text
 # Release v1.0 Notes
 New Software Resources
 The Conversation Analysis Web Application is brand new therefore there are no earlier releases. The user can use the application to do the following:
-View information about Sentiment Analysis by utilizing the tabs on the main page or the link on the results page.
-View details about the sentiment analysis algorithm that was developed for the application. This includes a general overview, as wells as the libraries that were used to implement the algorithm.
-Upload an annotated conversation as a csv file to be analyzed. Conversation needs columns for line number, content, speaker, and recipient.
-View instructions on the welcome page about how to analyze the document by giving an example input.
-Comment on the data shown in movable and resizeable text boxes.
-Tag data points on conversation emotion graph with customizable text.
-View specific spoken lines of the conversation by hovering over data points in conversation graph.
-Easily read and modify data visualization.
-Zoom in/out
-Autoscale
-Hide/Show speakers
-Save as png
-Displays a bar graph that details 50 of the most commonly used words in the conversation as a whole.
-Upload a second conversation document, whose analysis can be displayed side by side with the original document.
-Contact the client to report bugs or suggest new features.
-Display individual profiles of the speakers of the conversation. Speaker profiles detail the following:
-Bar graphs that display the positive, negative, neutral and compound scores for each speaker towards the entire group as well as every other person in the conversation
-Positive and negative scores range from 0 - 1 where the closer to 1 the score is, the more strong of the sentiment.
-Compound scores are an overall sentiment scores, range from -1 to 1 where -1 represents a sentiment that is more negative while 1 represents a sentiment that is more positive.
-Bar graphs that display each scores for the speaker in each emotion.
-Each graph shows emotion scores toward the entire group of speakers, but also, the scores the speaker had toward each other individual speaker in the conversation.
-Scores range from 0 to 1.
+  1. View information about Sentiment Analysis by utilizing the tabs on the main page or the link on the results page.
+  2. View details about the sentiment analysis algorithm that was developed for the application. This includes a general overview, as wells as the libraries that were used to implement the algorithm.
+  3. Upload an annotated conversation as a csv file to be analyzed. Conversation needs columns for line number, content, speaker, and recipient.
+  4. View instructions on the welcome page about how to analyze the document by giving an example input.
+  5. Comment on the data shown in movable and resizeable text boxes.
+  6. Tag data points on conversation emotion graph with customizable text.
+  7. View specific spoken lines of the conversation by hovering over data points in conversation graph.
+  8. Easily read and modify data visualization.
+  9. Zoom in/out
+  10. Autoscale
+  11. Hide/Show speakers
+  12. Save as png
+  13. Displays a bar graph that details 50 of the most commonly used words in the conversation as a whole.
+  14. Upload a second conversation document, whose analysis can be displayed side by side with the original document.
+  15. Contact the client to report bugs or suggest new features.
+  16. Display individual profiles of the speakers of the conversation. Speaker profiles detail the following:
+  17. Bar graphs that display the positive, negative, neutral and compound scores for each speaker towards the entire group as well as every other person in the conversation
+  18. Positive and negative scores range from 0 - 1 where the closer to 1 the score is, the more strong of the sentiment.
+  19. Compound scores are an overall sentiment scores, range from -1 to 1 where -1 represents a sentiment that is more negative while 1 represents a sentiment that is more positive.
+  20. Bar graphs that display each scores for the speaker in each emotion.
+  21. Each graph shows emotion scores toward the entire group of speakers, but also, the scores the speaker had toward each other individual speaker in the conversation.
+  22. Scores range from 0 to 1.
 
 
 Known Bugs & Unimplemented Features
-Currently, the user will not be able to access previously analyzed documents from within the application itself. Instead, users can access these analyzed documents locally.
-The user is not currently able to easily switch between all uploaded conversations. As of now, the user can only thoroughly analyze at most 2 conversations at a time.
-We used Plotly to create the visualizations on the application. Because we are using a third party graphing program, customizing the color and style of the visualization of data was not implemented.
-Currently, our application is not being hosted with a public domain, so there is no internet access to the application.
+  1. Currently, the user will not be able to access previously analyzed documents from within the application itself. Instead, users can access these analyzed documents locally.
+  2. The user is not currently able to easily switch between all uploaded conversations. As of now, the user can only thoroughly analyze at most 2 conversations at a time.
+  3. We used Plotly to create the visualizations on the application. Because we are using a third party graphing program, customizing the color and style of the visualization of data was not implemented.
+  4. Currently, our application is not being hosted with a public domain, so there is no internet access to the application.
 
 
 # Prerequisites
