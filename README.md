@@ -15,28 +15,28 @@ A web browser is required to access the web application.
 # Download instructions
   Please note that the instructions must be followed in chronological order. 
   1. Download Python:
-    1. For instructions how to install Python, please follow the instructions in the following link: https://www.python.org/downloads/ 
+      1. For instructions how to install Python, please follow the instructions in the following link: https://www.python.org/downloads/ 
   2. Download Python NLTK
-    1. This project requires the nltk python library as a dependency. For directions to install nltk please refer to the following link:          
+      1. This project requires the nltk python library as a dependency. For directions to install nltk please refer to the following link:          
     http://www.nltk.org/install.html
   3. Download the Vader Lexicon Package
-    1. To obtain this package, after successfully installing nltk, open the Python shell on the command line and type the following:
+      1. To obtain this package, after successfully installing nltk, open the Python shell on the command line and type the following:
         import nltk
         nltk.download()
         d
         l
         click enter until the interface reads "Identifier>" Then type:
         Vader_lexicon
-    2. Alternatively if a pop-up appears after executing nltk.download(), navigate to the “All Packages” tab using the keyboard and scroll down until the cursor is over the vader lexicon package.
+      2. Alternatively if a pop-up appears after executing nltk.download(), navigate to the “All Packages” tab using the keyboard and scroll down until the cursor is over the vader lexicon package.
   4. Download the Punkt Package
-    1. To obtain this package, after successfully installing nltk, open the Python shell on the command line and type the following:
+      1. To obtain this package, after successfully installing nltk, open the Python shell on the command line and type the following:
         import nltk
         nltk.download()
         d
         l
         click enter until the interface reads "Identifier>" Then type:
         Punkt
-    2. Alternatively if a pop-up appears after executing nltk.download(), navigate to the “All Packages” tab using the keyboard and scroll down until the cursor is over the punkt package.
+      2. Alternatively if a pop-up appears after executing nltk.download(), navigate to the “All Packages” tab using the keyboard and scroll down until the cursor is over the punkt package.
 
 # Installation of Actual Application
 Click the green clone or download button on the Conversation Analysis GitHub page to download the project in the directory of choice. 
