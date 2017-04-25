@@ -46,8 +46,8 @@ Run the command python manage.py runserver
 In the web browser’s address bar type in http://127.0.0.1:8000/main/. This will directly link to the Conversation Analysis Application.
 
 # Troubleshooting
-If the local address above doesn’t work, you may need to specify a different one. To do this, at the end of the command to launch the server specify an ip:port combo. For example, python manage.py runserver 0.0.0.0:8080
-If one would want to attempt to run the project on a Windows computer, the nltk website has information about how to install nltk: http://www.nltk.org/install.html. The instructions to download the Vader and Punkt packages is similar to the instructions described above.   
+  1. If the local address above doesn’t work, you may need to specify a different one. To do this, at the end of the command to launch the server specify an ip:port combo. For example, python manage.py runserver 0.0.0.0:8080
+  2. If one would want to attempt to run the project on a Windows computer, the nltk website has information about how to install nltk: http://www.nltk.org/install.html. The instructions to download the Vader and Punkt packages is similar to the instructions described above.   
 
 [1] M. Mahajan and B. R. Jadhav, "Review of dual sentiment analysis," International Journal of Science and Research (IJSR), vol. 4, no. 11, pp. 2323–2326, Nov. 2015.
 [2] Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.
